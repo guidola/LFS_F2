@@ -1,0 +1,14 @@
+.text-light-hover :hover{
+    color: #D9DEE4;
+}
+
+.scrollable-y{
+    /*overflow: scroll !important;*/
+}
+
+.navbar-fixed{
+    position: fixed !important;
+    left: 0;
+    top:0;
+    overflow-y:auto !important;
+}
