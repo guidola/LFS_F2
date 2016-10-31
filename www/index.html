@@ -23,6 +23,12 @@
     <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
@@ -35,7 +41,7 @@
         <div class="col-md-3 left_col navbar-fixed">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Lfs Control Panel</span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-linux"></i> <span>Lfs Control Panel</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -46,27 +52,27 @@
                 <div class="menu_section">
                   <h3>General</h3>
                   <ul class="nav side-menu">
-                    <li><a id="dashboard-trigger"><i class="fa fa-home"></i>Dashboard</a></li>
-                    <li><a id="processes-trigger"><i class="fa fa-edit"></i>Processes</a></li>
-                    <li><a id="iptables-trigger"><i class="fa fa-edit"></i>IpTables</a></li>
-                    <li><a id="umanagement-trigger"><i class="fa fa-user"></i>User Management</a></li>
-                    <li><a id="cron-trigger"><i class="fa fa-edit"></i>Cron</a></li>
-                    <li><a><i class="fa fa-desktop"></i>Logs<span class="fa fa-chevron-down"></span></a>
+                    <li class="menu_item" data-url="/dashboard.html"><a><i class="fa fa-home"></i>Dashboard</a></li>
+                    <li class="menu_item" data-url="/processes.html"><a><i class="fa fa-tasks"></i>Processes</a></li>
+                    <li class="menu_item" data-url="/iptables.html"><a><i class="fa fa-key"></i>IpTables</a></li>
+                    <li class="menu_item" data-url="/umanagement.html"><a><i class="fa fa-user"></i>User Management</a></li>
+                    <li class="menu_item" data-url="/cron.html"><a><i class="fa fa-clock-o"></i>Cron</a></li>
+                    <li class="menu_item" data-url="/logs.html"><a><i class="fa fa-list-alt"></i>Logs<span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
-                        <li><a href="general_elements.html">System</a></li>
-                        <li><a href="media_gallery.html">Authentication</a></li>
-                        <li><a href="typography.html">User</a></li>
-                        <li><a href="icons.html">Apache</a></li>
-                        <li><a href="glyphicons.html">Kernel</a></li>
-                        <li><a href="widgets.html">Others</a></li>
+                        <li  class="menu_item" data-url="/logs.html#system"><a>System</a></li>
+                        <li  class="menu_item" data-url="/logs.html#auth"><a>Authentication</a></li>
+                        <li  class="menu_item" data-url="/logs.html#user"><a>User</a></li>
+                        <li  class="menu_item" data-url="/logs.html#apache"><a>Apache</a></li>
+                        <li  class="menu_item" data-url="/logs.html#kernel"><a>Kernel</a></li>
+                        <li  class="menu_item" data-url="/logs.html#others"><a>Others</a></li>
                       </ul>
                     </li>
-                    <li><a id="playlist-trigger"><i class="fa fa-edit"></i>Playlist</a></li>
+                    <li  class="menu_item" data-url="/playlist.html"><a><i class="fa fa-music"></i>Playlist</a></li>
                 </div>
                 <div class="menu_section">
                   <h3>Devices</h3>
                   <ul class="nav side-menu">
-                    <li><a><i class="fa fa-edit"></i>Connected Devices<span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-usb"></i>Connected Devices<span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
                         <!--Here will dinamically appear all new connected usb devices-->
                         <li><a href="typography.html">User</a></li>
@@ -253,8 +259,30 @@
     <!-- easy-pie-chart -->
     <script src="../vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
 
+    <!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script defer src="../build/js/custom.min.js"></script>
+    <script defer src="js/style.js"></script>
 
     <!-- load main div content -->
     <script>
@@ -279,7 +307,6 @@
                 success: function(response_payload){
                   document.getElementById('main_wrapper').innerHTML = response_payload;
                   eval(document.getElementById('to_eval').innerHTML);
-                  console.log(document.getElementById('to_eval').innerHTML);
                 }
               })
       )
