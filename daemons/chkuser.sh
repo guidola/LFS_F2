@@ -6,7 +6,7 @@ enouser=2
 enodata=3
 esyntax=4
 ehash=5
-IFS=$
+IFS="$"
 
 error() {
 
