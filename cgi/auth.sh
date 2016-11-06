@@ -36,7 +36,7 @@ echo "1\$$USERNAME\$$PWD\$$$" >> /web_server/fifos/auth/request
 read resp_code token
 
 echo "Content-Type: text/html"
-
+echo ""
 
 
 if [ ! -z resp_code ]; then

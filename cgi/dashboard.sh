@@ -34,6 +34,7 @@ load_average_15m=`uptime | awk '{print $10}'`
 strings=`last -F | awk '{if($1!="reboot" && $1!="wtmp" && $0!="") if( $2 ~ /pts/ ){if($9=="-"){print $1 "$remote$" $3 "$" $6 " " $5 " " $8 " " $7 "$" $12 " " $11 " " $14 " " $13}else{print $1 "$remote$" $3 "$" $6 " " $5 " " $8 " " $7 "$-"}}else{if( $3 ~ /:/ ) {if($9=="-"){print $1 "$local$" $2 "$$" $6 " " $5 " " $8 " " $7 "$" $12 " " $11 " " $14 " " $13}else{print $1 "$local$" $2 "$" $6 " " $5 " " $8 " " $7 "$-"}}else if($8=="-"){print $1 "$local$" $2 "$" $5 " " $4 " " $7 " " $6 "$" $11 " " $10 " " $13 " " $12}else{print $1 "$local$" $2 "$" $5 " " $4 " " $7 " " $6 "$-"}}}' | head -n 10`
 
 echo "Content-Type: application/json"
+echo ""
 echo "{"
 echo "  \"cpu\":["
 echo "      $cpu_usr,"
