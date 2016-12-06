@@ -9,7 +9,7 @@ $('.menu_item').click(function setMainContent(e){
     //make ajax request to obtain content of the dashboard (home screen)
     $.ajax({
         type: "GET",
-        url: '/LFS_F2/www' + trigger.getAttribute('data-url'),
+        url: trigger.getAttribute('data-url'),
         accepts:{
             html: 'text/html'
         },
