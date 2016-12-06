@@ -4,16 +4,16 @@
 OIFS="$IFS"
 
 
-cpu_usr=`mpstat | awk 'NR == 4 {print $4}'`
-cpu_nice=`mpstat | awk 'NR == 4 {print $5}'`
-cpu_sys=`mpstat | awk 'NR == 4 {print $6}'`
-cpu_iowait=`mpstat | awk 'NR == 4 {print $7}'`
-cpu_irq=`mpstat | awk 'NR == 4 {print $8}'`
-cpu_soft=`mpstat | awk 'NR == 4 {print $9}'`
-cpu_steal=`mpstat | awk 'NR == 4 {print $10}'`
-cpu_guest=`mpstat | awk 'NR == 4 {print $11}'`
-cpu_gnice=`mpstat | awk 'NR == 4 {print $12}'`
-cpu_idle=`mpstat | awk 'NR == 4 {print $13}'`
+cpu_usr=`mpstat | awk 'NR == 4 {print $3}'`
+cpu_nice=`mpstat | awk 'NR == 4 {print $4}'`
+cpu_sys=`mpstat | awk 'NR == 4 {print $5}'`
+cpu_iowait=`mpstat | awk 'NR == 4 {print $6}'`
+cpu_irq=`mpstat | awk 'NR == 4 {print $7}'`
+cpu_soft=`mpstat | awk 'NR == 4 {print $8}'`
+cpu_steal=`mpstat | awk 'NR == 4 {print $9}'`
+cpu_guest=`mpstat | awk 'NR == 4 {print $10}'`
+cpu_gnice=`mpstat | awk 'NR == 4 {print $11}'`
+cpu_idle=`mpstat | awk 'NR == 4 {print $12}'`
 
 mem_used=`free | awk 'NR == 2 {print $3}'`
 mem_free=`free | awk 'NR == 2 {print $4}'`
