@@ -271,17 +271,32 @@
         });
 
 
-        $('.chart.ram').easyPieChart({
-            easing: 'easeOutElastic',
-            delay: 3000,
-            barColor: '#26793A',
-            trackColor: '#fff',
-            scaleColor: false,
-            lineWidth: 20,
-            trackWidth: 16,
-            lineCap: 'butt',
-            onStep: function(from, to, percent) {
-                $(this.el).find('.percent').text(Math.round(percent));
+        var chart_ram = new Chart(document.getElementById('ram'), {
+            type: 'doughnut',
+            tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+            data: {
+                labels: [
+                    "used",
+                    "free",
+                    "cache"
+                ],
+                datasets: [{
+                    data: [0, 100, 0],
+                    backgroundColor: [
+                        "#FF0000",
+                        "#BFBF00",
+                        "#008000"
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF0000",
+                        "#BFBF00",
+                        "#008000"
+                    ]
+                }]
+            },
+            options: {
+                legend: false,
+                responsive: false
             }
         });
 
@@ -350,7 +365,7 @@
                             {
                                 extend: "print",
                                 className: "btn-sm"
-                            },
+                            }
                         ],
                         responsive: true
                     });
@@ -420,9 +435,6 @@
                 error: function(payload) {
                     console.log(payload);
                     console.log("could not get data for dashboard async");
-                    chart_cpu.data.datasets[0].data = [10,5,5,10,2,23,7,9,12,17];
-                    chart_cpu.update();
-
                 },
 
                 // json retrieve call was successful
@@ -430,6 +442,8 @@
                 success: function(dades){
                     chart_cpu.data.datasets[0].data = dades.cpu;
                     chart_cpu.update();
+                    chart_ram.data.datasets[0].data = dades.mem.slice(0,3);
+                    chart_ram.update();
                 },
 
                 failure: function () {
