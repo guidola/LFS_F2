@@ -417,7 +417,8 @@
                 dataType: "json",
 
                 // html retrieve call was *not* successful
-                error: function() {
+                error: function(payload) {
+                    console.log(payload);
                     console.log("could not get data for dashboard async");
                     chart_cpu.data.datasets[0].data = [10,5,5,10,2,23,7,9,12,17];
                     chart_cpu.update();
