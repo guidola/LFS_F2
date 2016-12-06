@@ -71,10 +71,10 @@ for string in ${strings}; do
     else
         echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"$4\", \"until\":\"$5\"},"
     fi
-    IFS="$OIFS"
+    IFS="\n"
 
     let $i=$i+1
 done
-
+IFS="$OIFS"
 echo "  ]}"
 
