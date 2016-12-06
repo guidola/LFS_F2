@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-
 OIFS="$IFS"
 
-
-cpu=`top -n1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
+cpu=`top -n 1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
 set $cpu
 #Args="$*"
