@@ -348,13 +348,13 @@
 
     function updateGeneralInfo(dades) {
 
-        document.getElementById('hostname').innerHTML = dades.hostname;
+        document.getElementById('hostname').innerHTML = dades.hostname.toUpperCase();
         document.getElementById('up_for').innerHTML = dades.uptime_for;
         document.getElementById('up_since').innerHTML = dades.uptime_since;
-        document.getElementById('load_average').innerHTML = dades.load_average;
+        document.getElementById('load_average').innerHTML = dades.load_average + "%";
         document.getElementById('n_active_usrs').innerHTML = dades.active_users;
-        document.getElementById('buffer_cache').innerHTML = dades.mem[3];
-        document.getElementById('available').innerHTML = dades.mem[4];
+        document.getElementById('buffer_cache').innerHTML = dades.mem[3] + "MiB";
+        document.getElementById('available').innerHTML = dades.mem[4] + "MiB";
 
     }
 
