@@ -15,11 +15,11 @@ cpu_guest=`mpstat | awk 'NR == 4 {print $10}'`
 cpu_gnice=`mpstat | awk 'NR == 4 {print $11}'`
 cpu_idle=`mpstat | awk 'NR == 4 {print $12}'`
 
-mem_used=`free | awk 'NR == 2 {print $3}'`
-mem_free=`free | awk 'NR == 2 {print $4}'`
-mem_shared=`free | awk 'NR == 2 {print $5}'`
-mem_cache=`free | awk 'NR == 2 {print $6}'`
-mem_avail=`free | awk 'NR == 2 {print $7}'`
+mem_used=`free -m | awk 'NR == 2 {print $3}'`
+mem_free=`free -m | awk 'NR == 2 {print $4}'`
+mem_shared=`free -m | awk 'NR == 2 {print $5}'`
+mem_cache=`free -m | awk 'NR == 2 {print $6}'`
+mem_avail=`free -m | awk 'NR == 2 {print $7}'`
 
 disk=`df | awk '{if($6=="/") print $5 }' | sed -e 's/%//g'`
 
