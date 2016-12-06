@@ -49,9 +49,9 @@
                 </div>
                 <div class="x_content" style="display: block;">
                     <div style="text-align: center; margin-bottom: 17px">
-                    <span class="chart disk" data-percent="98">
-                    <span id="disk_doughnut" class="percent">86</span>
-                        <canvas height="220" width="220" style="height: 110px; width: 110px;"></canvas>
+                    <span id="disk_usage" class="chart disk" style="height: 350px; width: 350px;" data-percent="98">
+                    <span id="disk_doughnut" style="height: 350px; width: 350px; text-align:center" class="percent">86</span>
+                        <canvas height="350" width="350" style="height: 350px; width: 350px;"></canvas>
                     </span>
                     </div>
                 </div>
@@ -305,7 +305,8 @@
             barColor: '#36198A',
             trackColor: '#fff',
             scaleColor: false,
-            lineWidth: 20,
+            lineWidth: 85,
+            size: 350,
             trackWidth: 16,
             lineCap: 'butt',
             onStep: function(from, to, percent) {
@@ -442,6 +443,7 @@
                     chart_cpu.update();
                     chart_ram.data.datasets[0].data = dades.mem.slice(0,3);
                     chart_ram.update();
+                    $('#disk_usage').data('easyPieChart').update(dades.disk);
                 },
 
                 failure: function () {
