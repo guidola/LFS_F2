@@ -101,39 +101,22 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <h3 class="green"><i class="fa fa-paint-brush"></i> Gentelella</h3>
-
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                    <h3 class="green"><i class="fa fa-linux"></i><span id="hostname"></span></h3>
                     <br>
-
                     <div class="project_detail">
-
-                        <p class="title">Client Company</p>
-                        <p>Deveint Inc</p>
-                        <p class="title">Project Leader</p>
-                        <p>Tony Chicken</p>
+                        <p><span class="title">Up for:  </span><span id="up_for"></span></p>
+                        <p><span class="title">Up since:  </span><span id="up_since"></span></p>
+                        <p><span class="title">System load average (past 15m):  </span><span id="load_average"></span></p>
+                        <p><span class="title">Active users:  </span><span id="n_active_users"></span></p>
                     </div>
 
                     <br>
-                    <h5>Project files</h5>
-                    <ul class="list-unstyled project_files">
-                        <li><a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a>
-                        </li>
-                        <li><a href=""><i class="fa fa-file-pdf-o"></i> UAT.pdf</a>
-                        </li>
-                        <li><a href=""><i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a>
-                        </li>
-                        <li><a href=""><i class="fa fa-picture-o"></i> Logo.png</a>
-                        </li>
-                        <li><a href=""><i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a>
-                        </li>
+                    <h5>Other memory values</h5>
+                    <ul class="project_detail">
+                        <p><span class="title">Buffer/Cache:  </span><span id="buffer_cache"></span></p>
+                        <p><span class="title">Available:  </span><span id="available"></span></p>
                     </ul>
                     <br>
-
-                    <div class="text-center mtop20">
-                        <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                        <a href="#" class="btn btn-sm btn-warning">Report contact</a>
-                    </div>
                 </div>
 
             </section>
@@ -160,8 +143,6 @@
                     "irq (%)",
                     "soft (%)",
                     "steal (%)",
-                    "guest (%)",
-                    "gnice (%)",
                     "idle (%)"
                 ],
                 datasets: [{
@@ -174,8 +155,6 @@
                         "#8080FF",
                         "#BF40BF",
                         "#79ff4d",
-                        "#411BEA",
-                        "#ED7651",
                         "#808080"
                     ],
                     hoverBackgroundColor: [
@@ -186,8 +165,6 @@
                         "#8080FF",
                         "#BF40BF",
                         "#79ff4d",
-                        "#411BEA",
-                        "#ED7651",
                         "#808080"
                     ]
                 }]
@@ -369,6 +346,18 @@
         document.getElementById('last_logins').innerHTML = files;
     }
 
+    function updateGeneralInfo(dades) {
+
+        document.getElementById('hostname').innerHTML = dades.hostname;
+        document.getElementById('up_for').innerHTML = dades.uptime_for;
+        document.getElementById('up_since').innerHTML = dades.uptime_since;
+        document.getElementById('load_average').innerHTML = dades.load_average;
+        document.getElementById('n_active_usrs').innerHTML = dades.active_users;
+        document.getElementById('buffer_cache').innerHTML = dades.mem[3];
+        document.getElementById('available').innerHTML = dades.mem[4];
+
+    }
+
     function updateData() {
         $.ajax({
             type: "POST",
@@ -394,7 +383,8 @@
                 chart_ram.data.datasets[0].data = dades.mem.slice(0,3);
                 chart_ram.update();
                 $('#disk_usage').data('easyPieChart').update(dades.disk);
-                updateUsers(dades.users)
+                updateUsers(dades.users);
+                updateGeneralInfo(dades);
             },
 
             failure: function () {
