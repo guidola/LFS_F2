@@ -353,7 +353,8 @@
         var files = "";
 
         console.log(last_users);
-        for (var user in last_users) {
+        for (var i = 0; i < last_users.length; i++) {
+            user = last_users[i];
             console.log(user);
             files = files.concat('<tr role="row" class="even"><td class="sorting_1">')
                 .concat(user.user)
@@ -369,7 +370,6 @@
         }
         console.log(files);
         document.getElementById('last_logins').innerHTML = files;
-
     }
 
     function updateData() {
