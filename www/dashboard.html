@@ -427,8 +427,7 @@
 
                 // json retrieve call was successful
                 //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
-                success: function(response_payload){
-                    var dades = $.parseJSON(response_payload);
+                success: function(dades){
                     chart_cpu.data.datasets[0].data = dades.cpu;
                     chart_cpu.update();
                 },
