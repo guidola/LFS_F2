@@ -73,10 +73,10 @@
                     <table id="datatable" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
                         <thead>
                         <tr role="row">
-                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="user: activate to sort column descending" style="width: 206.889px;">User</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="type: activate to sort column ascending" style="width: 330.889px;">Type</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="from: activate to sort column ascending" style="width: 152.889px;">From</th>
-                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="when: activate to sort column ascending" style="width: 81.8889px;">Login Date</th>
+                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="user: activate to sort column descending" style="">User</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="type: activate to sort column ascending" style="width: 81.8889px;">Type</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="from: activate to sort column ascending" style="width: 81.8889px;">From</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="when: activate to sort column ascending" style="width: 154.889px;">Login Date</th>
                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="until: activate to sort column ascending" style="width: 154.889px;">Logout Date</th>
                         </tr>
                         </thead>
@@ -352,10 +352,8 @@
 
         var files = "";
 
-        console.log(last_users);
         for (var i = 0; i < last_users.length; i++) {
             var user = last_users[i];
-            console.log(user);
             files = files.concat('<tr role="row" class="even"><td class="sorting_1">')
                 .concat(user.user)
                     .concat('</td><td>')
@@ -368,7 +366,6 @@
                     .concat(user.until)
                     .concat('</td></tr>')
         }
-        console.log(files);
         document.getElementById('last_logins').innerHTML = files;
     }
 
