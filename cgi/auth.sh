@@ -22,7 +22,7 @@ enodata=3
 esyntax=4
 ehash=5
 
-template=`cat /web_server/www/js/notification_template.js`
+template=`cat ../www/js/templates/notification_template.js`
 #verify we got all params we need.
 (( -z  $USERNAME || -z $PWD )) || die "400 Bad Request"
 
@@ -36,25 +36,31 @@ echo "1\$$USERNAME\$$PWD\$$$" >> /web_server/fifos/auth/request
 read resp_code token
 
 echo "Content-Type: text/html"
-echo ""
+
 
 
 if [ ! -z resp_code ]; then
     case resp_code in
         ${xwrong}|${enouser}|${enodata})
             #return login.html with custom error
+            echo "Status: 301 Forbidden"
+            echo ""
             generate_notification "Invalid Credentials" "The username and password provided are not correct" "error"
             login=`cat /web_server/www/login.html | sed -e "s/\/\/CGI-SCRIPT-INJECTED-JS_____\/\//${notification}/g"`
             ;;
         ${esyntax}|${ehash})
             #return login.html with custom error
+            echo "Status: 500 Internal Server Error"
+            echo ""
             generate_notification "Oops." "Something went wrong on our side" "error"
             login=`cat /web_server/www/login.html | sed -e "s/\/\/CGI-SCRIPT-INJECTED-JS_____\/\//${notification}/g"`
             ;;
         ${xcorrect})
             #return index.html with dynamic attributes filled in and the token for the private area as a cookie
+            echo "Status: 200 Ok"
+            echo ""
             echo "Set-Cookie: auth_token=$token"
-            index=`cat /web_server/www/index.html | sed -e "s/{{username}}/${username}/g"`
+            index=`cat /web_server/www/index_prova.html | sed -e "s/{{username}}/${username}/g"`
             ;;
     esac
 fi
