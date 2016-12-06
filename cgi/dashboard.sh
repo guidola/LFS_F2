@@ -73,7 +73,7 @@ for string in ${strings}; do
     fi
     IFS="$OIFS"
 
-    let $i=$i+1
+    let i=$i+1
 done
 
 echo "  ]}"
