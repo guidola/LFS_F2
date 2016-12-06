@@ -8,6 +8,7 @@ generate_notification() {
 
 die() {
     echo "Status: $1"
+    echo ""
     exit 0
 }
 

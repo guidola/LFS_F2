@@ -1,45 +1,36 @@
 #!/usr/bin/env bash
 
-cont=0
+kill=0
 pause=1
-kill=2
 xcorrect=0
 xerror=1
 esyntax=2
+wpid=3
 ecode=4
 IFS="$"
-
-
-report() {
-
-        echo "${1}" >> "${2}"
-}
-
 
 while true
 do
     
-    read codi pid<$1
+    read action request_pid time_to_sleep pid<$1
 
-    [[ ! -z ${codi} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}"
+    [[ ${codi} == "2" ]] || exit 0
+    [[ ! -z ${codi} || ! -z ${action} || ! -z ${request_pid} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}${pid}"
+    [[ pid -ne -1 ]] || echo "${wpid}" >> "${1}${pid}"
 
-    case ${codi} in
-        ${cont})    kill -CONT ${pid}
+    case ${action} in
+        ${pause})   kill -STOP ${request_pid}
                     if [ $? -eq 0 ]
-                        then echo "${xcorrect}" >> "${1}"
-                        else echo "${xwrong}" >> "${1}"
+                        then echo "${xcorrect}" >> "${1}${pid}"
+                             ( sleep ${time_to_sleep}; kill -CONT ${request_pid})&
+                        else echo "${xwrong}" >> "${1}${pid}"
                     fi;;
-        ${pause})   kill -STOP ${pid}
+        ${kill})    kill ${request_pid}
                     if [ $? -eq 0 ]
-                        then echo "${xcorrect}" >> "${1}"
-                        else echo "${xwrong}" >> "${1}"
+                        then echo "${xcorrect}" >> "${1}${pid}"
+                        else echo "${xwrong}" >> "${1}${pid}"
                     fi;;
-        ${kill})    kill ${pid}
-                    if [ $? -eq 0 ]
-                        then echo "${xcorrect}" >> "${1}"
-                        else echo "${xwrong}" >> "${1}"
-                    fi;;
-        *)          echo "${ecode}" >> "${1}";;
+        *)          echo "${ecode}" >> "${1}${pid}";;
     esac
 
 
