@@ -59,10 +59,10 @@ echo "  \"disk\":$disk,"
 echo "  \"active_users\":$active_users,"
 echo "  \"load_average\":$load_average_15m,"
 echo "  \"users\":["
-IFS="$"
 lines=`echo "$strings" | wc -l`
 i=1;
 for string in ${strings}; do
+    IFS="$"
     set $string
     Args="$*"
     if [ $i -eq $lines ]; then
@@ -71,7 +71,7 @@ for string in ${strings}; do
     else
         echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"$4\", \"until\":\"$5\"},"
     fi
-
+    IFS="$OIFS"
 
     let $i=$i+1
 done
