@@ -67,9 +67,9 @@ for string in ${strings}; do
     Args="$*"
     if [ $i -eq $lines ]; then
 
-        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_//g'`\"}"
+        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_/ /g'`\"}"
     else
-        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_//g'`\"},"
+        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_/ /g'`\"},"
     fi
     IFS="$OIFS"
 
