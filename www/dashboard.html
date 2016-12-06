@@ -13,7 +13,7 @@
                 <div class="x_content" style="display: block;">
                     <div style="text-align: center; margin-bottom: 17px">
                         <iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
-                        <canvas id="cpu" height="220" width="220" style="height: 110px; width: 110px;"></canvas>
+                        <canvas id="cpu" height="350" width="350" style="height: 110px; width: 110px;"></canvas>
                     </span>
                     </div>
                 </div>
@@ -219,13 +219,8 @@
 -->
     <script id="to_eval" type="text/javascript">
 
-        var options = {
-            legend: false,
-            responsive: false
-        };
 
-
-        new Chart(document.getElementById('cpu'), {
+        var chart_cpu = new Chart(document.getElementById('cpu'), {
             type: 'doughnut',
             tooltipFillColor: "rgba(51, 51, 51, 0.55)",
             data: {
@@ -244,22 +239,35 @@
                 datasets: [{
                     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
                     backgroundColor: [
-                        "#BDC3C7",
-                        "#9B59B6",
-                        "#E74C3C",
-                        "#26B99A",
-                        "#3498DB"
+                        "#FF0000",
+                        "#BFBF00",
+                        "#008000",
+                        "#80FFFF",
+                        "#8080FF",
+                        "#BF40BF",
+                        "#79ff4d",
+                        "#411BEA",
+                        "#ED7651",
+                        "#808080"
                     ],
                     hoverBackgroundColor: [
-                        "#CFD4D8",
-                        "#B370CF",
-                        "#E95E4F",
-                        "#36CAAB",
-                        "#49A9EA"
+                        "#FF0000",
+                        "#BFBF00",
+                        "#008000",
+                        "#80FFFF",
+                        "#8080FF",
+                        "#BF40BF",
+                        "#79ff4d",
+                        "#411BEA",
+                        "#ED7651",
+                        "#808080"
                     ]
                 }]
             },
-            options: options
+            options: {
+                legend: false,
+                responsive: false
+            }
         });
 
 
@@ -403,14 +411,17 @@
                 type: "POST",
                 url: '/cgi-bin/dashboard.sh',
                 accepts:{
-                    html: 'text/json'
+                    json: 'text/json'
                 },
                 context: this,
                 dataType: "json",
 
                 // html retrieve call was *not* successful
-                error: function() {
+                error: function(payload) {
+                    console.log(payload);
                     console.log("could not get data for dashboard async");
+                    chart_cpu.data.datasets[0].data = [10,5,5,10,2,23,7,9,12,17];
+                    chart_cpu.update();
 
                 },
 
@@ -418,10 +429,12 @@
                 //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
                 success: function(response_payload){
                     var dades = $.parseJSON(response_payload);
+                    chart_cpu.data.datasets[0].data = dades.cpu;
+                    chart_cpu.update();
                 },
 
                 failure: function () {
-                    $('.current-page').attr('class', "");
+                    console.log("failure update usage mate");
                 }
             })
 
