@@ -36,7 +36,7 @@ echo "      $4,"            #mem_shared
 echo "      $5"             #mem_avail
 echo "  ],"
 
-disk=`df -l | awk '{if($6=="/") print $5 }' | sed -e 's/%//g'`
+disk=`df 2>/dev/null | awk '{if($6=="/") print $5 }' | sed -e 's/%//g'`
 
 hostname=`hostname`
 
