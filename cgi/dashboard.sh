@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set > /var/log/apache2/env.log
 
 OIFS="$IFS"
 
