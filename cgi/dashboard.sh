@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set > /var/log/apache2/env.log
+echo "create" > /var/log/apache2/env.log
+set >> /var/log/apache2/env.log
 
 OIFS="$IFS"
 
@@ -45,8 +46,8 @@ hostname=`hostname`
 uptime_since=`uptime -s`
 uptime_for=`uptime -p`
 
-active_users=`uptime | awk '{print $4}'`
-load_average_15m=`uptime | awk '{print $10}'`
+active_users=`uptime | awk -F "," '{print $3}'`
+load_average_15m=`uptime | awk '{print $8 "." $9}'`
 
 strings=`last -F | head -n 10 | awk '{if($1!="reboot" && $1!="wtmp" && $0!="") if( $2 ~ /pts/ ){if($9=="-"){print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else{if( $3 ~ /:/ ) {if($9=="-"){print $1 "$local$" $2 "$$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$local$" $2 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else if($8=="-"){print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$" $11 "_" $10 "_" $13 "_" $12}else{print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$-"}}}'`
 
