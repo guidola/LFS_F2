@@ -4,7 +4,7 @@ OIFS="$IFS"
 
 cpu=`top -n 1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
-#set $cpu
+set $cpu
 #Args="$*"
 IFS="$OIFS"
 
@@ -24,7 +24,7 @@ echo "  ],"
 
 mem=`free -m | awk 'NR == 2 {print $3 "$" $4 "$" $6 "$" $5 "$" $7 }'`
 IFS="$"
-#set $mem
+set $mem
 #Args="$*"
 IFS="$OIFS"
 
@@ -51,7 +51,7 @@ strings=`last -F | head -n 10 | awk '{if($1!="reboot" && $1!="wtmp" && $0!="") i
 
 
 echo "  \"disk\":$disk,"
-echo "  \"hostame\":$hostname,"
+echo "  \"hostname\":$hostname,"
 echo "  \"uptime_since\":$uptime_since,"
 echo "  \"uptime_for\":$uptime_for,"
 echo "  \"active_users\":$active_users,"
@@ -61,7 +61,7 @@ lines=`echo "$strings" | wc -l`
 i=1;
 for string in ${strings}; do
     IFS="$"
-    #set $string
+    set $string
     #Args="$*"
 
     when=`echo $4 | sed -e 's/_/ /g'`
