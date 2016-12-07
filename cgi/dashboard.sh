@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-echo "create" > /var/log/apache2/env.log
-set >> /var/log/apache2/env.log
+echo "create" >> /var/log/apache2/env.log
+set 1>>/var/log/apache2/env.log 2>>/var/log/apache2/env.log
 
 OIFS="$IFS"
 
