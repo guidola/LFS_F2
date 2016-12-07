@@ -63,15 +63,18 @@ for string in ${strings}; do
     IFS="$"
     set $string
     #Args="$*"
-    if [ $i -eq $lines ]; then
 
-        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_/ /g'`\"}"
+    when=`echo $4 | sed -e 's/_/ /g'`
+    until=`echo $5 | sed -e 's/_/ /g'`
+
+    if [ $i -eq $lines ]; then
+        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"$when\", \"until\":\"$until\"}"
     else
-        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_/ /g'`\"},"
+        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"$when\", \"until\":\"$until\"},"
     fi
     IFS="$OIFS"
 
-    let i=$i+1
+    let i=i+1
 done
 
 echo "  ]}"
