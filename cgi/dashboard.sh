@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
-echo "create" >> /var/log/apache2/env.log
-set 1>>/var/log/apache2/env.log 2>>/var/log/apache2/env.log
-
 OIFS="$IFS"
 
 cpu=`top -n 1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
-set $cpu
+#set $cpu
 #Args="$*"
 IFS="$OIFS"
 
@@ -27,7 +24,7 @@ echo "  ],"
 
 mem=`free -m | awk 'NR == 2 {print $3 "$" $4 "$" $6 "$" $5 "$" $7 }'`
 IFS="$"
-set $mem
+#set $mem
 #Args="$*"
 IFS="$OIFS"
 
@@ -64,7 +61,7 @@ lines=`echo "$strings" | wc -l`
 i=1;
 for string in ${strings}; do
     IFS="$"
-    set $string
+    #set $string
     #Args="$*"
 
     when=`echo $4 | sed -e 's/_/ /g'`
