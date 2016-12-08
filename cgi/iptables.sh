@@ -24,7 +24,7 @@ ecode=3
 [[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
-mkfifo "/web_server/fifos/proc/$$"
+mkfifo "/web_server/fifos/acl/$$"
 
 #send process request to process manager daemon
 echo "$CODI\$$$\$$TABLE\$$ACTION\$$NUM\$$CHAIN\$$PROT\$$IINT\$$OINT\$$SOURCE\$$DEST\$$SPT\$$DPT\$$TO\$$TARGET" >> /web_server/fifos/acl/request
@@ -41,7 +41,7 @@ if [ ! -z resp_code ]; then
         ${esyntax})
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "Something went wrong on our side" " error"
+            echo "Oops." "Syntax error"
             ;;
         ${ecode})
             echo "Status: 500 Internal Server Error"
@@ -52,9 +52,6 @@ if [ ! -z resp_code ]; then
             echo "Status: 200 OK"
             echo ""
             echo "false"
-            ;;
-        ${wpid})
-            die "400 Bad Request"
             ;;
         ${xcorrect})
             echo "Status: 200 OK"
