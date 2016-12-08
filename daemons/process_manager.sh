@@ -15,8 +15,8 @@ do
     read codi request_pid time_to_sleep pid<$1
 
     [[ ${codi} == "2" ]] || exit 0
-    [[ ! -z ${codi} || ! -z ${request_pid} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}${pid}"
-    [[ request_pid -ne -1 ]] || echo "${wpid}" >> "${1}${pid}"
+    [[ ! -z ${codi} || ! -z ${request_pid} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}${pid}"; continue
+    [[ request_pid -ne -1 ]] || echo "${wpid}" >> "${1}${pid}"; continue
 
     case ${codi} in
         ${pause})   kill -STOP ${request_pid}
@@ -32,6 +32,6 @@ do
                     fi;;
         *)          echo "${ecode}" >> "${1}${pid}";;
     esac
-∫
+
 
 done
