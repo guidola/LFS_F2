@@ -25,75 +25,7 @@
 
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td style="width: 3%;">
-                            <ul class="list-inline prod_color">
-                                <li>
-                                    <div class="color bg-green" style="width: 20px; height: 20px;"></div>
-                                </li>
-                            </ul>
-                            </td>
-                            <td>23453</td>
-                            <td>root</td>
-                            <td>/usr/bin/patata</td>
-                            <td>20 %</td>
-                            <td>10 %</td>
-                            <td>22:12:34</td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 3%;">
-                                <ul class="list-inline prod_color">
-                                    <li>
-                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>23453</td>
-                            <td>root</td>
-                            <td>/usr/bin/patata</td>
-                            <td>20 %</td>
-                            <td>10 %</td>
-                            <td>22:12:34</td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 3%;">
-                                <ul class="list-inline prod_color">
-                                    <li>
-                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>23453</td>
-                            <td>root</td>
-                            <td>/usr/bin/patata</td>
-                            <td>20 %</td>
-                            <td>10 %</td>
-                            <td>22:12:34</td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
-                        </tr>
-                        <tr>
-                            <td style="width: 3%;">
-                                <ul class="list-inline prod_color">
-                                    <li>
-                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>23453</td>
-                            <td>root</td>
-                            <td>/usr/bin/patata</td>
-                            <td>20 %</td>
-                            <td>10 %</td>
-                            <td>22:12:34</td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
-                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
-                        </tr>
+                        <tbody id="procs_table">
                         </tbody>
                     </table>
                 </div>
@@ -121,5 +53,288 @@
 
         $ICON.toggleClass('fa-chevron-up fa-chevron-down');
     });
+
+
+    // initialize the validator function
+    validator.message.date = 'not a real date';
+
+    // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+    $('.form-control')
+            .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+            .on('change', 'select.required', validator.checkField)
+            .on('keypress', 'input[required][pattern]', validator.keypress);
+
+    function sendPauseRequest(pid, pause_time, input_id, button_id, rodoneta_id){
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/manage_processes.sh',
+            data: {
+                'action': 1,
+                'pid': pid,
+                'time': pause_time
+            },
+            accepts:{
+                json: 'text/json'
+            },
+            context: this,
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit pause request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(dades){
+                console.log(dades);
+                if (dades) {
+                    //change pause button to invalidated until time has passed and change status to paused
+                    var button = document.getElementById(button_id);
+                    button.setAttribute("disabled", 'true');
+                    var input=document.getElementById(input_id);
+                    input.setAttribute('disabled','true');
+                    var rodoneta=document.getElementById(rodoneta_id);
+                    rodoneta.setAttribute('class', 'color bg-orange');
+                    window.setTimeout(
+                            function(){
+                                var button_nou = document.getElementById(button_id);
+                                button_nou.setAttribute('disabled', 'false');
+                                var input_nou=document.getElementById(input_id);
+                                input_nou.setAttribute('disabled', 'false');
+                                var rodoneta_nova=document.getElementById(rodoneta_id);
+                                rodoneta_nova.setAttribute('class', 'color bg-green');
+                            }, pause_time);
+                }else{
+                    $.notify("Could not pause process with PID " + pid + "for time " + pause_time, "warning");
+                }
+            },
+
+            failure: function () {
+                console.log("failure pause request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        })
+    }
+
+    $('.submit_pause').click(function(e) {
+        e.preventDefault();
+        var submit = true;
+
+        // evaluate the form using generic validaing
+        if (!validator.checkAll($(this))) {
+            submit = false;
+        }
+
+        if (submit) {
+            //recover the associated input value
+            var associated_input = e.attrs['data-data'];
+            var assoc_pid = e.attrs['data-role'];
+            var time_to_pause = document.getElementById(associated_input);
+            var rodona = e.attrs['data-option'];
+            sendPauseRequest(assoc_pid, time_to_pause, associated_input, e.id, rodona);
+        }
+
+    });
+
+    function loadProcesses(procs){
+
+        var files = "";
+
+        var parent_dude = document.getElementById('procs_table');
+        while (parent_dude.firstChild) {
+            parent_dude.removeChild(parent_dude.firstChild);
+        }
+
+        for (var i = 0; i < procs.length; i++) {
+            var proc = procs[i];
+            var trow = document.createElement('tr')
+                    .setAttribute('role', 'row')
+                    .setAttribute('class', 'even');
+
+            var diverino = document.createElement('div')
+                    .setAttribute('style', "width: 20px; height: 20px;");
+            diverino.id="status" + proc.pid;
+            if (proc.status = 'T'){
+                diverino.setAttribute('class', 'color bg-orange');
+            }else {
+                diverino.setAttribute('class', 'color bg-green');
+            }
+
+            var status = document.createElement('td').appendChild(
+                    document.createElement('ul')
+                            .setAttribute('class', 'list-inline prod_color')
+                            .appendChild(
+                                    document.createElement('li')
+                                            .appendChild(
+                                                    diverino
+                                            )
+                            )
+            );
+
+            trow.appendChild(status);
+            trow.appendChild(
+                    document.createElement('td').innerHTML=proc.pid
+            );
+            trow.appendChild(
+                    document.createElement('td').innerHTML=proc.user
+            );
+            trow.appendChild(
+                    document.createElement('td').innerHTML=proc.command
+            );
+            trow.appendChild(
+                    document.createElement('td').innerHTML=proc.memory
+            );
+            trow.appendChild(
+                    document.createElement('td').innerHTML=proc.cpu
+            );
+            trow.appendChild(
+                    document.createElement('td').innerHTML=proc.cputime
+            );
+
+            var inputerino = document.createElement('input')
+                    .setAttribute('type', 'number')
+                    .setAttribute('id', 'pause_time' + proc.pid)
+                    .setAttribute('name', 'pause_time')
+                    .setAttribute('required', 'required')
+                    .setAttribute('data-validate-minmax', '0,')
+                    .setAttribute('class', 'form-control');
+            if (proc.status == 'T'){
+                inputerino.setAttribute('disabled', 'true')
+            }else{
+                inputerino.setAttribute('disabled', 'false')
+            }
+            trow.appendChild(
+                    document.createElement('td')
+                        .appendChild(
+                                inputerino
+                        )
+            );
+
+            var button_pause = document.createElement('a')
+                    .setAttribute('href', '#')
+                    .setAttribute('id', 'submit_pause' + proc.pid)
+                    .setAttribute('data-data', proc.pid)
+                    .setAttribute('class', 'btn btn-sm btn-warning');
+            button_pause.innerHTML = "PAUSE";
+            if (proc.status == 'T'){
+                button_pause.setAttribute('disabled', 'true')
+            }else{
+                button_pause.setAttribute('disabled', 'false')
+            }
+            trow.appendChild(
+                    document.createElement('td')
+                            .setAttribute('style', "width: 5%;")
+                            .appendChild(
+                                    button_pause
+                            )
+            );
+
+            var button_kill = document.createElement('a')
+                    .setAttribute('href', '#')
+                    .setAttribute('id', 'submit_kill' + proc.pid)
+                    .setAttribute('data-data', proc.pid)
+                    .setAttribute('class', 'btn btn-sm btn-danger');
+            button_kill.innerHTML = "KILL";
+            trow.appendChild(
+                    document.createElement('td')
+                            .setAttribute('style', "width: 5%;")
+                            .appendChild(
+                                    button_kill
+                            )
+            );
+
+            parent_dude.appendChild(trow);
+        }
+    }
+
+    function refreshProcesses() {
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/show_processes.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            context: this,
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not get data for dashboard async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(dades){
+                console.log(dades);
+                loadProcesses(dades.processes)
+            },
+
+            failure: function () {
+                console.log("failure update usage mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        })
+    }
+
+
+
+    function sendKillRequest(pid, pause_time, input, button, rodoneta){
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/manage_processes.sh',
+            data: {
+                'action': 0,
+                'pid': pid
+            },
+            accepts:{
+                json: 'text/json'
+            },
+            context: this,
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit pause request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(dades){
+                console.log(dades);
+                if (dades) {
+                    refreshProcesses();
+                }else{
+                    $.notify("Could not kill process with PID " + pid, "warning");
+                }
+            },
+
+            failure: function () {
+                console.log("failure kill request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        })
+    }
+
+
+    $('.submit_kill').click(function(e) {
+        e.preventDefault();
+
+        //recover the associated input value
+        var assoc_pid = e.attrs['data-role'];
+        sendKillRequest();
+
+    });
+
+    $('#refresh_button').click(refreshProcesses);
+
+    refreshProcesses();
+
 
 </script>

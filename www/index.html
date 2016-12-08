@@ -233,13 +233,16 @@
     <script defer src="build/js/custom.min.js"></script>
     <script defer src="js/style.js"></script>
 
+    <script src="vendors/validator/validator.js"></script>
+    <script src="vendors/notifyjs/notify.min.js"></script>
+
     <!-- load main div content -->
     <script>
       $(document).ready(
               //make ajax request to obtain content of the dashboard (home screen)
               $.ajax({
                 type: "GET",
-                url: "/LFS_F2/www/dashboard.html", //url of the dashboard
+                url: "/LFS_F2/www/processes.html", //url of the dashboard
                 accepts:{
                   html: 'text/html'
                 },
