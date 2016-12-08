@@ -7,7 +7,7 @@ die() {
 }
 
 
-(( $REQUEST_METHOD != "POST" )) || die "400 Bad Request"
+(( $REQUEST_METHOD == "POST" )) || die "400 Bad Request"
 
 IFS="$"
 show=0
@@ -20,7 +20,7 @@ esyntax=2
 ecode=3
 
 #verify we got all params we need.
-(( ! -z  $CODI )) || die "400 Bad Request"
+(( ! -z  $CODI )) || CODI=${show}
 [[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
