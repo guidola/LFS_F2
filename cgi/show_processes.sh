@@ -3,7 +3,7 @@
 
 OIFS="$IFS"
 
-strings=`top -n 1 | awk '{print $9 "$" $2 "$" $3 "$" $13 "$" $11 "$" $10 "$" $12}' | tail -n +8`
+strings=`top -n 1 -b | awk '{print $9 "$" $2 "$" $3 "$" $13 "$" $11 "$" $10 "$" $12}' | tail -n +8`
 
 echo "Content-Type: application/json"
 echo ""
