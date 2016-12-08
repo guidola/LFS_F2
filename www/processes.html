@@ -337,23 +337,9 @@
         })
     }
 
-
+    refreshProcesses();
 
 
     $('#refresh_button').click(refreshProcesses);
-
-    console.log('dale maniga');
-    loadProcesses(
-            [
-                {status: 'W', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'S', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'S', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'W', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'S', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'}
-    ]);
-
 
 </script>
