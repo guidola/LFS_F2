@@ -1,0 +1,120 @@
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Active processes</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content" style="display: block;">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>PID</th>
+                            <th>User</th>
+                            <th>Command</th>
+                            <th>Memory</th>
+                            <th>CPU</th>
+                            <th>CPU time</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style="width: 3%;">
+                                <ul class="list-inline prod_color">
+                                    <li>
+                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>23453</td>
+                            <td>root</td>
+                            <td>/usr/bin/patata</td>
+                            <td>20 %</td>
+                            <td>10 %</td>
+                            <td>22:12:34</td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3%;">
+                                <ul class="list-inline prod_color">
+                                    <li>
+                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>23453</td>
+                            <td>root</td>
+                            <td>/usr/bin/patata</td>
+                            <td>20 %</td>
+                            <td>10 %</td>
+                            <td>22:12:34</td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3%;">
+                                <ul class="list-inline prod_color">
+                                    <li>
+                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>23453</td>
+                            <td>root</td>
+                            <td>/usr/bin/patata</td>
+                            <td>20 %</td>
+                            <td>10 %</td>
+                            <td>22:12:34</td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3%;">
+                                <ul class="list-inline prod_color">
+                                    <li>
+                                        <div class="color bg-green" style="width: 20px; height: 20px;"></div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>23453</td>
+                            <td>root</td>
+                            <td>/usr/bin/patata</td>
+                            <td>20 %</td>
+                            <td>10 %</td>
+                            <td>22:12:34</td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-warning">PAUSE</a></td>
+                            <td style="width: 5%;"><a href="#" class="btn btn-sm btn-danger">KILL</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="to_eval">
+    $('.collapse-link').on('click', function() {
+        var $BOX_PANEL = $(this).closest('.x_panel'),
+                $ICON = $(this).find('i'),
+                $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+        // fix for some div with hardcoded fix class
+        if ($BOX_PANEL.attr('style')) {
+            $BOX_CONTENT.slideToggle(200, function(){
+                $BOX_PANEL.removeAttr('style');
+            });
+        } else {
+            $BOX_CONTENT.slideToggle(200);
+            $BOX_PANEL.css('height', 'auto');
+        }
+        $ICON.toggleClass('fa-chevron-up fa-chevron-down');
+    });
+</script>

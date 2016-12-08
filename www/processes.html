@@ -148,27 +148,31 @@
 
         for (var i = 0; i < procs.length; i++) {
             var proc = procs[i];
-            var trow = document.createElement('tr').setAttribute('role', 'row');
-            trow.setAttribute('class', 'even');
+            var trow = document.createElement('tr');
 
-            var diverino = document.createElement('div').setAttribute('style', "width: 20px; height: 20px;");
+            var diverino = document.createElement('div');
+            diverino.setAttribute('style', "width: 20px; height: 20px;");
             diverino.id="status" + proc.pid;
             if (proc.status = 'T'){
                 diverino.setAttribute('class', 'color bg-orange');
             }else {
                 diverino.setAttribute('class', 'color bg-green');
             }
+            var diverinoo = document.createElement('li');
+            diverinoo.appendChild(diverino);
 
-            var status_in = document.createElement('ul').setAttribute('class', 'list-inline prod_color');
+            var status_in = document.createElement('ul');
+            status_in.setAttribute('class', 'list-inline prod_color');
 
             status_in.appendChild(
                             document.createElement('li')
                                     .appendChild(
-                                            diverino
+                                            diverinoo
                                     )
                     );
 
-            var status = document.createElement('td').appendChild(status_in);
+            var status = document.createElement('td');
+            status.appendChild(status_in);
 
             trow.appendChild(status);
             var content =  document.createElement('td');
@@ -214,12 +218,10 @@
             }else{
                 inputerino.setAttribute('disabled', 'false')
             }
-            trow.appendChild(
-                    document.createElement('td')
-                        .appendChild(
-                                inputerino
-                        )
-            );
+            var to_inputar = document.createElement('td');
+            to_inputar.setAttribute('style', 'width: 10%');
+            to_inputar.appendChild(inputerino);
+            trow.appendChild(to_inputar);
 
             var button_pause = document.createElement('a');
             button_pause.setAttribute('href', '#');
@@ -248,6 +250,8 @@
             to_append.appendChild(button_kill);
             trow.appendChild(to_append);
 
+            console.log('vuelta i vuelta campofrio');
+            console.log(trow);
             parent_dude.appendChild(trow);
         }
     }
@@ -336,7 +340,18 @@
 
     $('#refresh_button').click(refreshProcesses);
 
-    refreshProcesses();
+    console.log('dale maniga');
+    loadProcesses(
+            [
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'}
+    ]);
 
 
 </script>
