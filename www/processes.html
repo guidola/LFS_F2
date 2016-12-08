@@ -153,7 +153,7 @@
             var diverino = document.createElement('div');
             diverino.setAttribute('style', "width: 20px; height: 20px;");
             diverino.id="status" + proc.pid;
-            if (proc.status = 'T'){
+            if (proc.status == 'T'){
                 diverino.setAttribute('class', 'color bg-orange');
             }else {
                 diverino.setAttribute('class', 'color bg-green');
@@ -343,12 +343,12 @@
     console.log('dale maniga');
     loadProcesses(
             [
+                {status: 'W', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'S', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
                 {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
-                {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'S', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'W', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
+                {status: 'S', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
                 {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'},
                 {status: 'T', pid: 23456, user: 'root', command: 'cmd', memory: 34, cpu: 23, cputime: 'massa'}
     ]);
