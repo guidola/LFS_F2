@@ -5,7 +5,7 @@ case $1 in
         mkdir -p /web_server/fifos/auth/
         mkfifo /web_server/fifos/auth/request
         echo "Starting authentication daemon..."
-        /web_server/daemons/chkuser /web_server/fifos/auth/ &
+        /web_server/daemons/chkuser.sh /web_server/fifos/auth/ &
         echo "Authentication daemon running [$!]"
         ;;
     stop)

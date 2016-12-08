@@ -5,7 +5,7 @@ case $1 in
         mkdir -p /web_server/fifos/proc/
         mkfifo /web_server/fifos/proc/request
         echo "Starting process manager daemon..."
-        /web_server/daemons/process_manager /web_server/fifos/proc/ &
+        /web_server/daemons/process_manager.sh /web_server/fifos/proc/ &
         echo "Process manager daemon running [$!]"
         ;;
     stop)

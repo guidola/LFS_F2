@@ -5,7 +5,7 @@ case $1 in
         mkdir -p /web_server/fifos/acl/
         mkfifo /web_server/fifos/acl/request
         echo "Starting ip tables daemon..."
-        /web_server/daemons/process_manager /web_server/fifos/acl/ &
+        /web_server/daemons/process_manager.sh /web_server/fifos/acl/ &
         echo "IP tables daemon running [$!]"
         ;;
     stop)
