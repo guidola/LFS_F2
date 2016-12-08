@@ -31,7 +31,7 @@ report() {
 while true
 do
     
-    read codi username password pid <$1
+    read codi username password pid < ${1}request
 
     [[ ${codi} == "2" ]] || exit 0
     [[ ! -z ${codi} || ! -z ${username} || ! -z ${password} || ! -z ${pid} || ${pid} == *"$"* ]] || error ${esyntax} $1 ${pid}; continue
