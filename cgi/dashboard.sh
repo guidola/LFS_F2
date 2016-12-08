@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-
 OIFS="$IFS"
 
-
-cpu=`top -n1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
+cpu=`top -n 1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
 set $cpu
 #Args="$*"
@@ -38,22 +36,22 @@ echo "      $4,"            #mem_shared
 echo "      $5"             #mem_avail
 echo "  ],"
 
-disk=`df | awk '{if($6=="/") print $5 }' | sed -e 's/%//g'`
+disk=`df 2>/dev/null | awk '{if($6=="/") print $5 }' | sed -e 's/%//g'`
 
 hostname=`hostname`
 
 uptime_since=`uptime -s`
 uptime_for=`uptime -p`
 
-active_users=`uptime | awk '{print $4}'`
-load_average_15m=`uptime | awk '{print $10}'`
+active_users=`uptime | awk -F "," '{print $3}'`
+load_average_15m=`uptime | awk '{print $8 "." $9}'`
 
-strings=`last -F | awk '{if($1!="reboot" && $1!="wtmp" && $0!="") if( $2 ~ /pts/ ){if($9=="-"){print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else{if( $3 ~ /:/ ) {if($9=="-"){print $1 "$local$" $2 "$$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$local$" $2 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else if($8=="-"){print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$" $11 "_" $10 "_" $13 "_" $12}else{print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$-"}}}' | head -n 10`
+strings=`last -F | head -n 10 | awk '{if($1!="reboot" && $1!="wtmp" && $0!="") if( $2 ~ /pts/ ){if($9=="-"){print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else{if( $3 ~ /:/ ) {if($9=="-"){print $1 "$local$" $2 "$$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$local$" $2 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else if($8=="-"){print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$" $11 "_" $10 "_" $13 "_" $12}else{print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$-"}}}'`
 
 
 
 echo "  \"disk\":$disk,"
-echo "  \"hostame\":$hostname,"
+echo "  \"hostname\":$hostname,"
 echo "  \"uptime_since\":$uptime_since,"
 echo "  \"uptime_for\":$uptime_for,"
 echo "  \"active_users\":$active_users,"
@@ -65,15 +63,18 @@ for string in ${strings}; do
     IFS="$"
     set $string
     #Args="$*"
-    if [ $i -eq $lines ]; then
 
-        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_/ /g'`\"}"
+    when=`echo $4 | sed -e 's/_/ /g'`
+    until=`echo $5 | sed -e 's/_/ /g'`
+
+    if [ $i -eq $lines ]; then
+        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"$when\", \"until\":\"$until\"}"
     else
-        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"`echo $4 | sed -e 's/_/ /g'`\", \"until\":\"`echo $5 | sed -e 's/_/ /g'`\"},"
+        echo "      {\"user\":\"$1\", \"type\":\"$2\", \"from\":\"$3\", \"when\":\"$when\", \"until\":\"$until\"},"
     fi
     IFS="$OIFS"
 
-    let $i=$i+1
+    let i=i+1
 done
 
 echo "  ]}"
