@@ -13,7 +13,7 @@ die() {
 }
 
 
-(( $REQUEST_METHOD != "POST" )) || die "400 Bad Request"
+(( $REQUEST_METHOD == "POST" )) || die "400 Bad Request"
 
 IFS="$"
 xcorrect=0
@@ -25,7 +25,7 @@ ehash=5
 
 template=`cat ../www/js/templates/notification_template.js`
 #verify we got all params we need.
-(( -z  $USERNAME || -z $PWD )) || die "400 Bad Request"
+(( ! -z  $USERNAME || ! -z $PWD )) || die "400 Bad Request"
 
 #create return fifo
 mkfifo "/web_server/fifos/auth/$$"

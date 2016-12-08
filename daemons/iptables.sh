@@ -16,7 +16,6 @@ do
     IFS="$OIFS"
     [[ ${codi} == "2" ]] || exit 0
     [[ ! -z ${codi} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}${pid}"; continue
-    [[ pid -ne -1 ]] || echo "${wpid}" >> "${1}${pid}"; continue
 
     case ${codi} in
         ${show})
@@ -134,5 +133,6 @@ do
                      echo "${esyntax}" >> "${1}${pid}"
                  fi
             fi;;
+        *)  echo "${ecode}" >> "${1}${pid}";;
     esac
 done
