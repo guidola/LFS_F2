@@ -119,26 +119,6 @@
         })
     }
 
-    $('.submit_pause').click(function(e) {
-        e.preventDefault();
-        var submit = true;
-
-        // evaluate the form using generic validaing
-        if (!validator.checkAll($(this))) {
-            submit = false;
-        }
-
-        if (submit) {
-            //recover the associated input value
-            var associated_input = e.attrs['data-data'];
-            var assoc_pid = e.attrs['data-role'];
-            var time_to_pause = document.getElementById(associated_input);
-            var rodona = e.attrs['data-option'];
-            sendPauseRequest(assoc_pid, time_to_pause, associated_input, e.id, rodona);
-        }
-
-    });
-
     function loadProcesses(procs){
 
         var parent_dude = document.getElementById('procs_table');
@@ -216,7 +196,7 @@
             if (proc.status == 'T'){
                 inputerino.setAttribute('disabled', 'true')
             }else{
-                inputerino.setAttribute('disabled', 'false')
+                inputerino.removeAttribute('disabled')
             }
             var to_inputar = document.createElement('td');
             to_inputar.setAttribute('style', 'width: 10%');
@@ -227,12 +207,12 @@
             button_pause.setAttribute('href', '#');
             button_pause.setAttribute('id', 'submit_pause' + proc.pid);
             button_pause.setAttribute('data-data', proc.pid);
-            button_pause.setAttribute('class', 'btn btn-sm btn-warning');
+            button_pause.setAttribute('class', 'btn btn-sm btn-warning submit_pause');
             button_pause.innerHTML = "PAUSE";
             if (proc.status == 'T'){
                 button_pause.setAttribute('disabled', 'true')
             }else{
-                button_pause.setAttribute('disabled', 'false')
+                button_pause.removeAttribute('disabled')
             }
             var to_append = document.createElement('td');
             to_append.setAttribute('style', "width: 5%;");
@@ -243,7 +223,7 @@
             button_kill.setAttribute('href', '#');
             button_kill.setAttribute('id', 'submit_kill' + proc.pid);
             button_kill.setAttribute('data-data', proc.pid);
-            button_kill.setAttribute('class', 'btn btn-sm btn-danger');
+            button_kill.setAttribute('class', 'btn btn-sm btn-danger submit_kill');
             button_kill.innerHTML = "KILL";
             to_append = document.createElement('td');
             to_append.setAttribute('style', "width: 5%;");
@@ -254,6 +234,35 @@
             console.log(trow);
             parent_dude.appendChild(trow);
         }
+
+        $('.submit_kill').click(function(e) {
+            e.preventDefault();
+
+            //recover the associated input value
+            var assoc_pid = e.target.attributes['data-role'];
+            sendKillRequest(assoc_pid);
+
+        });
+
+        $('.submit_pause').click(function(e) {
+            e.preventDefault();
+            var submit = true;
+
+            // evaluate the form using generic validaing
+            if (!validator.checkAll($(this))) {
+                submit = false;
+            }
+
+            if (submit) {
+                //recover the associated input value
+                var associated_input = e.target.attributes['data-data'];
+                var assoc_pid = e.target.attributes['data-role'];
+                var time_to_pause = document.getElementById(associated_input);
+                var rodona = e.target.attributes['data-option'];
+                sendPauseRequest(assoc_pid, time_to_pause, associated_input, e.id, rodona);
+            }
+
+        });
     }
 
     function refreshProcesses() {
@@ -329,14 +338,7 @@
     }
 
 
-    $('.submit_kill').click(function(e) {
-        e.preventDefault();
 
-        //recover the associated input value
-        var assoc_pid = e.attrs['data-role'];
-        sendKillRequest();
-
-    });
 
     $('#refresh_button').click(refreshProcesses);
 
