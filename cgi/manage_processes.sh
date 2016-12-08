@@ -23,7 +23,7 @@ ecode=4
 mkfifo "/web_server/fifos/proc/$$"
 
 #send process request to process manager daemon
-echo "1\$$ACTION\$$PID\$$TIME\$$$" >> /web_server/fifos/proc/request
+echo "$ACTION\$$PID\$$TIME\$$$" >> /web_server/fifos/proc/request
 
 #wait for response from the authentication daemon
 read resp_code

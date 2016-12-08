@@ -10,7 +10,7 @@ case $1 in
         ;;
     stop)
         echo "Signaling daemon..."
-        echo '2$$$$' >> /web_server/fifos/proc/request
+        echo '2$$$' >> /web_server/fifos/proc/request
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/proc/request
         echo "Process manager daemon gracefully shut down."
