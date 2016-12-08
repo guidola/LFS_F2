@@ -27,7 +27,7 @@ ecode=3
 mkfifo "/web_server/fifos/proc/$$"
 
 #send process request to process manager daemon
-echo "$CODI\$$PID\$$TIME\$$$" >> /web_server/fifos/proc/request
+echo "$CODI\$$$\$$TABLE\$$ACTION\$$NUM\$$CHAIN\$$PROT\$$IINT\$$OINT\$$SOURCE\$$DEST\$$SPT\$$DPT\$$TO\$$TARGET" >> /web_server/fifos/acl/request
 
 #wait for response from the authentication daemon
 read resp_code

@@ -12,7 +12,7 @@ IFS="$"
 while true
 do
     
-    read codi request_pid time_to_sleep pid<$1
+    read codi request_pid time_to_sleep pid < ${1}request
 
     [[ ${codi} == "2" ]] || exit 0
     [[ ! -z ${codi} || ! -z ${request_pid} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}${pid}"; continue
