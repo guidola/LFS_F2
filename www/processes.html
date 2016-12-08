@@ -141,8 +141,6 @@
 
     function loadProcesses(procs){
 
-        var files = "";
-
         var parent_dude = document.getElementById('procs_table');
         while (parent_dude.firstChild) {
             parent_dude.removeChild(parent_dude.firstChild);
@@ -150,12 +148,10 @@
 
         for (var i = 0; i < procs.length; i++) {
             var proc = procs[i];
-            var trow = document.createElement('tr')
-                    .setAttribute('role', 'row')
-                    .setAttribute('class', 'even');
+            var trow = document.createElement('tr').setAttribute('role', 'row');
+            trow.setAttribute('class', 'even');
 
-            var diverino = document.createElement('div')
-                    .setAttribute('style', "width: 20px; height: 20px;");
+            var diverino = document.createElement('div').setAttribute('style', "width: 20px; height: 20px;");
             diverino.id="status" + proc.pid;
             if (proc.status = 'T'){
                 diverino.setAttribute('class', 'color bg-orange');
@@ -163,44 +159,56 @@
                 diverino.setAttribute('class', 'color bg-green');
             }
 
-            var status = document.createElement('td').appendChild(
-                    document.createElement('ul')
-                            .setAttribute('class', 'list-inline prod_color')
-                            .appendChild(
-                                    document.createElement('li')
-                                            .appendChild(
-                                                    diverino
-                                            )
-                            )
-            );
+            var status_in = document.createElement('ul').setAttribute('class', 'list-inline prod_color');
+
+            status_in.appendChild(
+                            document.createElement('li')
+                                    .appendChild(
+                                            diverino
+                                    )
+                    );
+
+            var status = document.createElement('td').appendChild(status_in);
 
             trow.appendChild(status);
+            var content =  document.createElement('td');
+            content.innerHTML=proc.pid;
             trow.appendChild(
-                    document.createElement('td').innerHTML=proc.pid
+                   content
             );
+            content =  document.createElement('td');
+            content.innerHTML=proc.user;
             trow.appendChild(
-                    document.createElement('td').innerHTML=proc.user
+                    content
             );
+            content =  document.createElement('td');
+            content.innerHTML=proc.command;
             trow.appendChild(
-                    document.createElement('td').innerHTML=proc.command
+                    content
             );
+            content =  document.createElement('td');
+            content.innerHTML=proc.memory;
             trow.appendChild(
-                    document.createElement('td').innerHTML=proc.memory
+                    content
             );
+            content =  document.createElement('td');
+            content.innerHTML=proc.cpu;
             trow.appendChild(
-                    document.createElement('td').innerHTML=proc.cpu
+                    content
             );
+            content =  document.createElement('td');
+            content.innerHTML=proc.cputime;
             trow.appendChild(
-                    document.createElement('td').innerHTML=proc.cputime
+                    content
             );
 
-            var inputerino = document.createElement('input')
-                    .setAttribute('type', 'number')
-                    .setAttribute('id', 'pause_time' + proc.pid)
-                    .setAttribute('name', 'pause_time')
-                    .setAttribute('required', 'required')
-                    .setAttribute('data-validate-minmax', '0,')
-                    .setAttribute('class', 'form-control');
+            var inputerino = document.createElement('input');
+            inputerino.setAttribute('type', 'number');
+            inputerino.setAttribute('id', 'pause_time' + proc.pid);
+            inputerino.setAttribute('name', 'pause_time');
+            inputerino.setAttribute('required', 'required');
+            inputerino.setAttribute('data-validate-minmax', '0,');
+            inputerino.setAttribute('class', 'form-control');
             if (proc.status == 'T'){
                 inputerino.setAttribute('disabled', 'true')
             }else{
@@ -213,38 +221,32 @@
                         )
             );
 
-            var button_pause = document.createElement('a')
-                    .setAttribute('href', '#')
-                    .setAttribute('id', 'submit_pause' + proc.pid)
-                    .setAttribute('data-data', proc.pid)
-                    .setAttribute('class', 'btn btn-sm btn-warning');
+            var button_pause = document.createElement('a');
+            button_pause.setAttribute('href', '#');
+            button_pause.setAttribute('id', 'submit_pause' + proc.pid);
+            button_pause.setAttribute('data-data', proc.pid);
+            button_pause.setAttribute('class', 'btn btn-sm btn-warning');
             button_pause.innerHTML = "PAUSE";
             if (proc.status == 'T'){
                 button_pause.setAttribute('disabled', 'true')
             }else{
                 button_pause.setAttribute('disabled', 'false')
             }
-            trow.appendChild(
-                    document.createElement('td')
-                            .setAttribute('style', "width: 5%;")
-                            .appendChild(
-                                    button_pause
-                            )
-            );
+            var to_append = document.createElement('td');
+            to_append.setAttribute('style', "width: 5%;");
+            to_append.appendChild(button_pause);
+            trow.appendChild(to_append);
 
-            var button_kill = document.createElement('a')
-                    .setAttribute('href', '#')
-                    .setAttribute('id', 'submit_kill' + proc.pid)
-                    .setAttribute('data-data', proc.pid)
-                    .setAttribute('class', 'btn btn-sm btn-danger');
+            var button_kill = document.createElement('a');
+            button_kill.setAttribute('href', '#');
+            button_kill.setAttribute('id', 'submit_kill' + proc.pid);
+            button_kill.setAttribute('data-data', proc.pid);
+            button_kill.setAttribute('class', 'btn btn-sm btn-danger');
             button_kill.innerHTML = "KILL";
-            trow.appendChild(
-                    document.createElement('td')
-                            .setAttribute('style', "width: 5%;")
-                            .appendChild(
-                                    button_kill
-                            )
-            );
+            to_append = document.createElement('td');
+            to_append.setAttribute('style', "width: 5%;");
+            to_append.appendChild(button_kill);
+            trow.appendChild(to_append);
 
             parent_dude.appendChild(trow);
         }
