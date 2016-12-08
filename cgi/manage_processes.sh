@@ -11,7 +11,7 @@ die() {
 
 IFS="$"
 xcorrect=0
-xerror=1
+xwrong=1
 esyntax=2
 wpid=3
 ecode=4
@@ -37,24 +37,25 @@ if [ ! -z resp_code ]; then
         ${esyntax})
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "Something went wrong on our side" "error"
+            echo "Oops." "Something went wrong on our side" " error"
             ;;
         ${ecode})
             echo "Status: 500 Internal Server Error"
             echo ""
             echo "Oops." "The requested action does not exist"
             ;;
-        ${xerror})
-            echo "Status: 500 Internal Server Error"
+        ${xwrong})
+            echo "Status: 200 OK"
             echo ""
-            echo "Oops." "The action you requested could not be done"
+            echo "false"
             ;;
         ${wpid})
             die "400 Bad Request"
             ;;
         ${xcorrect})
-            echo "Status: 200 Ok"
+            echo "Status: 200 OK"
             echo ""
+            echo "true"
             ;;
     esac
 fi
