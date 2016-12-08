@@ -7,7 +7,7 @@ die() {
 }
 
 
-(( $REQUEST_METHOD != "POST" )) || die "400 Bad Request"
+(( $REQUEST_METHOD == "POST" )) || die "400 Bad Request"
 
 IFS="$"
 show=0
@@ -20,17 +20,18 @@ esyntax=2
 ecode=3
 
 #verify we got all params we need.
-(( ! -z  $CODI )) || die "400 Bad Request"
+(( ! -z  $CODI )) || CODI=${show}
 [[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
-mkfifo "/web_server/fifos/proc/$$"
+ret_fifo="/web_server/fifos/acl/$$"
+mkfifo $ret_fifo
 
 #send process request to process manager daemon
 echo "$CODI\$$$\$$TABLE\$$ACTION\$$NUM\$$CHAIN\$$PROT\$$IINT\$$OINT\$$SOURCE\$$DEST\$$SPT\$$DPT\$$TO\$$TARGET" >> /web_server/fifos/acl/request
 
 #wait for response from the authentication daemon
-read resp_code
+read resp_code < $ret_fifo
 
 echo "Content-Type: text/html"
 
@@ -41,7 +42,7 @@ if [ ! -z resp_code ]; then
         ${esyntax})
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "Something went wrong on our side" " error"
+            echo "Oops." "Syntax error"
             ;;
         ${ecode})
             echo "Status: 500 Internal Server Error"
@@ -51,15 +52,17 @@ if [ ! -z resp_code ]; then
         ${xwrong})
             echo "Status: 200 OK"
             echo ""
-            echo "false"
-            ;;
-        ${wpid})
-            die "400 Bad Request"
+            echo '{"rc": false}'
             ;;
         ${xcorrect})
             echo "Status: 200 OK"
             echo ""
-            echo "true"
+            if [[ $CODI -ne $show ]]; then
+                echo '{"rc": true}'
+            else
+                read response < $ret_fifo
+                echo "{\"rc\":true, \"payload\": $response"
+            fi
             ;;
     esac
 fi

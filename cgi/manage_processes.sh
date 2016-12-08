@@ -21,13 +21,14 @@ ecode=4
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
-mkfifo "/web_server/fifos/proc/$$"
+ret_fifo="/web_server/fifos/proc/$$"
+mkfifo $ret_fifo
 
 #send process request to process manager daemon
 echo "$ACTION\$$PID\$$TIME\$$$" >> /web_server/fifos/proc/request
 
 #wait for response from the authentication daemon
-read resp_code
+read resp_code < $ret_fifo
 
 echo "Content-Type: text/html"
 

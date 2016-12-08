@@ -28,13 +28,14 @@ template=`cat ../www/js/templates/notification_template.js`
 (( ! -z  $USERNAME || ! -z $PWD )) || die "400 Bad Request"
 
 #create return fifo
-mkfifo "/web_server/fifos/auth/$$"
+ret_fifo="/web_server/fifos/auth/$$"
+mkfifo $ret_fifo
 
 #send authentication request to authentication daemon
 echo "1\$$USERNAME\$$PWD\$$$" >> /web_server/fifos/auth/request
 
 #wait for response from the authentication daemon
-read resp_code token
+read resp_code token < $ret_fifo
 
 echo "Content-Type: text/html"
 
