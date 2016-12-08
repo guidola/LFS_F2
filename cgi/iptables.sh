@@ -7,24 +7,27 @@ die() {
 }
 
 
-(( $REQUEST_METHOD == "POST" )) || die "400 Bad Request"
+(( $REQUEST_METHOD != "POST" )) || die "400 Bad Request"
 
 IFS="$"
+show=0
+modify=1
+insert=0
+delete=1
 xcorrect=0
-xwrong=1
+xerror=1
 esyntax=2
-wpid=3
-ecode=4
+ecode=3
 
 #verify we got all params we need.
-(( ! -z  $ACTION || ! -z $PID || ! -z $TIME )) || die "400 Bad Request"
-[[ $ACTION -ne 2 ]] || die "400 Bad Request"
+(( ! -z  $CODI )) || die "400 Bad Request"
+[[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
 mkfifo "/web_server/fifos/proc/$$"
 
 #send process request to process manager daemon
-echo "$ACTION\$$PID\$$TIME\$$$" >> /web_server/fifos/proc/request
+echo "$CODI\$$PID\$$TIME\$$$" >> /web_server/fifos/proc/request
 
 #wait for response from the authentication daemon
 read resp_code
