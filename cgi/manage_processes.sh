@@ -7,7 +7,7 @@ die() {
 }
 
 
-[[ $REQUEST_METHOD -eq "POST" ]] || echo -e "Status: 400 Bad Request\n\nrequest_metho: ${REQUEST_METHOD}"
+[[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
 
 IFS="$"
 xcorrect="0"
@@ -22,7 +22,7 @@ ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)'`
 PID=`echo ${url} | grep -oP '(?<=pid=).*?(?=&)'`
 TIME=`echo ${url} | grep -oP '(?<=time=).*?(?=&)'`
 #verify we got all params we need.
-[[ ! -z  $ACTION && ! -z $PID && ($ACTION -ne 1 || ! -z $TIME) ]] || echo -e "Status: 400 Bad Request\n\nNo action, pid or time\n${PID}, ${ACTION}, ${TIME}"
+[[ ! -z  $ACTION && ! -z $PID && ($ACTION -ne 1 || ! -z $TIME) ]] || die "Status: 400 Bad Request"
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
@@ -62,7 +62,7 @@ if [[ ! -z $resp_code ]]; then
             echo "false"
             ;;
         3)
-            echo -e "Status: 400 Bad Request\n\n-1"
+            die "400 Bad Request"
             ;;
         0)
             echo "Status: 200 OK"

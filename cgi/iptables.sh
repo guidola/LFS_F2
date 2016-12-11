@@ -27,6 +27,22 @@ ecode=3
 ret_fifo="/web_server/fifos/acl/$$"
 mkfifo $ret_fifo
 
+read -n $CONTENT_LENGTH url
+url="${url}&"
+TABLE=`echo ${url} | grep -oP '(?<=table=).*?(?=&)'`
+ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)'`
+NUM=`echo ${url} | grep -oP '(?<=num=).*?(?=&)'`
+CHAIN=`echo ${url} | grep -oP '(?<=chain=).*?(?=&)'`
+PROT=`echo ${url} | grep -oP '(?<=prot=).*?(?=&)'`
+IINT=`echo ${url} | grep -oP '(?<=iint=).*?(?=&)'`
+OINT=`echo ${url} | grep -oP '(?<=oint=).*?(?=&)'`
+SOURCE=`echo ${url} | grep -oP '(?<=source=).*?(?=&)'`
+DEST=`echo ${url} | grep -oP '(?<=dest=).*?(?=&)'`
+SPT=`echo ${url} | grep -oP '(?<=spt=).*?(?=&)'`
+DPT=`echo ${url} | grep -oP '(?<=dpt=).*?(?=&)'`
+TO=`echo ${url} | grep -oP '(?<=to=).*?(?=&)'`
+TARGET=`echo ${url} | grep -oP '(?<=target=).*?(?=&)'`
+
 #send process request to process manager daemon
 echo "$CODI\$$$\$$TABLE\$$ACTION\$$NUM\$$CHAIN\$$PROT\$$IINT\$$OINT\$$SOURCE\$$DEST\$$SPT\$$DPT\$$TO\$$TARGET" >> /web_server/fifos/acl/request
 
