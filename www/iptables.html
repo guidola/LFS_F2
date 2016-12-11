@@ -13,208 +13,184 @@
                 <div class="x_content" style="display: block;">
                     <!--Gonna have a tab for each iptables table there is-->
                     <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#tab_nat" id="iptables_tab" role="tab" data-toggle="tab" aria-expanded="true">NAT</a>
+                        <ul id="tab_tables" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="chain_tab active"><a href="#content_nat" id="tab_nat" role="tab" data-toggle="tab" aria-expanded="true">NAT</a>
                             </li>
-                            <li role="presentation" class=""><a href="#tab_filter" role="tab" id="iptables_tab2" data-toggle="tab" aria-expanded="false">FILTER</a>
+                            <li role="presentation" class="chain_tab"><a href="#content_filter" role="tab" id="tab_filter" data-toggle="tab" aria-expanded="false">FILTER</a>
                             </li>
                         </ul>
-                        <div id="myTabContent" class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade active in" id="tab_nat" aria-labelledby="iptables_tab">
-                                <table id="datatable_nat" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
-                                    <thead>
-                                    <tr>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Seq. ID</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Chain</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">IP type</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Input Interface</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Input IP</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Input port</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Output Interface</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Action</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">To</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable:_nat" rowspan="1" colspan="1" aria-sort="ascending">Other Params</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>POST-ROUTING</td>
-                                        <td>tcp</td>
-                                        <td>eth0</td>
-                                        <td>192.168.1.23</td>
-                                        <td>-</td>
-                                        <td>eth1</td>
-                                        <td>SNAT</td>
-                                        <td>88.97.95.23</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>POST-ROUTING</td>
-                                        <td>tcp</td>
-                                        <td>eth0</td>
-                                        <td>192.168.1.23</td>
-                                        <td>-</td>
-                                        <td>eth1</td>
-                                        <td>SNAT</td>
-                                        <td>88.97.95.23</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>POST-ROUTING</td>
-                                        <td>tcp</td>
-                                        <td>eth0</td>
-                                        <td>192.168.1.23</td>
-                                        <td>-</td>
-                                        <td>eth1</td>
-                                        <td>SNAT</td>
-                                        <td>88.97.95.23</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>POST-ROUTING</td>
-                                        <td>tcp</td>
-                                        <td>eth0</td>
-                                        <td>192.168.1.23</td>
-                                        <td>-</td>
-                                        <td>eth1</td>
-                                        <td>SNAT</td>
-                                        <td>88.97.95.23</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>POST-ROUTING</td>
-                                        <td>tcp</td>
-                                        <td>eth0</td>
-                                        <td>192.168.1.23</td>
-                                        <td>-</td>
-                                        <td>eth1</td>
-                                        <td>SNAT</td>
-                                        <td>88.97.95.23</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <div id="content_tables" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="content_nat" aria-labelledby="iptables_tab">
+                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                    <ul id="tab_chains_nat" class="nav nav-tabs bar_tabs" role="tablist">
+                                        <li role="presentation" class="chain_tab active"><a href="#nat-in" id="tab_nat_in" role="tab" data-toggle="tab" aria-expanded="true">INPUT</a>
+                                        </li>
+                                        <li role="presentation" class="chain_tab"><a href="#nat-pre-routing" role="tab" id="tab_nat_pre-routing" data-toggle="tab" aria-expanded="false">PRE-ROUTING</a>
+                                        </li>
+                                        <li role="presentation" class="chain_tab"><a href="#nat-post-routing" role="tab" id="tab_nat_post-routing" data-toggle="tab" aria-expanded="false">POST-ROUTING</a>
+                                        </li>
+                                        <li role="presentation" class="chain_tab"><a href="#nat-out" id="tab_nat_out" role="tab" data-toggle="tab" aria-expanded="true">OUTPUT</a>
+                                        </li>
+                                    </ul>
+                                    <div id="content_nat_chains" class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade active in" id="nat-in" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_nat_in" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Matched Pkts</th>
+                                                    <th>IP type</th>
+                                                    <th>Input Interface</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output Interface</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                    <th>To</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_nat_in">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade in" id="nat-pre-routing" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_nat_pre-routing" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Matched Pkts</th>
+                                                    <th>IP type</th>
+                                                    <th>Input Interface</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output Interface</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                    <th>To</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_nat_pre">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade in" id="nat-post-routing" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_nat_post-routing" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Matched Pkts</th>
+                                                    <th>IP type</th>
+                                                    <th>Input Interface</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output Interface</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                    <th>To</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_nat_post">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade in" id="nat-out" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_nat_out" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Matched Pkts</th>
+                                                    <th>IP type</th>
+                                                    <th>Input Interface</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output Interface</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                    <th>To</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_nat_out">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade" id="tab_filter" aria-labelledby="iptables_tab2">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th class="sorting">Seq. ID</th>
-                                        <th class="sorting">Chain</th>
-                                        <th class="sorting">Interface</th>
-                                        <th class="sorting">IP type</th>
-                                        <th class="sorting">Input IP</th>
-                                        <th class="sorting">Input port</th>
-                                        <th class="sorting">Output IP</th>
-                                        <th class="sorting">Output port</th>
-                                        <th class="sorting">Action</th>
-                                        <th class="sorting">Other Params</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr><tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 5%;">10</td>
-                                        <td>INPUT</td>
-                                        <td>eth0</td>
-                                        <td>tcp</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>REJECT</td>
-                                        <td width="20%"></td>
-                                        <td><i class="fa fa-close"></i></td>
-                                    </tr>
-
-                                    </tbody>
-                                </table>
+                            <div role="tabpanel" class="tab-pane fade in" id="content_filter" aria-labelledby="iptables_tab">
+                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                    <ul id="tab_chains_filter" class="nav nav-tabs bar_tabs" role="tablist">
+                                        <li role="presentation" class=" chain_tab active"><a href="#filter-in" id="tab_filter_in" role="tab" data-toggle="tab" aria-expanded="true">INPUT</a>
+                                        </li>
+                                        <li role="presentation" class="chain_tab"><a href="#filter-forward" role="tab" id="tab_filter_forward" data-toggle="tab" aria-expanded="false">PRE-ROUTING</a>
+                                        </li>
+                                        <li role="presentation" class="chain_tab"><a href="#filter-out" id="tab_filter_out" role="tab" data-toggle="tab" aria-expanded="true">OUTPUT</a>
+                                        </li>
+                                    </ul>
+                                    <div id="content_filter_chains" class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade active in" id="filter-in" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_filter_in" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Matched Pkts</th>
+                                                    <th>IP type</th>
+                                                    <th>Input interface</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output interface</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_filter_in">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade in" id="filter-forward" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_filter_forward" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Interface</th>
+                                                    <th>IP type</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                    <th>Other Params</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_filter_forward">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade in" id="filter-out" aria-labelledby="tab_chains_nat">
+                                            <table id="datatable_filter_out" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                                <thead>
+                                                <tr>
+                                                    <th>Seq. ID</th>
+                                                    <th>Interface</th>
+                                                    <th>IP type</th>
+                                                    <th>Input IP</th>
+                                                    <th>Input port</th>
+                                                    <th>Output IP</th>
+                                                    <th>Output port</th>
+                                                    <th>Action</th>
+                                                    <th>Other Params</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="rows_filter-out">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -243,6 +219,195 @@
 
         $ICON.toggleClass('fa-chevron-up fa-chevron-down');
     });
+
+    $('.submit_kill').click(function(e) {
+        e.preventDefault();
+
+        //recover the associated input value
+        var assoc_pid = e.target.attributes['data-role'];
+        sendKillRequest(assoc_pid);
+
+    });
+
+    $('.chain_tab').click(updateChains);
+
+
+    function updateChains() {
+
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/iptables.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            context: this,
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit pause request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(dades){
+
+                //load all chains
+                loadChain(dades.filter.input, 'rows_filter_in');
+                loadChain(dades.filter.output, 'rows_filter_out');
+                loadChain(dades.filter.forward, 'rows_filter_forward');
+                loadChain(dades.nat.input, 'rows_nat_in');
+                loadChain(dades.nat.prerouting, 'rows_nat_pre');
+                loadChain(dades.nat.postrouting, 'rows_nat_post');
+                loadChain(dades.nat.output, 'rows_nat_out');
+
+            },
+
+            failure: function () {
+                console.log("failure pause request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        })
+
+    }
+
+    function loadChain(rules, chain) {
+
+        var parent_dude = document.getElementById(chain);
+        while (parent_dude.firstChild) {
+            parent_dude.removeChild(parent_dude.firstChild);
+        }
+
+        var rule;
+        var i;
+
+        switch(chain){
+
+            case 'rows_nat_in':
+            case 'rows_nat_pre':
+            case 'rows_nat_out':
+            case 'rows_nat_post':
+
+                for (i = 0; i < rules.length; i++) {
+                    rule = rules[i];
+                    parent_dude.appendChild(loadNatChainRow(rule));
+                }
+                break;
+
+            case 'rows_filter_in':
+            case 'rows_filter_forward':
+            case 'rows_filter_out':
+                for (i = 0; i < rules.length; i++) {
+                    rule = rules[i];
+                    parent_dude.appendChild(loadChainRow(rule));
+                }
+                break;
+
+        }
+
+    }
+
+    function loadNatChainRow(rule) {
+
+        trow = loadChainRow(rule);
+
+        var to = document.createElement('td');
+        to.innerHTML = rule.to;
+        trow.appendChild(to);
+
+        return trow;
+    }
+
+
+    function loadChainRow(rule){
+
+        var trow = document.createElement('tr');
+        var seq_id = document.createElement('td');
+        seq_id.setAttribute('style', 'width: 5%');
+
+        var pkts = seq_id.cloneNode(true);
+        seq_id.innerHTML = rule.num;
+        pkts.innerHTML = rule.pkts;
+        trow.appendChild(seq_id);
+        trow.appendChild(pkts);
+
+        var prot =  document.createElement('td');
+        prot.innerHTML = rule.prot;
+        trow.appendChild(prot);
+
+        var in_int = document.createElement('td');
+        in_int.innerHTML = rule.in;
+        trow.appendChild(in_int);
+        
+        var in_ip = document.createElement('td');
+        in_ip.innerHTML = rule.source;
+        trow.appendChild(in_ip);
+        
+        var in_port = document.createElement('td');
+        in_port.innerHTML = rule.spt;
+        trow.appendChild(in_port);
+
+        var out_int = document.createElement('td');
+        out_int.innerHTML = rule.out;
+        trow.appendChild(out_int);
+        
+        var out_ip = document.createElement('td');
+        out_ip.innerHTML = rule.destination;
+        trow.appendChild(out_ip);
+
+        var out_port = document.createElement('td');
+        out_port.innerHTML = rule.dpt;
+        trow.appendChild(out_port);
+
+        var action = document.createElement('td');
+        action.innerHTML = rule.target;
+        trow.appendChild(action);
+
+        return trow
+    }
+
+    loadChain(
+            [{num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12}
+            ],'rows_filter_in');
+
+    /*
+     <tr>
+     <td style="width: 5%;">10</td>
+     <td style="width: 5%;">10</td>
+     <td>tcp</td>
+     <td>eth0</td>
+     <td>192.168.1.23</td>
+     <td>-</td>
+     <td>eth1</td>
+     <td>200.12.12.5</td>
+     <td>-</td>
+     <td>SNAT</td>
+     <td>88.97.95.23</td>
+     <td><i class="fa fa-close"></i></td>
+     </tr>*//*
+    
+    <tr>
+    <td style="width: 5%;">10</td>
+            <td>eth0</td>
+            <td>tcp</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>REJECT</td>
+            <td width="20%"></td>
+            <td><i class="fa fa-close"></i></td>
+            </tr>*/
+    
 
     <!-- Datatables -->
     $(document).ready(function() {

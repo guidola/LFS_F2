@@ -104,6 +104,7 @@
                                 button_nou.setAttribute('disabled', 'false');
                                 var input_nou=document.getElementById(input_id);
                                 input_nou.setAttribute('disabled', 'false');
+                                input_nou.setAttribute('value', '');
                                 var rodoneta_nova=document.getElementById(rodoneta_id);
                                 rodoneta_nova.setAttribute('class', 'color bg-green');
                             }, pause_time);
@@ -191,6 +192,7 @@
             inputerino.setAttribute('id', 'pause_time' + proc.pid);
             inputerino.setAttribute('name', 'pause_time');
             inputerino.setAttribute('required', 'required');
+            inputerino.setAttribute('placeholder', 'seconds');
             inputerino.setAttribute('data-validate-minmax', '0,');
             inputerino.setAttribute('class', 'form-control');
             if (proc.status == 'T'){
