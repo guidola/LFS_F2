@@ -16,6 +16,11 @@ esyntax="2"
 wpid="3"
 ecode="4"
 
+read -n $CONTENT_LENGTH url
+url="${url}&"
+ACTION=`echo ${url} | grep -oP '(?<=action=).*(?=&)'`
+PID=`echo ${url} | grep -oP '(?<=pid=).*(?=&)'`
+TIME=`echo ${url} | grep -oP '(?<=time=).*(?=&)'`
 #verify we got all params we need.
 [[ ! -z  $ACTION && ! -z $PID && ! -z $TIME ]] || echo -e "Status: 400 Bad Request\n\nNo action, pid or time\n${pid}, ${action}, ${time}"
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
