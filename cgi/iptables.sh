@@ -7,7 +7,7 @@ die() {
 }
 
 
-(( $REQUEST_METHOD == "POST" )) || die "400 Bad Request"
+[[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
 
 IFS="$"
 show=0
@@ -20,7 +20,7 @@ esyntax=2
 ecode=3
 
 #verify we got all params we need.
-(( ! -z  $CODI )) || CODI=${show}
+[[ ! -z  $CODI ]] || CODI=${show}
 [[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
@@ -33,7 +33,7 @@ echo "$CODI\$$$\$$TABLE\$$ACTION\$$NUM\$$CHAIN\$$PROT\$$IINT\$$OINT\$$SOURCE\$$D
 #wait for response from the authentication daemon
 read resp_code < $ret_fifo
 
-echo "Content-Type: text/html"
+echo "Content-Type: application/json"
 
 
 
@@ -42,12 +42,12 @@ if [ ! -z resp_code ]; then
         ${esyntax})
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "Syntax error"
+            echo "\"Oops. Syntax error\""
             ;;
         ${ecode})
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "The requested action does not exist"
+            echo "\"Oops. The requested action does not exist\""
             ;;
         ${xwrong})
             echo "Status: 200 OK"

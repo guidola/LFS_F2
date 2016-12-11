@@ -17,7 +17,7 @@ wpid="3"
 ecode="4"
 
 #verify we got all params we need.
-[[ ! -z  $ACTION || ! -z $PID || ! -z $TIME ]] || die "400 Bad Request"
+[[ ! -z  $ACTION && ! -z $PID && ! -z $TIME ]] || die "400 Bad Request"
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
@@ -44,12 +44,12 @@ if [[ ! -z $resp_code ]]; then
         2)
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "Something went wrong on our side" " error"
+            echo "\"Oops. Something went wrong on our side error\""
             ;;
         4)
             echo "Status: 500 Internal Server Error"
             echo ""
-            echo "Oops." "The requested action does not exist"
+            echo "\"Oops. The requested action does not exist\""
             ;;
         1)
             echo "Status: 200 OK"

@@ -5,6 +5,7 @@ case $1 in
         [[ ! -p /web_server/fifos/proc/request || ! -z `ps -aux | grep /web_server/daemons/iptables.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
         mkdir -p /web_server/fifos/acl/
         mkfifo /web_server/fifos/acl/request
+        chown www-data:www-data -R /web_server/fifos/acl
         echo "Starting ip tables daemon..."
         /web_server/daemons/iptables.sh /web_server/fifos/acl/ &
         echo "IP tables daemon running [$!]"

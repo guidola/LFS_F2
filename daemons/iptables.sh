@@ -14,8 +14,8 @@ while true
 do
     IFS="$" read codi pid table action num chain prot iint oint source dest spt dpt to target < ${1}request
     IFS="$OIFS"
-    [[ ${codi} == "2" ]] || exit 0
-    [[ ! -z ${codi} || ! -z ${pid} || ${pid} == *"$"* ]] || echo "${esyntax}" >> "${1}${pid}"; continue
+    [[ ${codi} -ne "2" ]] || exit 0
+    [[ ! -z ${codi} && ! -z ${pid} && ${pid} != *"$"* ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
 
     case ${codi} in
         ${show})
