@@ -7,7 +7,10 @@ case $1 in
         mkfifo /web_server/fifos/acl/request
         chown www-data:www-data -R /web_server/fifos/acl
         echo "Starting ip tables daemon..."
-        /web_server/daemons/iptables.sh /web_server/fifos/acl/ &
+        touch /web_server/daemons/iptables_daemon_log
+        chmod 777 /web_server/daemons/iptables_daemon_log
+        /web_server/daemons/iptables.sh /web_server/fifos/acl/ >> /web_server/daemons/iptables_daemon_log 2>> /web_server/daemons/iptables_daemon_log &
+        #/web_server/daemons/iptables.sh /web_server/fifos/acl/ &
         echo "IP tables daemon running [$!]"
         ;;
     stop)
