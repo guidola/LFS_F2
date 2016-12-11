@@ -5,6 +5,7 @@ case $1 in
         [[ ! -p /web_server/fifos/proc/request || ! -z `ps -aux | grep /web_server/daemons/process_manager.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
         mkdir -p /web_server/fifos/proc/
         mkfifo /web_server/fifos/proc/request
+        chown www-data:www-data -R /web_server/fifos/proc
         echo "Starting process manager daemon..."
         /web_server/daemons/process_manager.sh /web_server/fifos/proc/ &
         echo "Process manager daemon running [$!]"

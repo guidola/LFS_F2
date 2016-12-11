@@ -251,6 +251,7 @@
             // evaluate the form using generic validaing
             if (!validator.checkAll($(this))) {
                 submit = false;
+                $.notify('This field cannot be empty', 'info')
             }
 
             if (submit) {
