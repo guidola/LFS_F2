@@ -64,6 +64,6 @@ if [[ ! -z $resp_code ]]; then
             echo ""
             echo "true"
             ;;
-	#*)  echo "guille default dobao is my name";;
+	#*)  echo "Guille default dobao is my name";;
     esac
 fi
