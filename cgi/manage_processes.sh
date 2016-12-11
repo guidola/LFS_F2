@@ -22,7 +22,7 @@ ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)'`
 PID=`echo ${url} | grep -oP '(?<=pid=).*?(?=&)'`
 TIME=`echo ${url} | grep -oP '(?<=time=).*?(?=&)'`
 #verify we got all params we need.
-[[ ! -z  $ACTION && ! -z $PID && ! -z $TIME ]] || echo -e "Status: 400 Bad Request\n\nNo action, pid or time\n${PID}, ${ACTION}, ${TIME}"
+[[ ! -z  $ACTION && ! -z $PID && ($ACTION -ne 1 || ! -z $TIME) ]] || echo -e "Status: 400 Bad Request\n\nNo action, pid or time\n${PID}, ${ACTION}, ${TIME}"
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
