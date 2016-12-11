@@ -7,7 +7,7 @@ die() {
 }
 
 
-[[ $REQUEST_METHOD -eq "POST" ]] || echo -e "Status: 400 Bad Request\n \nrequest_metho: ${REQUEST_METHOD}"
+[[ $REQUEST_METHOD -eq "POST" ]] || echo -e "Status: 400 Bad Request\n\nrequest_metho: ${REQUEST_METHOD}"
 
 IFS="$"
 xcorrect="0"
@@ -17,7 +17,7 @@ wpid="3"
 ecode="4"
 
 #verify we got all params we need.
-[[ ! -z  $ACTION && ! -z $PID && ! -z $TIME ]] || echo -e "Status: 400 Bad Request\n \nNo action, pid or time\n${pid}, ${action}, ${time}"
+[[ ! -z  $ACTION && ! -z $PID && ! -z $TIME ]] || echo -e "Status: 400 Bad Request\n\nNo action, pid or time\n${pid}, ${action}, ${time}"
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
@@ -57,7 +57,7 @@ if [[ ! -z $resp_code ]]; then
             echo "false"
             ;;
         3)
-            echo -e "Status: 400 Bad Request\n \n-1"
+            echo -e "Status: 400 Bad Request\n\n-1"
             ;;
         0)
             echo "Status: 200 OK"
