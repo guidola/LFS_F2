@@ -7,6 +7,9 @@ case $1 in
         mkfifo /web_server/fifos/proc/request
         chown www-data:www-data -R /web_server/fifos/proc
         echo "Starting process manager daemon..."
+        #touch /web_server/daemons/proc_daemon_log
+        #chmod 777 /web_server/daemons/proc_daemon_log
+        #/web_server/daemons/process_manager.sh /web_server/fifos/proc/ >> /web_server/daemons/proc_daemon_log 2>> /web_server/daemons/proc_daemon_log &
         /web_server/daemons/process_manager.sh /web_server/fifos/proc/ &
         echo "Process manager daemon running [$!]"
         ;;
