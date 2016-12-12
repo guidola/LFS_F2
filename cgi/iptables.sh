@@ -9,7 +9,7 @@ die() {
 
 [[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
 
-IFS="$"
+#IFS="$"
 show=0
 modify=1
 insert=0
@@ -67,7 +67,7 @@ if [[ ! -z $resp_code ]]; then
             echo ""
             echo "\"Oops. The requested action does not exist\""
             ;;
-        ${xwrong})
+        ${xerror})
             echo "Status: 200 OK"
             echo ""
             echo '{"rc": false}'
