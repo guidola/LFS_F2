@@ -107,6 +107,7 @@ do
             #echo "${missatge}"
             echo "${xcorrect}" >> "${1}${pid}"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
+            read brossa < ${1}${pid}
             echo "${missatge}" >> "${1}${pid}"
 	        #echo "asnwered with the message to --> ${1}${pid}"
 	        ;;
