@@ -277,7 +277,7 @@
             data: {
                 action: 0,
                 table: table,
-                chain: chain,
+                chain: chain.toUpperCase(),
                 num: seq_id,
                 prot: ip_type,
                 in: in_int,
@@ -286,7 +286,7 @@
                 out: out_int,
                 dest: out_ip,
                 dpt: out_port,
-                target: action
+                target: action.toUpperCase()
             },
             dataType: "json",
 
