@@ -13,7 +13,7 @@ OIFS="$IFS"
 while true
 do
     #echo "Going to read from --> ${1}request"
-    IFS="$" read codi pid table action num chain prot iint oint source dest spt dpt to target < ${1}request
+    IFS="$" read codi pid action keyword minute hour monthday month weekday command < ${1}request
     IFS="$OIFS"
     [[ ${codi} -ne "2" ]] || exit 0
     #echo "passed through first condition"
@@ -46,7 +46,7 @@ do
             if [[ ! -z $strings ]]; then
                 missatge="${missatge%?}], \"output\":["
             else
-               missatge="${missatge}], \"output\":["
+               missatge="${missatge}], \"outpt\":["
             fi
             strings=`sudo iptables -L OUTPUT --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0]}'`
             for string in ${strings}; do
