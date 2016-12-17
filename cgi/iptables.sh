@@ -81,7 +81,7 @@ if [[ ! -z $resp_code ]]; then
                 echo "Dobao is the JS king" >> "${ret_fifo}"
                 read response < $ret_fifo
 		        #echo "second read done"
-                echo "{\"rc\":true, \"payload\": $response"
+                echo "{\"rc\":true, \"payload\": ${response}}"
             fi
             ;;
     esac
