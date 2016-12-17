@@ -37,7 +37,7 @@ TO=`echo ${url} | grep -oP '(?<=to=).*?(?=&)'`
 TARGET=`echo ${url} | grep -oP '(?<=target=).*?(?=&)'`
 
 #verify we got all params we need.
-[[ ! -z  $CODI ]] || CODI=${show}
+[[ ! -z  $CODI ]] || CODI=${modify}
 [[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
