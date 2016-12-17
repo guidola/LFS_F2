@@ -200,7 +200,7 @@
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_filter-out"></tbody>
+                                                <tbody id="rows_filter_out"></tbody>
                                             </table>
                                             <div class="more_button" id="more-filter-out" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
                                                 <i class="fa fa-plus fa-3x"></i>
@@ -562,6 +562,8 @@
             // json retrieve call was successful
             //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
             success: function(response){
+
+
 
                 if (response.rc) {
                     var dades = response.payload;
