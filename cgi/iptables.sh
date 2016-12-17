@@ -6,6 +6,10 @@ die() {
     exit 0
 }
 
+urldecode(){
+  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;')"
+}
+
 
 [[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
 
@@ -21,20 +25,20 @@ ecode=3
 
 [[ $CONTENT_LENGTH -eq 0 ]] || read -n $CONTENT_LENGTH url
 url="${url}&"
-CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)'`
-TABLE=`echo ${url} | grep -oP '(?<=table=).*?(?=&)'`
-ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)'`
-NUM=`echo ${url} | grep -oP '(?<=num=).*?(?=&)'`
-CHAIN=`echo ${url} | grep -oP '(?<=chain=).*?(?=&)'`
-PROT=`echo ${url} | grep -oP '(?<=prot=).*?(?=&)'`
-IINT=`echo ${url} | grep -oP '(?<=iint=).*?(?=&)'`
-OINT=`echo ${url} | grep -oP '(?<=oint=).*?(?=&)'`
-SOURCE=`echo ${url} | grep -oP '(?<=source=).*?(?=&)'`
-DEST=`echo ${url} | grep -oP '(?<=dest=).*?(?=&)'`
-SPT=`echo ${url} | grep -oP '(?<=spt=).*?(?=&)'`
-DPT=`echo ${url} | grep -oP '(?<=dpt=).*?(?=&)'`
-TO=`echo ${url} | grep -oP '(?<=to=).*?(?=&)'`
-TARGET=`echo ${url} | grep -oP '(?<=target=).*?(?=&)'`
+CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)' | urldecode`
+TABLE=`echo ${url} | grep -oP '(?<=table=).*?(?=&)' | urldecode`
+ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)' | urldecode`
+NUM=`echo ${url} | grep -oP '(?<=num=).*?(?=&)' | urldecode`
+CHAIN=`echo ${url} | grep -oP '(?<=chain=).*?(?=&)' | urldecode`
+PROT=`echo ${url} | grep -oP '(?<=prot=).*?(?=&)' | urldecode`
+IINT=`echo ${url} | grep -oP '(?<=iint=).*?(?=&)' | urldecode`
+OINT=`echo ${url} | grep -oP '(?<=oint=).*?(?=&)' | urldecode`
+SOURCE=`echo ${url} | grep -oP '(?<=source=).*?(?=&)' | urldecode`
+DEST=`echo ${url} | grep -oP '(?<=dest=).*?(?=&)' | urldecode`
+SPT=`echo ${url} | grep -oP '(?<=spt=).*?(?=&)' | urldecode`
+DPT=`echo ${url} | grep -oP '(?<=dpt=).*?(?=&)' | urldecode`
+TO=`echo ${url} | grep -oP '(?<=to=).*?(?=&)' | urldecode`
+TARGET=`echo ${url} | grep -oP '(?<=target=).*?(?=&)' | urldecode`
 
 #verify we got all params we need.
 [[ ! -z  $CODI ]] || CODI=${modify}
