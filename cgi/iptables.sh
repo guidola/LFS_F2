@@ -78,9 +78,9 @@ if [[ ! -z $resp_code ]]; then
             if [[ ! -z $ACTION ]]; then
                 echo '{"rc": true}'
             else
-                echo "Dobai is the JS king" >> "${ret_fifo}"
+                echo "Dobao is the JS king" >> "${ret_fifo}"
                 read response < $ret_fifo
-		        echo "second read done"
+		        #echo "second read done"
                 echo "{\"rc\":true, \"payload\": $response"
             fi
             ;;
