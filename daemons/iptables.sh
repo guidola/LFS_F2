@@ -29,7 +29,7 @@ do
 
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
@@ -40,7 +40,7 @@ do
             strings=`sudo iptables -L INPUT --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0]}'`
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
@@ -51,7 +51,7 @@ do
             strings=`sudo iptables -L OUTPUT --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0]}'`
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
@@ -62,7 +62,7 @@ do
             strings=`sudo iptables -L PREROUTING -t nat --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); match($0, /to:[:\.0-9]+/, arra); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0] "$" arra[0]}'`
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`,\"to\":${params[10]}},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"to\":${params[10]}},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
@@ -73,7 +73,7 @@ do
             strings=`sudo iptables -L POSTROUTING -t nat --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); match($0, /to:[:\.0-9]+/, arra); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0] "$" arra[0]}'`
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`,\"to\":${params[10]}},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"to\":${params[10]}},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
@@ -84,7 +84,7 @@ do
             strings=`sudo iptables -L INPUT -t nat --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); match($0, /to:[:\.0-9]+/, arra); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0] "$" arra[0]}'`
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`,\"to\":${params[10]}},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"to\":${params[10]}},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
@@ -95,7 +95,7 @@ do
             strings=`sudo iptables -L OUTPUT -t nat --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); match($0, /to:[:\.0-9]+/, arra); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0] "$" arra[0]}'`
             for string in ${strings}; do
                 IFS="$" read -ra params <<< "$string"
-                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{print $2}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{print $2}'`,\"to\":${params[10]}},"
+                missatge="${missatge}{\"num\":${params[0]},\"pkts\":${params[1]},\"target\":\"${params[2]}\",\"prot\":\"${params[3]}\",\"in\":\"${params[4]}\",\"out\":\"${params[5]}\",\"source\":\"${params[6]}\",\"destination\":\"${params[7]}\",\"spt\":`echo "${params[8]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"dpt\":`echo "${params[9]}" | awk -F ":" '{if ($2 == "") { print "null" }else{ print $2 }}'`,\"to\":${params[10]}},"
             done
             IFS="$OIFS"
             if [[ ! -z $strings ]]; then
