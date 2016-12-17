@@ -561,17 +561,22 @@
 
             // json retrieve call was successful
             //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
-            success: function(dades){
+            success: function(response){
 
-                //load all chains
-                loadChain(dades.filter.input, 'rows_filter_in');
-                loadChain(dades.filter.output, 'rows_filter_out');
-                loadChain(dades.filter.forward, 'rows_filter_forward');
-                loadChain(dades.nat.input, 'rows_nat_in');
-                loadChain(dades.nat.prerouting, 'rows_nat_pre');
-                loadChain(dades.nat.postrouting, 'rows_nat_post');
-                loadChain(dades.nat.output, 'rows_nat_out');
-                $('.acl-delete').click(ruleDeleteRequest);
+                if (response.rc) {
+                    var dades = response.payload;
+                    //load all chains
+                    loadChain(dades.filter.input, 'rows_filter_in');
+                    loadChain(dades.filter.output, 'rows_filter_out');
+                    loadChain(dades.filter.forward, 'rows_filter_forward');
+                    loadChain(dades.nat.input, 'rows_nat_in');
+                    loadChain(dades.nat.prerouting, 'rows_nat_pre');
+                    loadChain(dades.nat.postrouting, 'rows_nat_post');
+                    loadChain(dades.nat.output, 'rows_nat_out');
+                    $('.acl-delete').click(ruleDeleteRequest);
+                } else {
+                    $.notify('Could not fetch rules!', 'error');
+                }
 
             },
 
