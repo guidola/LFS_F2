@@ -360,7 +360,7 @@
         var seq_id = document.createElement('td');
         seq_id.setAttribute('style', 'width: 5%');
         var pkts = seq_id.cloneNode(false);
-        var seq_id_form = text_input_proto.cloneNode(true);
+        var seq_id_form = number_input_proto.cloneNode(true);
         seq_id_form.setAttribute('name', 'seq_id');
         console.log(datatable);
         seq_id_form.value = datatable.getElementsByTagName('tbody')[0].childNodes.length + 1;
