@@ -50,9 +50,11 @@
                                                     <th>To</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_nat_in">
-                                                </tbody>
+                                                <tbody id="rows_nat_in"></tbody>
                                             </table>
+                                            <div class="more_button" id="more-nat-in" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="nat-pre-routing" aria-labelledby="tab_chains_nat">
                                             <table id="datatable_nat_pre-routing" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
@@ -71,9 +73,11 @@
                                                     <th>To</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_nat_pre">
-                                                </tbody>
+                                                <tbody id="rows_nat_pre"></tbody>
                                             </table>
+                                            <div class="more_button" id="more-nat-pre" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="nat-post-routing" aria-labelledby="tab_chains_nat">
                                             <table id="datatable_nat_post-routing" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
@@ -95,6 +99,9 @@
                                                 <tbody id="rows_nat_post">
                                                 </tbody>
                                             </table>
+                                            <div class="more_button" id="more-nat-post" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="nat-out" aria-labelledby="tab_chains_nat">
                                             <table id="datatable_nat_out" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
@@ -113,9 +120,11 @@
                                                     <th>To</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_nat_out">
-                                                </tbody>
+                                                <tbody id="rows_nat_out"></tbody>
                                             </table>
+                                            <div class="more_button" id="more-nat-out" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -147,47 +156,55 @@
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_filter_in">
-                                                </tbody>
+                                                <tbody id="rows_filter_in"></tbody>
                                             </table>
+                                            <div class="more_button" id="more-filter-in" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="filter-forward" aria-labelledby="tab_chains_nat">
                                             <table id="datatable_filter_forward" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
-                                                    <th>Interface</th>
+                                                    <th>Matched Pkts</th>
                                                     <th>IP type</th>
+                                                    <th>Input interface</th>
                                                     <th>Input IP</th>
                                                     <th>Input port</th>
+                                                    <th>Output interface</th>
                                                     <th>Output IP</th>
                                                     <th>Output port</th>
                                                     <th>Action</th>
-                                                    <th>Other Params</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_filter_forward">
-                                                </tbody>
+                                                <tbody id="rows_filter_forward"></tbody>
                                             </table>
+                                            <div class="more_button" id="more-filter-forward" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="filter-out" aria-labelledby="tab_chains_nat">
                                             <table id="datatable_filter_out" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
-                                                    <th>Interface</th>
+                                                    <th>Matched Pkts</th>
                                                     <th>IP type</th>
+                                                    <th>Input interface</th>
                                                     <th>Input IP</th>
                                                     <th>Input port</th>
+                                                    <th>Output interface</th>
                                                     <th>Output IP</th>
                                                     <th>Output port</th>
                                                     <th>Action</th>
-                                                    <th>Other Params</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody id="rows_filter-out">
-                                                </tbody>
+                                                <tbody id="rows_filter-out"></tbody>
                                             </table>
+                                            <div class="more_button" id="more-filter-out" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                                                <i class="fa fa-plus fa-3x"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +217,12 @@
     </div>
 </div>
 
-<script id="to_eval">
+<!--SPLITTER-->
+
+<script type="text/javascript" id="to_eval">
+
+
+    $('tbody').innerHTML = '';
 
     $('.collapse-link').on('click', function() {
         var $BOX_PANEL = $(this).closest('.x_panel'),
@@ -220,16 +242,303 @@
         $ICON.toggleClass('fa-chevron-up fa-chevron-down');
     });
 
-    $('.submit_kill').click(function(e) {
-        e.preventDefault();
+    var text_input_proto = document.createElement('input');
+    text_input_proto.setAttribute('class', 'form-control');
+    text_input_proto.setAttribute('type', 'text');
 
-        //recover the associated input value
-        var assoc_pid = e.target.attributes['data-role'];
-        sendKillRequest(assoc_pid);
+    var number_input_proto = document.createElement('input');
+    number_input_proto.setAttribute('class', 'form-control');
+    number_input_proto.setAttribute('type', 'number');
 
-    });
+    function submitAdd(event) {
+        console.log('I now do something');
 
-    $('.chain_tab').click(updateChains);
+        //obtain data from form inputs
+        var inputs_wrapper = event.target.parentNode.parentNode;
+        var table = event.target.getAttribute('data-data');
+        var chain = event.target.getAttribute('data-option');
+        var seq_id = inputs_wrapper.childNodes[0].firstElementChild.value;
+        var ip_type = inputs_wrapper.childNodes[2].firstElementChild.value;
+        var in_int = inputs_wrapper.childNodes[3].firstElementChild.value;
+        var in_ip = inputs_wrapper.childNodes[4].firstElementChild.value;
+        var in_port = inputs_wrapper.childNodes[5].firstElementChild.value;
+        var out_int = inputs_wrapper.childNodes[6].firstElementChild.value;
+        var out_ip = inputs_wrapper.childNodes[7].firstElementChild.value;
+        var out_port = inputs_wrapper.childNodes[8].firstElementChild.value;
+        var action = inputs_wrapper.childNodes[9].firstElementChild.value;
+
+
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/iptables.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            data: {
+                action: 0,
+                table: table,
+                chain: chain,
+                num: seq_id,
+                prot: ip_type,
+                in: in_int,
+                source: in_ip,
+                spt: in_port,
+                out: out_int,
+                dest: out_ip,
+                dpt: out_port,
+                target: action
+            },
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit pause request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(response){
+
+                if (response.rc) {
+                    $.notify('Rule successfully registered!', 'success');
+                    updateChains();
+                } else {
+                    $.notify('Could not add the requested rule...', 'error');
+                }
+            },
+
+            failure: function () {
+                console.log("failure pause request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        });
+    }
+
+    function appendNatRuleForm(datatable, table, chain) {
+
+        trow = createBasicFormRow(datatable, table, chain);
+
+        var to = document.createElement('td');
+        to.innerHTML='<input id="" class="form-control" name="to" placeholder="p.ex. 80.71.23.90:80" required="required" type="text">';
+        trow.appendChild(to);
+
+        var confirm = document.createElement('td');
+        var confirm_i = document.createElement('i');
+        confirm_i.setAttribute('class', 'fa fa-check green fa-2x');
+        confirm_i.setAttribute('data-data', table);
+        confirm_i.setAttribute('data-option', chain);
+        confirm.appendChild(confirm_i);
+        trow.appendChild(confirm);
+        confirm.addEventListener('click', submitAdd);
+
+        datatable.getElementsByTagName('tbody')[0].appendChild(trow);
+    }
+
+    function appendRuleForm(datatable, table, chain) {
+
+        trow = createBasicFormRow(datatable, table, chain);
+
+        var confirm = document.createElement('td');
+        var confirm_i = document.createElement('i');
+        confirm_i.setAttribute('class', 'fa fa-check green fa-2x');
+        confirm_i.setAttribute('data-data', table);
+        confirm_i.setAttribute('data-option', chain);
+        confirm.appendChild(confirm_i);
+        trow.appendChild(confirm);
+        confirm.addEventListener('click', submitAdd);
+
+        datatable.getElementsByTagName('tbody')[0].appendChild(trow);
+    }
+
+
+    function createBasicFormRow(datatable, table, chain){
+
+        //<input id="" class="form-control" name="to" placeholder="p.ex. 80.71.23.90" required="required" type="text">';
+        var trow = document.createElement('tr');
+        var seq_id = document.createElement('td');
+        seq_id.setAttribute('style', 'width: 5%');
+        var pkts = seq_id.cloneNode(false);
+        var seq_id_form = text_input_proto.cloneNode(true);
+        seq_id_form.setAttribute('name', 'seq_id');
+        console.log(datatable);
+        seq_id_form.value = datatable.getElementsByTagName('tbody')[0].childNodes.length + 1;
+        seq_id.appendChild(seq_id_form);
+        trow.appendChild(seq_id);
+        trow.appendChild(pkts);
+
+        var prot =  document.createElement('td');
+        var prot_form = text_input_proto.cloneNode(true);
+        prot_form.setAttribute('name', 'prot');
+        prot_form.setAttribute('placeholder', 'tcp');
+        prot.appendChild(prot_form);
+        trow.appendChild(prot);
+
+        var in_int = document.createElement('td');
+        var in_int_form = text_input_proto.cloneNode(true);
+        in_int_form.setAttribute('name', 'in_int');
+        in_int_form.setAttribute('placeholder', 'eth0');
+        in_int.appendChild(in_int_form);
+        trow.appendChild(in_int);
+
+        var in_ip = document.createElement('td');
+        var in_ip_form = text_input_proto.cloneNode(true);
+        in_ip_form.setAttribute('name', 'in_ip');
+        in_ip_form.setAttribute('placeholder', '0.0.0.0/0');
+        in_ip_form.setAttribute('required', 'required');
+        in_ip.appendChild(in_ip_form);
+        trow.appendChild(in_ip);
+
+        var in_port = document.createElement('td');
+        var in_port_form = number_input_proto.cloneNode(true);
+        in_port_form.setAttribute('name', 'in_port');
+        in_port_form.setAttribute('placeholder', '80');
+        in_port.appendChild(in_port_form);
+        trow.appendChild(in_port);
+
+        var out_int = document.createElement('td');
+        var out_int_form = text_input_proto.cloneNode(true);
+        out_int_form.setAttribute('name', 'out_int');
+        out_int_form.setAttribute('placeholder', 'eth1');
+        out_int.appendChild(out_int_form);
+        trow.appendChild(out_int);
+
+        var out_ip = document.createElement('td');
+        var out_ip_form = text_input_proto.cloneNode(true);
+        out_ip_form.setAttribute('name', 'out_ip');
+        out_ip_form.setAttribute('placeholder', '0.0.0.0/0');
+        out_ip_form.setAttribute('required', 'required');
+        out_ip.appendChild(out_ip_form);
+        trow.appendChild(out_ip);
+
+        var out_port = document.createElement('td');
+        var out_port_form = number_input_proto.cloneNode(true);
+        out_port_form.setAttribute('name', 'out_port');
+        out_port_form.setAttribute('placeholder', '8000');
+        out_port.appendChild(out_port_form);
+        trow.appendChild(out_port);
+
+        var action = document.createElement('td');
+        var action_form = text_input_proto.cloneNode(true);
+        action_form.setAttribute('name', 'action');
+        action_form.setAttribute('placeholder', 'drop');
+        action_form.setAttribute('required', 'required');
+        action.appendChild(action_form);
+        trow.appendChild(action);
+
+        return trow
+    }
+
+    function appendFormToTable(event) {
+
+        console.log(event);
+
+        if (event.target.tagName == 'I') {
+            var table = event.target.parentNode.parentNode.firstElementChild;
+        } else {
+            table = event.target.parentNode.firstElementChild;
+        }
+
+        
+        console.log(table);
+
+        switch (table.id) {
+            case 'datatable_nat_in':
+                appendNatRuleForm(table, 'nat', 'input');
+                break;
+            case 'datatable_nat_pre-routing':
+                appendNatRuleForm(table, 'nat', 'prerouting');
+                break;
+            case 'datatable_nat_out':
+                appendNatRuleForm(table, 'nat', 'output');
+                break;
+            case 'datatable_nat_post-routing':
+                appendNatRuleForm(table, 'nat', 'postrouting');
+                break;
+
+            case 'datatable_filter_in':
+                appendRuleForm(table, 'filter', 'input');
+                break;
+            case 'datatable_filter_forward':
+                appendRuleForm(table, 'filter', 'forward');
+                break;
+            case 'datatable_filter_out':
+                appendRuleForm(table, 'filter', 'output');
+                break;
+        }
+
+    }
+
+
+    function executeDeleteRequest(seq_id, chain, table) {
+        console.log(table + chain + table);
+
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/iptables.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            data: {
+                action: 1,
+                table: table,
+                chain: chain,
+                num: seq_id
+            },
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit pause request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(response){
+
+                if (response.rc) {
+                    $.notify('Rule successfully deleted!', 'success');
+                    updateChains();
+                } else {
+                    $.notify('Could not delete the requested rule...', 'error');
+                }
+            },
+
+            failure: function () {
+                console.log("failure pause request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        });
+    }
+
+    function ruleDeleteRequest(event) {
+
+        console.log('holita');
+
+        var seq_id = event.target.getAttribute('data-data');
+        var chain = event.target.getAttribute('data-role');
+        var table = event.target.getAttribute('data-main');
+
+        executeDeleteRequest(seq_id, chain, table);
+    }
+
+    function addCloseButton(node, num, chain, table) {
+
+        var close = document.createElement('td');
+        var i_close = document.createElement('i');
+        i_close.setAttribute('id', 'close' + num);
+        i_close.setAttribute('class', 'fa fa-close acl-delete');
+        i_close.setAttribute('data-data', num);
+        i_close.setAttribute('data-role', chain);
+        i_close.setAttribute('data-main', table);
+        close.appendChild(i_close);
+        node.append(close);
+
+        return node;
+    }
 
 
     function updateChains() {
@@ -262,6 +571,7 @@
                 loadChain(dades.nat.prerouting, 'rows_nat_pre');
                 loadChain(dades.nat.postrouting, 'rows_nat_post');
                 loadChain(dades.nat.output, 'rows_nat_out');
+                $('.acl-delete').click(ruleDeleteRequest);
 
             },
 
@@ -280,38 +590,56 @@
             parent_dude.removeChild(parent_dude.firstChild);
         }
 
+        function appendNatRules(parent, rules, table, chain) {
+            for (i = 0; i < rules.length; i++) {
+                rule = rules[i];
+                parent.appendChild(addCloseButton(loadNatChainRow(rule), rule.num, chain, 'nat'));
+            }
+        }
+
+        function appendRules(parent, rules, table, chain) {
+            for (i = 0; i < rules.length; i++) {
+                rule = rules[i];
+                parent.appendChild(addCloseButton(loadChainRow(rule), rule.num, chain, 'filter'));
+            }
+        }
+
         var rule;
         var i;
 
         switch(chain){
 
             case 'rows_nat_in':
+                appendNatRules(parent_dude, rules, 'nat', 'input');
+                break;
             case 'rows_nat_pre':
+                appendNatRules(parent_dude, rules, 'nat', 'prerouting');
+                break;
             case 'rows_nat_out':
+                appendNatRules(parent_dude, rules, 'nat', 'output');
+                break;
             case 'rows_nat_post':
-
-                for (i = 0; i < rules.length; i++) {
-                    rule = rules[i];
-                    parent_dude.appendChild(loadNatChainRow(rule));
-                }
+                appendNatRules(parent_dude, rules, 'nat', 'postrouting');
                 break;
 
             case 'rows_filter_in':
+                appendRules(parent_dude, rules, 'filter', 'input');
+                break;
             case 'rows_filter_forward':
+                appendRules(parent_dude, rules, 'filter', 'forward');
+                break;
             case 'rows_filter_out':
-                for (i = 0; i < rules.length; i++) {
-                    rule = rules[i];
-                    parent_dude.appendChild(loadChainRow(rule));
-                }
+                appendRules(parent_dude, rules, 'filter', 'output');
                 break;
 
         }
 
     }
 
+
     function loadNatChainRow(rule) {
 
-        trow = loadChainRow(rule);
+        var trow = loadChainRow(rule);
 
         var to = document.createElement('td');
         to.innerHTML = rule.to;
@@ -370,14 +698,19 @@
 
     loadChain(
             [{num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
-                {num: 1, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12}
+                {num: 2, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 3, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 4, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 5, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 6, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 7, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12},
+                {num: 8, pkts: 2, target: "drop", prot: 'tcp', in: 'eth0', out: 'eth1', source: '1.2.3.4/32', destination: '1.2.3.4/32', spt: 23, dpt: 12}
             ],'rows_filter_in');
+
+    $('.acl-delete').click(ruleDeleteRequest);
+    $('.chain_tab').click(updateChains);
+    $('.more_button').click(appendFormToTable);
+    updateChains();
 
     /*
      <tr>
@@ -410,7 +743,6 @@
     
 
     <!-- Datatables -->
-    $(document).ready(function() {
         var handleDataTableButtons = function() {
             if ($("#datatable-buttons").length) {
                 $("#datatable-buttons").DataTable({
@@ -435,7 +767,7 @@
                         {
                             extend: "print",
                             className: "btn-sm"
-                        },
+                        }
                     ],
                     responsive: true
                 });
@@ -486,7 +818,6 @@
         });
 
         TableManageButtons.init();
-    });
     <!-- /Datatables -->
 
 </script>
