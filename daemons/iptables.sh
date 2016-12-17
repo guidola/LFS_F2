@@ -19,6 +19,8 @@ do
     #echo "passed through first condition"
     [[ ! -z ${codi} && ! -z ${pid} && ${pid} != *"$"* ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
     #echo "passed through the conditions, going to answer to --> ${1}${pid} and the code is ${codi}"
+    [[ ! -z ${action} ]] || codi=${show}
+    #echo "codi and action: ${codi}, ${action}"
     case ${codi} in
         ${show})
             #echo "entered to show ip tables"
@@ -105,6 +107,7 @@ do
             #echo "${missatge}"
             echo "${xcorrect}" >> "${1}${pid}"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
+            read brossa < ${1}${pid}
             echo "${missatge}" >> "${1}${pid}"
 	        #echo "asnwered with the message to --> ${1}${pid}"
 	        ;;
@@ -120,8 +123,9 @@ do
 		        #echo "the action is delete and the message is:"
 		        #echo "${missatge}"
                 ${missatge}
+                rc=$?
                 #echo "command finished, going to answer to --> ${1}${pid}"
-                if [ $? -eq 0 ]
+                if [ ${rc} -eq 0 ]
                     then echo "${xcorrect}" >> "${1}${pid}"
                     else echo "${xerror}" >> "${1}${pid}"
                 fi
@@ -140,8 +144,9 @@ do
 		             #echo "the action is insert and the message is:"
 		             #echo "${missatge}"
                      ${missatge}
+                     rc=$?
                      #echo "command finished, going to answer to --> ${1}${pid}"
-                     if [ $? -eq 0 ]
+                     if [ ${rc} -eq 0 ]
                         then echo "${xcorrect}" >> "${1}${pid}"
                         else echo "${xerror}" >> "${1}${pid}"
                      fi

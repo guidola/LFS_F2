@@ -9,7 +9,7 @@ die() {
 
 [[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
 
-IFS="$"
+#IFS="$"
 show=0
 modify=1
 insert=0
@@ -37,7 +37,7 @@ TO=`echo ${url} | grep -oP '(?<=to=).*?(?=&)'`
 TARGET=`echo ${url} | grep -oP '(?<=target=).*?(?=&)'`
 
 #verify we got all params we need.
-[[ ! -z  $CODI ]] || CODI=${show}
+[[ ! -z  $CODI ]] || CODI=${modify}
 [[ $CODI -ne 2 ]] || die "400 Bad Request"
 
 #create return fifo
@@ -67,7 +67,7 @@ if [[ ! -z $resp_code ]]; then
             echo ""
             echo "\"Oops. The requested action does not exist\""
             ;;
-        ${xwrong})
+        ${xerror})
             echo "Status: 200 OK"
             echo ""
             echo '{"rc": false}'
@@ -78,8 +78,9 @@ if [[ ! -z $resp_code ]]; then
             if [[ $CODI -ne $show ]]; then
                 echo '{"rc": true}'
             else
+                echo "Dobai is the JS king" >> "${ret_fifo}"
                 read response < $ret_fifo
-		echo "second read done"
+		        echo "second read done"
                 echo "{\"rc\":true, \"payload\": $response"
             fi
             ;;
