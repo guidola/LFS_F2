@@ -19,7 +19,7 @@ xerror=1
 esyntax=2
 ecode=3
 
-read -n $CONTENT_LENGTH url
+[[ $CONTENT_LENGTH -eq 0 ]] || read -n $CONTENT_LENGTH url
 url="${url}&"
 CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)'`
 TABLE=`echo ${url} | grep -oP '(?<=table=).*?(?=&)'`
@@ -75,7 +75,7 @@ if [[ ! -z $resp_code ]]; then
         ${xcorrect})
             echo "Status: 200 OK"
             echo ""
-            if [[ $CODI -ne $show ]]; then
+            if [[ ! -z $ACTION ]]; then
                 echo '{"rc": true}'
             else
                 echo "Dobai is the JS king" >> "${ret_fifo}"
