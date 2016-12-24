@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# IMPORTANT!! TERM env variable must be set in the shell env that calls this script
 
 OIFS="$IFS"
 

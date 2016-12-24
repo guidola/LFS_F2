@@ -12,7 +12,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content" style="display: block;">
-                <table id="datatable_cron" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_cron">
+                <table id="datatable_cron" class="table table-striped">
                     <thead>
                     <tr>
                         <th>Minute</th>
@@ -22,6 +22,7 @@
                         <th>Day of Week</th>
                         <th>User</th>
                         <th>Command</th>
+                        <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                     </tr>
                     </thead>
                     <tbody id="rows_cron"></tbody>
@@ -193,9 +194,11 @@
         console.log(event);
 
         if (event.target.tagName == 'I') {
-            var table = event.target.parentNode.parentNode.firstElementChild;
+            var table = event.target.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling
+                    .firstElementChild.firstElementChild;
         } else {
-            table = event.target.parentNode.firstElementChild;
+            table = event.target.parentNode.firstElementChild.firstElementChild.nextElementSibling
+                    .firstElementChild.firstElementChild;
         }
 
         console.log(table);
@@ -338,6 +341,7 @@
         trow.appendChild(cmd);
 
         var close = document.createElement('td');
+        close.setAttribute('style', "width: 2%");
         var i_close = document.createElement('i');
         var whole_task = task_info.minute
                 + task_info.hour
@@ -348,6 +352,7 @@
                 + task_info.cmd;
         i_close.setAttribute('id', 'close' + whole_task);
         i_close.setAttribute('class', 'fa fa-close task-delete');
+        i_close.setAttribute('style', 'float: right;');
         i_close.setAttribute('data-data', whole_task);
         close.appendChild(i_close);
         trow.append(close);
@@ -375,83 +380,10 @@
     $('.more_button').click(appendFormToTable);
     updateTasks();
 
-
     <!-- Datatables -->
-    var handleDataTableButtons = function() {
-        if ($("#datatable-buttons").length) {
-            $("#datatable-buttons").DataTable({
-                dom: "Bfrtip",
-                buttons: [
-                    {
-                        extend: "copy",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "csv",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "excel",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "pdfHtml5",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "print",
-                        className: "btn-sm"
-                    }
-                ],
-                responsive: true
-            });
-        }
-    };
 
-    TableManageButtons = function() {
-        "use strict";
-        return {
-            init: function() {
-                handleDataTableButtons();
-            }
-        };
-    }();
+    $('#datatable_cron').dataTable();
 
-    $('#datatable_nat').dataTable();
-
-    $('#datatable-keytable').DataTable({
-        keys: true
-    });
-
-    $('#datatable-responsive').DataTable();
-
-    $('#datatable-scroller').DataTable({
-        ajax: "js/datatables/json/scroller-demo.json",
-        deferRender: true,
-        scrollY: 380,
-        scrollCollapse: true,
-        scroller: true
-    });
-
-    $('#datatable-fixed-header').DataTable({
-        fixedHeader: true
-    });
-
-    var $datatable = $('#datatable-checkbox');
-
-    $datatable.dataTable({
-        'order': [[ 1, 'asc' ]],
-        'columnDefs': [
-            { orderable: false, targets: [0] }
-        ]
-    });
-    $datatable.on('draw.dt', function() {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_flat-green'
-        });
-    });
-
-    TableManageButtons.init();
     <!-- /Datatables -->
 
 </script>

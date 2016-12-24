@@ -3,9 +3,46 @@
  */
 
 
-$('.menu_item').click(function setMainContent(e){
+function loadLogTypes(e) {
 
-    var trigger = $(this)[0];
+    var trigger = e.target.parentNode;
+
+    $.ajax({
+        type: "GET",
+        //url: '/cgi-bin/getLogsAvailable.sh', //TODO activate this when script exists
+        url: '/LFS_F2/www/menu_example.html',
+        accepts:{
+            html: 'text/html'
+        },
+        context: this,
+        dataType: "html",
+
+        // html retrieve call was *not* successful
+        error: function() {
+            $.notify("could not get available logs", "error");
+        },
+
+        // html retrieve call was successful
+        //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+        success: function(response_payload){
+            document.getElementById('log_type_menu').innerHTML = response_payload;
+
+            $('.menu_item.clickable').click(setMainContent);
+        },
+
+        failure: function () {
+            $.notify("could not get available logs", "error");
+        }
+    });
+
+    $('#'+trigger.id).toggleClass('non-toggled toggled');
+
+}
+
+function setMainContent(e){
+
+    var trigger = e.target.parentNode;
+    console.log(trigger);
     //make ajax request to obtain content of the dashboard (home screen)
     $.ajax({
         type: "GET",
@@ -25,8 +62,11 @@ $('.menu_item').click(function setMainContent(e){
         //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
         success: function(response_payload){
             document.getElementById('main_wrapper').innerHTML = response_payload;
-            $('.current-page').attr('class', "");
-            trigger.setAttribute('class', "current-page");
+            $('.current-page').toggleClass('current-page');
+            $('#'+trigger.id).toggleClass('current-page');
+            if ( trigger.get('data-role') == 'log-trigger' ) {
+
+            }
             $('.to_eval').each(function(){
                 $.getScript( $(this).attr('src'), function( data, textStatus, jqxhr ) {
                     console.log( data ); // Data returned
@@ -36,11 +76,18 @@ $('.menu_item').click(function setMainContent(e){
                 });
             });
             eval(document.getElementById('to_eval').innerHTML);
+            $.notify("lets keep it going!", "error");
         },
 
         failure: function () {
-            $('.current-page').attr('class', "");
+            $.notify('could not load page async', 'error');
         }
     })
 
+}
+
+$('.log_menu.non-toggled').click(loadLogTypes);
+$('.log_menu.toggled').click(function () {
+    $('.log_menu.toggled').toggleClass('toggled non-toggled');
 });
+$('.menu_item.clickable').click(setMainContent);

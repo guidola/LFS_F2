@@ -53,22 +53,16 @@
                 <div class="menu_section">
                   <h3>General</h3>
                   <ul class="nav side-menu">
-                    <li class="menu_item" data-url="/dashboard.html"><a><i class="fa fa-home"></i>Dashboard</a></li>
-                    <li class="menu_item" data-url="/processes.html"><a><i class="fa fa-tasks"></i>Processes</a></li>
-                    <li class="menu_item" data-url="/iptables.html"><a><i class="fa fa-key"></i>IpTables</a></li>
-                    <li class="menu_item" data-url="/umanagement.html"><a><i class="fa fa-user"></i>User Management</a></li>
-                    <li class="menu_item" data-url="/cron.html"><a><i class="fa fa-clock-o"></i>Cron</a></li>
-                    <li class="menu_item" data-url="/logs.html"><a><i class="fa fa-list-alt"></i>Logs<span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                        <li  class="menu_item" data-url="/logs.html#system"><a>System</a></li>
-                        <li  class="menu_item" data-url="/logs.html#auth"><a>Authentication</a></li>
-                        <li  class="menu_item" data-url="/logs.html#user"><a>User</a></li>
-                        <li  class="menu_item" data-url="/logs.html#apache"><a>Apache</a></li>
-                        <li  class="menu_item" data-url="/logs.html#kernel"><a>Kernel</a></li>
-                        <li  class="menu_item" data-url="/logs.html#others"><a>Others</a></li>
+                    <li class="menu_item clickable" data-url="/dashboard.html"><a><i class="fa fa-home"></i>Dashboard</a></li>
+                    <li class="menu_item clickable" data-url="/processes.html"><a><i class="fa fa-tasks"></i>Processes</a></li>
+                    <li class="menu_item clickable" data-url="/iptables.html"><a><i class="fa fa-key"></i>IpTables</a></li>
+                    <li class="menu_item clickable" data-url="/umanagement.html"><a><i class="fa fa-user"></i>User Management</a></li>
+                    <li class="menu_item clickable" data-url="/cron.html"><a><i class="fa fa-clock-o"></i>Cron</a></li>
+                    <li id="logs_wrapper" class="log_menu non-toggled"><a><i class="fa fa-list-alt"></i>Logs<span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu" id="log_type_menu">
                       </ul>
                     </li>
-                    <li  class="menu_item" data-url="/playlist.html"><a><i class="fa fa-music"></i>Playlist</a></li>
+                    <li  class="menu_item clickable" data-url="/playlist.html"><a><i class="fa fa-music"></i>Playlist</a></li>
                   </ul>
                 </div>
                 <div class="menu_section">
@@ -242,7 +236,7 @@
               //make ajax request to obtain content of the dashboard (home screen)
               $.ajax({
                 type: "GET",
-                url: "/LFS_F2/www/cron.html", //url of the dashboard
+                url: "/LFS_F2/www/logs.html", //url of the dashboard
                 accepts:{
                   html: 'text/html'
                 },

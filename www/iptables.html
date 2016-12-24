@@ -34,7 +34,7 @@
                                     </ul>
                                     <div id="content_nat_chains" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="nat-in" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_nat_in" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_nat_in" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -48,6 +48,7 @@
                                                     <th>Output port</th>
                                                     <th>Action</th>
                                                     <th>To</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_nat_in"></tbody>
@@ -57,7 +58,7 @@
                                             </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="nat-pre-routing" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_nat_pre-routing" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_nat_pre-routing" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -71,6 +72,7 @@
                                                     <th>Output port</th>
                                                     <th>Action</th>
                                                     <th>To</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_nat_pre"></tbody>
@@ -80,7 +82,7 @@
                                             </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="nat-post-routing" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_nat_post-routing" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_nat_post-routing" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -94,6 +96,7 @@
                                                     <th>Output port</th>
                                                     <th>Action</th>
                                                     <th>To</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_nat_post">
@@ -104,7 +107,7 @@
                                             </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="nat-out" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_nat_out" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_nat_out" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -118,6 +121,7 @@
                                                     <th>Output port</th>
                                                     <th>Action</th>
                                                     <th>To</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_nat_out"></tbody>
@@ -141,7 +145,7 @@
                                     </ul>
                                     <div id="content_filter_chains" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="filter-in" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_filter_in" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_filter_in" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -154,6 +158,7 @@
                                                     <th>Output IP</th>
                                                     <th>Output port</th>
                                                     <th>Action</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_filter_in"></tbody>
@@ -163,7 +168,7 @@
                                             </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="filter-forward" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_filter_forward" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_filter_forward" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -176,6 +181,7 @@
                                                     <th>Output IP</th>
                                                     <th>Output port</th>
                                                     <th>Action</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_filter_forward"></tbody>
@@ -185,7 +191,7 @@
                                             </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade in" id="filter-out" aria-labelledby="tab_chains_nat">
-                                            <table id="datatable_filter_out" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_iptables">
+                                            <table id="datatable_filter_out" class="table table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>Seq. ID</th>
@@ -198,6 +204,7 @@
                                                     <th>Output IP</th>
                                                     <th>Output port</th>
                                                     <th>Action</th>
+                                                    <th class="sorting_asc_disabled sorting_desc_disabled"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="rows_filter_out"></tbody>
@@ -435,9 +442,11 @@
         console.log(event);
 
         if (event.target.tagName == 'I') {
-            var table = event.target.parentNode.parentNode.firstElementChild;
+            var table = event.target.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling
+                    .firstElementChild.firstElementChild;
         } else {
-            table = event.target.parentNode.firstElementChild;
+            table = event.target.parentNode.firstElementChild.firstElementChild.nextElementSibling
+                    .firstElementChild.firstElementChild;
         }
 
         
@@ -528,9 +537,11 @@
     function addCloseButton(node, num, chain, table) {
 
         var close = document.createElement('td');
+        close.setAttribute('style', "width: 2%");
         var i_close = document.createElement('i');
         i_close.setAttribute('id', 'close' + num);
         i_close.setAttribute('class', 'fa fa-close acl-delete');
+        i_close.setAttribute('style', 'float: right;');
         i_close.setAttribute('data-data', num);
         i_close.setAttribute('data-role', chain);
         i_close.setAttribute('data-main', table);
@@ -719,112 +730,10 @@
     $('.more_button').click(appendFormToTable);
     updateChains();
 
-    /*
-     <tr>
-     <td style="width: 5%;">10</td>
-     <td style="width: 5%;">10</td>
-     <td>tcp</td>
-     <td>eth0</td>
-     <td>192.168.1.23</td>
-     <td>-</td>
-     <td>eth1</td>
-     <td>200.12.12.5</td>
-     <td>-</td>
-     <td>SNAT</td>
-     <td>88.97.95.23</td>
-     <td><i class="fa fa-close"></i></td>
-     </tr>*//*
-    
-    <tr>
-    <td style="width: 5%;">10</td>
-            <td>eth0</td>
-            <td>tcp</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>REJECT</td>
-            <td width="20%"></td>
-            <td><i class="fa fa-close"></i></td>
-            </tr>*/
-    
-
     <!-- Datatables -->
-        var handleDataTableButtons = function() {
-            if ($("#datatable-buttons").length) {
-                $("#datatable-buttons").DataTable({
-                    dom: "Bfrtip",
-                    buttons: [
-                        {
-                            extend: "copy",
-                            className: "btn-sm"
-                        },
-                        {
-                            extend: "csv",
-                            className: "btn-sm"
-                        },
-                        {
-                            extend: "excel",
-                            className: "btn-sm"
-                        },
-                        {
-                            extend: "pdfHtml5",
-                            className: "btn-sm"
-                        },
-                        {
-                            extend: "print",
-                            className: "btn-sm"
-                        }
-                    ],
-                    responsive: true
-                });
-            }
-        };
 
-        TableManageButtons = function() {
-            "use strict";
-            return {
-                init: function() {
-                    handleDataTableButtons();
-                }
-            };
-        }();
+        $('.table').dataTable();
 
-        $('#datatable_nat').dataTable();
-
-        $('#datatable-keytable').DataTable({
-            keys: true
-        });
-
-        $('#datatable-responsive').DataTable();
-
-        $('#datatable-scroller').DataTable({
-            ajax: "js/datatables/json/scroller-demo.json",
-            deferRender: true,
-            scrollY: 380,
-            scrollCollapse: true,
-            scroller: true
-        });
-
-        $('#datatable-fixed-header').DataTable({
-            fixedHeader: true
-        });
-
-        var $datatable = $('#datatable-checkbox');
-
-        $datatable.dataTable({
-            'order': [[ 1, 'asc' ]],
-            'columnDefs': [
-                { orderable: false, targets: [0] }
-            ]
-        });
-        $datatable.on('draw.dt', function() {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_flat-green'
-            });
-        });
-
-        TableManageButtons.init();
     <!-- /Datatables -->
 
 </script>
