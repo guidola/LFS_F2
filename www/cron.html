@@ -1,0 +1,457 @@
+<div class="right_col" role="main">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Cron Tasks</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a><i id= "refresh" class="fa fa-refresh"></i></a>
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="display: block;">
+                <table id="datatable_cron" class="table table-striped dataTable no-footer" role="grid" aria-describedby="datatable_cron">
+                    <thead>
+                    <tr>
+                        <th>Minute</th>
+                        <th>Hour</th>
+                        <th>Day of Month</th>
+                        <th>Month</th>
+                        <th>Day of Week</th>
+                        <th>User</th>
+                        <th>Command</th>
+                    </tr>
+                    </thead>
+                    <tbody id="rows_cron"></tbody>
+                </table>
+                <div class="more_button" id="more-cron" style="text-align: center; width: 100%; padding: 10px; background-color: #F1F1F4">
+                    <i class="fa fa-plus fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--SPLITTER-->
+
+<script type="text/javascript" id="to_eval">
+
+
+    $('tbody').innerHTML = '';
+
+    $('.collapse-link').on('click', function() {
+        var $BOX_PANEL = $(this).closest('.x_panel'),
+                $ICON = $(this).find('i'),
+                $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+        // fix for some div with hardcoded fix class
+        if ($BOX_PANEL.attr('style')) {
+            $BOX_CONTENT.slideToggle(200, function(){
+                $BOX_PANEL.removeAttr('style');
+            });
+        } else {
+            $BOX_CONTENT.slideToggle(200);
+            $BOX_PANEL.css('height', 'auto');
+        }
+
+        $ICON.toggleClass('fa-chevron-up fa-chevron-down');
+    });
+
+    var text_input_proto = document.createElement('input');
+    text_input_proto.setAttribute('class', 'form-control');
+    text_input_proto.setAttribute('type', 'text');
+
+    function submitAddTask(event) {
+
+        //obtain data from form inputs
+        var inputs_wrapper = event.target.parentNode.parentNode;
+        var minute = inputs_wrapper.childNodes[0].firstElementChild.value;
+        var hour = inputs_wrapper.childNodes[1].firstElementChild.value;
+        var dom = inputs_wrapper.childNodes[2].firstElementChild.value;
+        var mon = inputs_wrapper.childNodes[3].firstElementChild.value;
+        var dow = inputs_wrapper.childNodes[4].firstElementChild.value;
+        var user = inputs_wrapper.childNodes[5].firstElementChild.value;
+        var cmd = inputs_wrapper.childNodes[6].firstElementChild.value;
+
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/cron.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            data: {
+                //TODO change param names to the ones of the cgi script for crontab
+                action: 0,
+                username: minute,
+                passwd: hour,
+                fullname: dom,
+                rnumber: mon,
+                wphone: dow,
+                hphone: user,
+                other: cmd
+            },
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(response){
+
+                if (response.rc) {
+                    $.notify('Task successfully registered!', 'success');
+                    updateTasks();
+                } else {
+                    $.notify('Could not add the requested task...', 'error');
+                }
+            },
+
+            failure: function () {
+                console.log("failure pause request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        });
+    }
+
+
+    function addFormRow(datatable){
+
+        //<input id="" class="form-control" name="to" placeholder="p.ex. 80.71.23.90" required="required" type="text">';
+        var trow = document.createElement('tr');
+        var min = document.createElement('td');
+
+        var min_form = text_input_proto.cloneNode(true);
+        min_form.setAttribute('name', 'minute');
+        min_form.setAttribute('placeholder', 'minutes');
+        min_form.setAttribute('required', 'required');
+        min.appendChild(min_form);
+        trow.appendChild(min);
+
+        var hour =  document.createElement('td');
+        var hour_form = text_input_proto.cloneNode(true);
+        hour_form.setAttribute('name', 'hour');
+        hour_form.setAttribute('placeholder', 'Hour');
+        hour_form.setAttribute('required', 'required');
+        hour.appendChild(hour_form);
+        trow.appendChild(hour);
+
+        var dom = document.createElement('td');
+        var dom_form = text_input_proto.cloneNode(true);
+        dom_form.setAttribute('name', 'dom');
+        dom_form.setAttribute('placeholder', 'Day of Month');
+        dom.appendChild(dom_form);
+        trow.appendChild(dom);
+
+        var mon = document.createElement('td');
+        var mon_form = text_input_proto.cloneNode(true);
+        mon_form.setAttribute('name', 'mon');
+        mon_form.setAttribute('placeholder', 'Month');
+        mon.appendChild(mon_form);
+        trow.appendChild(mon);
+
+        var dow = document.createElement('td');
+        var dow_form = text_input_proto.cloneNode(true);
+        dow_form.setAttribute('name', 'dow');
+        dow_form.setAttribute('placeholder', 'Day of Week');
+        dow.appendChild(dow_form);
+        trow.appendChild(dow);
+
+        var user = document.createElement('td');
+        var user_form = text_input_proto.cloneNode(true);
+        user_form.setAttribute('name', 'user');
+        user_form.setAttribute('placeholder', 'user');
+        user.appendChild(user_form);
+        trow.appendChild(user);
+
+        var cmd = document.createElement('td');
+        var cmd_form = text_input_proto.cloneNode(true);
+        cmd_form.setAttribute('name', 'cmd');
+        cmd_form.setAttribute('placeholder', 'cmd');
+        cmd.appendChild(cmd_form);
+        trow.appendChild(cmd);
+
+        var confirm = document.createElement('td');
+        var confirm_i = document.createElement('i');
+        confirm_i.setAttribute('class', 'fa fa-check green fa-2x');
+        confirm.appendChild(confirm_i);
+        trow.appendChild(confirm);
+        confirm.addEventListener('click', submitAddTask);
+
+        datatable.getElementsByTagName('tbody')[0].appendChild(trow);
+    }
+
+    function appendFormToTable(event) {
+
+        console.log(event);
+
+        if (event.target.tagName == 'I') {
+            var table = event.target.parentNode.parentNode.firstElementChild;
+        } else {
+            table = event.target.parentNode.firstElementChild;
+        }
+
+        console.log(table);
+        addFormRow(table);
+    }
+
+
+    function executeDeleteTaskRequest(username) {
+
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/cron.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            data: {
+                action: 1,
+                username: username
+            },
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(response){
+
+                if (response.rc) {
+                    $.notify('Task successfully deleted!', 'success');
+                    updateTasks();
+                } else {
+                    $.notify('Could not delete the requested task...', 'error');
+                }
+            },
+
+            failure: function () {
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        });
+    }
+
+    function taskDeleteRequest(event) {
+
+        var task = event.target.getAttribute('data-data');
+        executeDeleteTaskRequest(task);
+    }
+
+
+    function updateTasks() {
+
+        $.ajax({
+            type: "POST",
+            url: '/cgi-bin/cron.sh',
+            accepts:{
+                json: 'text/json'
+            },
+            context: this,
+            dataType: "json",
+
+            // html retrieve call was *not* successful
+            error: function(payload) {
+                console.log(payload);
+                console.log("could not submit request async");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            },
+
+            // json retrieve call was successful
+            //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+            success: function(response){
+
+                if (response.rc) {
+                    var dades = response.payload;
+                    //load all chains
+                    loadTasks(dades.tasks);
+                } else {
+                    $.notify('Could not fetch tasks!', 'error');
+                }
+
+            },
+
+            failure: function () {
+                console.log("failure request mate");
+                $.notify("Something went wrong on our side. Or ur trying really nasty things :3", "error");
+            }
+        })
+
+    }
+
+    function loadTasks(users) {
+
+        var parent_dude = document.getElementById('datatable_cron').getElementsByTagName('tbody')[0];
+        while (parent_dude.firstChild) {
+            parent_dude.removeChild(parent_dude.firstChild);
+        }
+
+        var i;
+        var user;
+
+        for (i = 0; i < users.length; i++) {
+            user = users[i];
+            parent_dude.appendChild(loadTaskRow(user));
+        }
+
+    }
+
+    function loadTaskRow(task_info){
+
+        var trow = document.createElement('tr');
+        var min = document.createElement('td');
+
+        var hour = min.cloneNode(true);
+        min.innerHTML = task_info.minute;
+        hour.innerHTML = task_info.hour;
+        trow.appendChild(min);
+        trow.appendChild(hour);
+
+        var dom =  document.createElement('td');
+        dom.innerHTML = task_info.dom;
+        trow.appendChild(dom);
+
+        var mon = document.createElement('td');
+        mon.innerHTML = task_info.mon;
+        trow.appendChild(mon);
+
+        var dow = document.createElement('td');
+        dow.innerHTML = task_info.dow;
+        trow.appendChild(dow);
+
+        var user = document.createElement('td');
+        user.innerHTML = task_info.user;
+        trow.appendChild(user);
+
+        var cmd = document.createElement('td');
+        cmd.innerHTML = task_info.cmd;
+        trow.appendChild(cmd);
+
+        var close = document.createElement('td');
+        var i_close = document.createElement('i');
+        var whole_task = task_info.minute
+                + task_info.hour
+                + task_info.dom
+                + task_info.mon
+                + task_info.dow
+                + task_info.user
+                + task_info.cmd;
+        i_close.setAttribute('id', 'close' + whole_task);
+        i_close.setAttribute('class', 'fa fa-close task-delete');
+        i_close.setAttribute('data-data', whole_task);
+        close.appendChild(i_close);
+        trow.append(close);
+
+        return trow 
+    }
+
+    loadTasks(
+            [{minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""}
+                ]);
+
+    $('.task-delete').click(taskDeleteRequest);
+    $('#refresh').click(updateTasks);
+    $('.more_button').click(appendFormToTable);
+    updateTasks();
+
+
+    <!-- Datatables -->
+    var handleDataTableButtons = function() {
+        if ($("#datatable-buttons").length) {
+            $("#datatable-buttons").DataTable({
+                dom: "Bfrtip",
+                buttons: [
+                    {
+                        extend: "copy",
+                        className: "btn-sm"
+                    },
+                    {
+                        extend: "csv",
+                        className: "btn-sm"
+                    },
+                    {
+                        extend: "excel",
+                        className: "btn-sm"
+                    },
+                    {
+                        extend: "pdfHtml5",
+                        className: "btn-sm"
+                    },
+                    {
+                        extend: "print",
+                        className: "btn-sm"
+                    }
+                ],
+                responsive: true
+            });
+        }
+    };
+
+    TableManageButtons = function() {
+        "use strict";
+        return {
+            init: function() {
+                handleDataTableButtons();
+            }
+        };
+    }();
+
+    $('#datatable_nat').dataTable();
+
+    $('#datatable-keytable').DataTable({
+        keys: true
+    });
+
+    $('#datatable-responsive').DataTable();
+
+    $('#datatable-scroller').DataTable({
+        ajax: "js/datatables/json/scroller-demo.json",
+        deferRender: true,
+        scrollY: 380,
+        scrollCollapse: true,
+        scroller: true
+    });
+
+    $('#datatable-fixed-header').DataTable({
+        fixedHeader: true
+    });
+
+    var $datatable = $('#datatable-checkbox');
+
+    $datatable.dataTable({
+        'order': [[ 1, 'asc' ]],
+        'columnDefs': [
+            { orderable: false, targets: [0] }
+        ]
+    });
+    $datatable.on('draw.dt', function() {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_flat-green'
+        });
+    });
+
+    TableManageButtons.init();
+    <!-- /Datatables -->
+
+</script>
