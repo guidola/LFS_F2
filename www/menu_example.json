@@ -1,0 +1,105 @@
+[{
+  "type": "folder",
+  "name": "Bluetooth",
+  "childs": []
+}, {
+  "type": "folder",
+  "name": "CoreDuet",
+  "childs": []
+}, {
+  "type": "folder",
+  "name": "DiagnosticMessages",
+  "childs": []
+}, {
+  "type": "folder",
+  "name": "Tunnelblick",
+  "childs": [{
+    "type": "file",
+    "name": "tunnelblickd",
+    "path": "/var/log/Tunnelblick/tunnelblickd.log"
+  }]
+}, {
+  "type": "file",
+  "name": "alf",
+  "path": "/var/log/alf.log"
+}, {
+  "type": "folder",
+  "name": "apache2",
+  "childs": []
+}, {
+  "type": "file",
+  "name": "appfirewall",
+  "path": "/var/log/appfirewall.log"
+}, {
+  "type": "folder",
+  "name": "asl",
+  "childs": [{
+    "type": "folder",
+    "name": "Logs",
+    "childs": [{
+      "type": "file",
+      "name": "tunnelblickd",
+      "path": "/var/log/Tunnelblick/tunnelblickd.log"
+    }]
+  }]
+}, {
+  "type": "folder",
+  "name": "com.apple.xpc.launchd",
+  "childs": []
+}, {
+  "type": "file",
+  "name": "corecaptured",
+  "path": "/var/log/corecaptured.log"
+}, {
+  "type": "folder",
+  "name": "cups",
+  "childs": []
+}, {
+  "type": "file",
+  "name": "displaypolicyd",
+  "path": "/var/log/displaypolicyd.log"
+}, {
+  "type": "file",
+  "name": "displaypolicyd.stdout",
+  "path": "/var/log/displaypolicyd.stdout.log"
+}, {
+  "type": "folder",
+  "name": "emond",
+  "childs": []
+}, {
+  "type": "file",
+  "name": "fsck_hfs",
+  "path": "/var/log/fsck_hfs.log"
+}, {
+  "type": "file",
+  "name": "install",
+  "path": "/var/log/install.log"
+}, {
+  "type": "file",
+  "name": "opendirectoryd",
+  "path": "/var/log/opendirectoryd.log"
+}, {
+  "type": "folder",
+  "name": "powermanagement",
+  "childs": []
+}, {
+  "type": "folder",
+  "name": "ppp",
+  "childs": []
+}, {
+  "type": "file",
+  "name": "system",
+  "path": "/var/log/system.log"
+}, {
+  "type": "folder",
+  "name": "timezone",
+  "childs": []
+}, {
+  "type": "folder",
+  "name": "uucp",
+  "childs": []
+}, {
+  "type": "file",
+  "name": "wifi",
+  "path": "/var/log/wifi.log"
+}]
