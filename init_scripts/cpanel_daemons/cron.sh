@@ -5,7 +5,7 @@ case $1 in
         [[ ! -p /web_server/fifos/cron/request && ! -z `ps -aux | grep /web_server/daemons/cron_manager.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
         mkdir -p /web_server/fifos/cron/
         mkfifo /web_server/fifos/cron/request
-        chown www-data:www-data -R /web_server/fifos/cron
+        chown apache:apache -R /web_server/fifos/cron
         echo "Starting user manager daemon..."
         #touch /web_server/daemons/cron_manager_daemon_log
         #chmod 777 /web_server/daemons/cron_manager_daemon_log

@@ -5,7 +5,7 @@ case $1 in
         [[ ! -p /web_server/fifos/usr/request && ! -z `ps -aux | grep /web_server/daemons/user_manager.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
         mkdir -p /web_server/fifos/usr/
         mkfifo /web_server/fifos/usr/request
-        chown www-data:www-data -R /web_server/fifos/usr
+        chown apache:apache -R /web_server/fifos/usr
         echo "Starting user manager daemon..."
         #touch /web_server/daemons/user_manager_daemon_log
         #chmod 777 /web_server/daemons/user_manager_daemon_log
