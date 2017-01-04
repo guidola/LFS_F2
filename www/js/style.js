@@ -63,8 +63,7 @@ function loadLogTypes() {
 
     $.ajax({
         type: "GET",
-        //url: '/cgi-bin/getLogsAvailable.sh', //TODO activate this when script exists
-        url: '/LFS_F2/www/menu_example.json',
+        url: '/cgi-bin/getLogsAvailable.sh',
         accepts:{
             html: 'application/json'
         },
