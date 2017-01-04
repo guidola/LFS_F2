@@ -158,7 +158,6 @@ function setMainContent(e){
                 });
             });
             eval(document.getElementById('to_eval').innerHTML);
-            $.notify("lets keep it going!", "error");
         },
 
         failure: function () {
