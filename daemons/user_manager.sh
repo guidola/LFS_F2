@@ -22,7 +22,7 @@ do
         ${insert})
             #echo "entered to insert command"
             [[ ! -z ${username} && ! -z ${passwd} ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
-            adduser "$username" << EOF
+            adduser "$username" <<EOF
             $passwd
             $passwd
             $fullname
@@ -31,7 +31,7 @@ do
             $hphone
             $other
             "Y"
-            EOF
+EOF
             rc=$?
             #echo "command finished, going to answer to --> ${1}${pid}"
             if [ ${rc} -eq 0 ]
@@ -43,8 +43,10 @@ do
 	        [[ ! -z ${username} ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
             deluser "$username"
             rc=$?
+            rm -rf /home/${username}
+	        rc2=$?
             #echo "command finished, going to answer to --> ${1}${pid}"
-            if [ ${rc} -eq 0 ]
+            if [[ ${rc} -eq 0 && ${rc2} -eq 0 ]]
                 then echo "${xcorrect}" >> "${1}${pid}"
                 else echo "${xerror}" >> "${1}${pid}"
             fi;;
