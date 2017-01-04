@@ -3,8 +3,8 @@
 
 OIFS="$IFS"
 
-strings=`top -n 1 -b | awk '{print $8 "$" $1 "$" $2 "$" $12 "$" $10 "$" $9 "$" $11}' | tail -n +8`
-
+#strings=`top -n 1 -b | awk '{print $8 "$" $1 "$" $2 "$" $12 "$" $10 "$" $9 "$" $11}' | tail -n +8`
+strings=`top -n 1 -b | awk '{print $10 "$" $1 "$" $2 "$" $11 $12 "$" $18 "$" $7 "$" $9}' | tail -n +8 | sed "s/'-//g"`
 echo "Content-Type: application/json"
 echo ""
 echo "{"
