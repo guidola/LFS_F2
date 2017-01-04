@@ -22,7 +22,7 @@ for file in ./*; do
     fi;
     scp -P $2 -r ${file} lfs@${1}:/home/lfs/temp/${file}
 done;
-ssh -p $2 lfs@${1} -t 'sudo mv /home/lfs/temp/* /web_server/'
+ssh -p $2 lfs@${1} -t 'cp -r /home/lfs/vendors /home/lfs/temp/www/vendors; sudo mv /home/lfs/temp/* /web_server/'
 
 # ssh -p $2 execute several setup commands
 # change ownership of files to apache user
