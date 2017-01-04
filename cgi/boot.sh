@@ -23,14 +23,12 @@ CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)' | urldecode`
 
 case $resp_code in
     ${shutdown})
-        echo "Status: 500 Internal Server Error"
-        echo ""
-        echo "\"Oops. Syntax error\""
+        poweroff
+        #shutdown -P now
         ;;
     ${restart})
-        echo "Status: 500 Internal Server Error"
-        echo ""
-        echo "\"Oops. The requested action does not exist\""
+        reboot
+        #shutdown -r now
         ;;
     *)
         die
