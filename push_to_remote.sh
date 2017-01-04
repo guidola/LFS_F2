@@ -9,7 +9,7 @@ ssh -p $2 lfs@${1} -t 'sudo rm -rf /web_server/*'
 
 # scp all project files to /web_server
 ssh -p $2 lfs@${1} -t 'sudo rm -rf /home/lfs/temp; mkdir -pv /home/lfs/temp'
-scp -r ./* lfs@${1}:/home/lfs/temp
+scp -P $2 -r ./* lfs@${1}:/home/lfs/temp
 ssh -p $2 lfs@${1} -t 'sudo mv /home/lfs/temp/* /web_server/'
 
 # ssh -p $2 execute several setup commands
