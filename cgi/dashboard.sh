@@ -3,7 +3,7 @@
 
 OIFS="$IFS"
 
-cpu=`top -n 1 | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
+cpu=`top -n 1 | head | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
 cpu_array=($cpu)
 #Args="$*"
@@ -12,9 +12,9 @@ IFS="$OIFS"
 echo "Status: 200 Ok"
 echo "Content-Type: application/json"
 echo ""
-echo "{"
+echo ", {"
 echo "  \"cpu\":["
-echo "      ${cpu_array[0]},"            #cpu_usr
+echo "      ${cpu_array[0]},${cpu}"            #cpu_usr
 echo "      ${cpu_array[1]},"            #cpu_nice
 echo "      ${cpu_array[2]},"            #cpu_sys
 echo "      ${cpu_array[3]},"            #cpu_iowait
