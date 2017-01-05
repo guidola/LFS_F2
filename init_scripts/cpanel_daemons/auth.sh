@@ -8,7 +8,7 @@ case $1 in
         mkfifo /web_server/fifos/auth/request
         chown apache:apache -R /web_server/fifos/auth
         echo "Starting authentication daemon..."
-        /web_server/daemons/chkuser.sh /web_server/fifos/auth/ >> /var/log/daemons_errors/auth.log 2 >> /var/log/daemons_errors/auth.log &
+        /web_server/daemons/chkuser.sh /web_server/fifos/auth/ < /dev/null >> /var/log/daemons_errors/auth.log 2 >> /var/log/daemons_errors/auth.log &
         echo "Authentication daemon running [$!]"
         logger -p local1.notice "check user daemon: running";
         ;;

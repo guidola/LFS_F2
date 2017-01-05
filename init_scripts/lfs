@@ -13,7 +13,7 @@ stop() {
     # wait 1 second and if there is some daemon still up cleanse it all
     sleep 1
     echo "Killing hung up daemons..."
-    pkill '/etc/init.d/cpanel_daemons'
+    pkill -f "bash /web_server/daemons/"
     # remove all fifos
     echo "Removing fifos..."
     rm -rf /web_server/fifos/*

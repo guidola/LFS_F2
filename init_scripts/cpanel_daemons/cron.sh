@@ -9,7 +9,7 @@ case $1 in
         mkdir -p /web_server/tmp/cron/
         chown apache:apache -R /web_server/fifos/cron
         echo "Starting user manager daemon..."
-        /web_server/daemons/cron_manager.sh /web_server/fifos/cron/ >> /var/log/daemons_errors/cron.log 2 >> /var/log/daemons_errors/cron.log &
+        /web_server/daemons/cron_manager.sh /web_server/fifos/cron/ < /dev/null >> /var/log/daemons_errors/cron.log 2 >> /var/log/daemons_errors/cron.log &
         echo "Cron manager daemon running [$!]"
         logger -p local1.notice "cron manager daemon: running";
         ;;

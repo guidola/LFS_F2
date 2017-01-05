@@ -36,4 +36,4 @@ ssh -p $2 lfs@${1} -t 'sudo ln -s /web_server/init_scripts/lfs /etc/init.d/'
 ssh -p $2 lfs@${1} -t 'sudo chmod +x /etc/init.d/cpanel_daemons/* /etc/init.d/lfs'
 
 # restart all daemons
-ssh -p $2 lfs@${1} -t 'sudo /etc/init.d/lfs restart'
+ssh -p $2 lfs@${1}  'sudo /etc/init.d/lfs restart'

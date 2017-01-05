@@ -247,7 +247,7 @@
             e.preventDefault();
 
             //recover the associated input value
-            var assoc_pid = e.target.attributes['data-role'];
+            var assoc_pid = e.target.getAttribute['data-data'];
             sendKillRequest(assoc_pid);
 
         });
@@ -269,7 +269,8 @@
                 var time_to_pause = document.getElementById(associated_input).value;
                 var rodona = e.target.getAttribute('data-option');
                 console.log(e.target);
-                sendPauseRequest(assoc_pid, time_to_pause, associated_input, e.id, rodona);
+                console.log(associated_input);
+                sendPauseRequest(assoc_pid, time_to_pause, associated_input, e.target.id, rodona);
             }
 
         });
