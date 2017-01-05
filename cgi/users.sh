@@ -99,7 +99,7 @@ else
     do
     basic_info=`echo ${line} | awk -F: '{print "{\"usr\": \"" $1 "\", \"passwd\": \"" $2 "\", \"uid\": " $3 ", \"gid\": " $4 ", "}'`
     message="${message}${basic_info}"
-    additional_info=`echo ${line} | awk -F: '{print $5}' | awk -F, '{print "\"fullname\": \"" $1 "\", \"rnumber\": " $2 ", \"wphone\": " $3 ", \"hphone\": " $4 ", \"other\": \"" $5 "\", "  }'`
+    additional_info=`echo ${line} | awk -F: '{print $5}' | awk -F, '{print "\"fullname\": \"" $1 "\", \"rnumber\": \"" $2 "\", \"wphone\": \"" $3 "\", \"hphone\": \"" $4 "\", \"other\": \"" $5 "\", "  }'`
     message="${message}${additional_info}"
     final_info=`echo ${line} | awk -F: '{print "\"home\": \"" $6 "\", \"shell\": \"" $7 "\"},"}'`
     message="${message}${final_info}"
