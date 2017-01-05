@@ -2,16 +2,13 @@
 
 case $1 in
     start)
-        [[ ! -p /web_server/fifos/acl/request && ! -z `ps -aux | grep /web_server/daemons/iptables.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
+        [[ ! -p /web_server/fifos/acl/request && ! -z `ps -aux | grep /web_server/daemons/iptables.sh` ]] || (echo "ACL Daemon already started. Please stop it and start it again" && exit 1)
         logger -p local1.notice "iptables daemon: starting daemon";
         mkdir -p /web_server/fifos/acl/
         mkfifo /web_server/fifos/acl/request
         chown apache:apache -R /web_server/fifos/acl
         echo "Starting ip tables daemon..."
-        #touch /web_server/daemons/iptables_daemon_log
-        #chmod 777 /web_server/daemons/iptables_daemon_log
-        #/web_server/daemons/iptables.sh /web_server/fifos/acl/ >> /web_server/daemons/iptables_daemon_log 2>> /web_server/daemons/iptables_daemon_log &
-        /web_server/daemons/iptables.sh /web_server/fifos/acl/ &
+        /web_server/daemons/iptables.sh /web_server/fifos/acl/ >> /var/log/daemons_errors/acl.log 2 >> /var/log/daemons_errors/acl.log &
         echo "IP tables daemon running [$!]"
         logger -p local1.notice "iptables daemon: running";
         ;;

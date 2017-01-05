@@ -3,7 +3,7 @@
 
 OIFS="$IFS"
 
-cpu=`top -n 1 | head | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
+cpu=`top -n 1 -b | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
 cpu_array=($cpu)
 #Args="$*"
@@ -12,9 +12,9 @@ IFS="$OIFS"
 echo "Status: 200 Ok"
 echo "Content-Type: application/json"
 echo ""
-echo ", {"
+echo "{"
 echo "  \"cpu\":["
-echo "      ${cpu_array[0]},${cpu}"            #cpu_usr
+echo "      ${cpu_array[0]},"            #cpu_usr
 echo "      ${cpu_array[1]},"            #cpu_nice
 echo "      ${cpu_array[2]},"            #cpu_sys
 echo "      ${cpu_array[3]},"            #cpu_iowait
@@ -46,17 +46,17 @@ uptime_since=`uptime -s`
 uptime_for=`uptime -p`
 
 active_users=`uptime | awk -F "," '{print $2}'`
-load_average_15m=`uptime | awk -F ',' '{print $8 "." $9}'`
+load_average_15m=`uptime | awk -F "," '{print $5}'`
 
 strings=`last -F | head -n 10 | awk '{if($1!="reboot" && $1!="wtmp" && $0!="") if( $2 ~ /pts/ ){if($9=="-"){print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$remote$" $3 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else{if( $3 ~ /:/ ) {if($9=="-"){print $1 "$local$" $2 "$$" $6 "_" $5 "_" $8 "_" $7 "$" $12 "_" $11 "_" $14 "_" $13}else{print $1 "$local$" $2 "$" $6 "_" $5 "_" $8 "_" $7 "$-"}}else if($8=="-"){print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$" $11 "_" $10 "_" $13 "_" $12}else{print $1 "$local$" $2 "$" $5 "_" $4 "_" $7 "_" $6 "$-"}}}'`
 
 
 
 echo "  \"disk\":$disk,"
-echo "  \"hostname\":$hostname,"
-echo "  \"uptime_since\":$uptime_since,"
-echo "  \"uptime_for\":$uptime_for,"
-echo "  \"active_users\":$active_users,"
+echo "  \"hostname\":\"$hostname\","
+echo "  \"uptime_since\":\"$uptime_since\","
+echo "  \"uptime_for\":\"${uptime_for:3}\","
+echo "  \"active_users\":\"$active_users\","
 echo "  \"load_average\":$load_average_15m,"
 echo "  \"users\":["
 lines=`echo "$strings" | wc -l`

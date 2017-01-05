@@ -2,17 +2,14 @@
 
 case $1 in
     start)
-        [[ ! -p /web_server/fifos/cron/request && ! -z `ps -aux | grep /web_server/daemons/cron_manager.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
+        [[ ! -p /web_server/fifos/cron/request && ! -z `ps -aux | grep /web_server/daemons/cron_manager.sh` ]] || (echo "Cron Daemon already started. Please stop it and start it again" && exit 1)
         logger -p local1.notice "cron manager daemon: starting daemon";
         mkdir -p /web_server/fifos/cron/
         mkfifo /web_server/fifos/cron/request
         mkdir -p /web_server/tmp/cron/
         chown apache:apache -R /web_server/fifos/cron
         echo "Starting user manager daemon..."
-        #touch /web_server/daemons/cron_manager_daemon_log
-        #chmod 777 /web_server/daemons/cron_manager_daemon_log
-        #/web_server/daemons/cron_manager.sh /web_server/fifos/cron/ >> /web_server/daemons/cron_manager_daemon_log 2>> /web_server/daemons/cron_manager_daemon_log &
-        /web_server/daemons/cron_manager.sh /web_server/fifos/cron/ &
+        /web_server/daemons/cron_manager.sh /web_server/fifos/cron/ >> /var/log/daemons_errors/cron.log 2 >> /var/log/daemons_errors/cron.log &
         echo "Cron manager daemon running [$!]"
         logger -p local1.notice "cron manager daemon: running";
         ;;

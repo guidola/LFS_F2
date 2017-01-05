@@ -123,6 +123,7 @@ function loadLogTypes() {
 function setMainContent(e){
 
     var trigger = e.target.parentNode;
+    window.clearInterval(window.interval_id);
 
     console.log(trigger);
     //make ajax request to obtain content of the dashboard (home screen)

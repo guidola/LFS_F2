@@ -66,6 +66,7 @@
             .on('keypress', 'input[required][pattern]', validator.keypress);
 
     function sendPauseRequest(pid, pause_time, input_id, button_id, rodoneta_id){
+        console.log(pid + "-" + pause_time);
         $.ajax({
             type: "POST",
             url: '/cgi-bin/manage_processes.sh',
@@ -209,7 +210,9 @@
             var button_pause = document.createElement('a');
             button_pause.setAttribute('href', '#');
             button_pause.setAttribute('id', 'submit_pause' + proc.pid);
-            button_pause.setAttribute('data-data', proc.pid);
+            button_pause.setAttribute('data-role', proc.pid);
+            button_pause.setAttribute('data-data', 'pause_time' + proc.pid);
+            button_pause.setAttribute('data-option', 'status' + proc.pid);
             button_pause.setAttribute('class', 'btn btn-sm btn-warning submit_pause');
             button_pause.innerHTML = "PAUSE";
             button_pause.setAttribute('style', 'float: right;');
@@ -261,10 +264,11 @@
 
             if (submit) {
                 //recover the associated input value
-                var associated_input = e.target.attributes['data-data'];
-                var assoc_pid = e.target.attributes['data-role'];
-                var time_to_pause = document.getElementById(associated_input);
-                var rodona = e.target.attributes['data-option'];
+                var associated_input = e.target.getAttribute('data-data');
+                var assoc_pid = e.target.getAttribute('data-role');
+                var time_to_pause = document.getElementById(associated_input).value;
+                var rodona = e.target.getAttribute('data-option');
+                console.log(e.target);
                 sendPauseRequest(assoc_pid, time_to_pause, associated_input, e.id, rodona);
             }
 

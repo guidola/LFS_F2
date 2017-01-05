@@ -2,16 +2,13 @@
 
 case $1 in
     start)
-        [[ ! -p /web_server/fifos/usr/request && ! -z `ps -aux | grep /web_server/daemons/user_manager.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
+        [[ ! -p /web_server/fifos/usr/request && ! -z `ps -aux | grep /web_server/daemons/user_manager.sh` ]] || (echo "User Daemon already started. Please stop it and start it again" && exit 1)
         logger -p local1.notice "user manager daemon: starting daemon";
         mkdir -p /web_server/fifos/usr/
         mkfifo /web_server/fifos/usr/request
         chown apache:apache -R /web_server/fifos/usr
         echo "Starting user manager daemon..."
-        #touch /web_server/daemons/user_manager_daemon_log
-        #chmod 777 /web_server/daemons/user_manager_daemon_log
-        #/web_server/daemons/user_manager.sh /web_server/fifos/usr/ >> /web_server/daemons/user_manager_daemon_log 2>> /web_server/daemons/user_manager_daemon_log &
-        /web_server/daemons/user_manager.sh /web_server/fifos/usr/ &
+        /web_server/daemons/user_manager.sh /web_server/fifos/usr/ >> /var/log/daemons_errors/usr.log 2 >> /var/log/daemons_errors/usr.log &
         echo "User manager daemon running [$!]"
         logger -p local1.notice "user manager daemon: running";
         ;;

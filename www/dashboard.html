@@ -352,7 +352,7 @@
         document.getElementById('up_for').innerHTML = dades.uptime_for;
         document.getElementById('up_since').innerHTML = dades.uptime_since;
         document.getElementById('load_average').innerHTML = dades.load_average + "%";
-        document.getElementById('n_active_usrs').innerHTML = dades.active_users;
+        document.getElementById('n_active_users').innerHTML = dades.active_users;
         document.getElementById('buffer_cache').innerHTML = dades.mem[3] + "MiB";
         document.getElementById('available').innerHTML = dades.mem[4] + "MiB";
 
@@ -396,7 +396,7 @@
     updateData();
 
     <!-- update performance -->
-    window.setInterval(updateData, 1000);
+    window.interval_id = window.setInterval(updateData, 1000);
 
     </script>
     <!-- /page content -->
