@@ -6,6 +6,7 @@ getlist() {
     missatge="{\"list\": ["
     i=1
     current=0
+    IFS=$'\n'
     for line in $info
     do
         missatge="${missatge}\"${line}\","
@@ -14,6 +15,7 @@ getlist() {
         fi
         let i=i+1
     done
+    IFS=$OIFS
     missatge="${missatge%?}], \"current\": ${current}}"
 }
 
@@ -120,6 +122,7 @@ do
         ${random})
             #echo "entered to pause/resume song"
             logger -p local1.notice "music player daemon: random list request received"
+            touch /web_server/music/randomlist.txt
             shuf /web_server/music/playlist.txt > /web_server/music/randomlist.txt
             cat /web_server/music/randomlist.txt > /web_server/music/playlist.txt
             song=`cat /web_server/music/playlist.txt | awk 'NR == 1'`
@@ -139,6 +142,7 @@ do
             #echo "entered to pause/resume song"
             logger -p local1.notice "music player daemon: original list request received"
             cat /web_server/music/originallist.txt > /web_server/music/playlist.txt
+            rm /web_server/music/randomlist.txt
             song=`cat /web_server/music/playlist.txt | awk 'NR == 1'`
             echo "S" > "${1}mpg123_fifo"
             echo "L /media/usb/music/${song}" > "${1}mpg123_fifo"
