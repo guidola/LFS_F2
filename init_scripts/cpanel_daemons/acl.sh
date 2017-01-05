@@ -8,7 +8,7 @@ case $1 in
         mkfifo /web_server/fifos/acl/request
         chown apache:apache -R /web_server/fifos/acl
         echo "Starting ip tables daemon..."
-        /web_server/daemons/iptables.sh /web_server/fifos/acl/ < /dev/null >> /var/log/daemons_errors/acl.log 2 >> /var/log/daemons_errors/acl.log &
+        /web_server/daemons/iptables.sh /web_server/fifos/acl/ < /dev/null 1>>/var/log/daemons_errors/acl.log 2>>/var/log/daemons_errors/acl.log &
         echo "IP tables daemon running [$!]"
         logger -p local1.notice "iptables daemon: running";
         ;;

@@ -103,13 +103,13 @@
                     window.setTimeout(
                             function(){
                                 var button_nou = document.getElementById(button_id);
-                                button_nou.setAttribute('disabled', 'false');
+                                button_nou.removeAttribute('disabled');
                                 var input_nou=document.getElementById(input_id);
-                                input_nou.setAttribute('disabled', 'false');
+                                input_nou.removeAttribute('disabled');
                                 input_nou.setAttribute('value', '');
                                 var rodoneta_nova=document.getElementById(rodoneta_id);
                                 rodoneta_nova.setAttribute('class', 'color bg-green');
-                            }, pause_time);
+                            }, pause_time * 1000);
                 }else{
                     $.notify("Could not pause process with PID " + pid + "for time " + pause_time, "warning");
                 }
@@ -247,7 +247,7 @@
             e.preventDefault();
 
             //recover the associated input value
-            var assoc_pid = e.target.getAttribute['data-data'];
+            var assoc_pid = e.target.getAttribute('data-data');
             sendKillRequest(assoc_pid);
 
         });
