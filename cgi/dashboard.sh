@@ -81,3 +81,5 @@ done
 
 echo "  ]}"
 
+logger -p local0.notice "CGI dashboard: request completed"
+

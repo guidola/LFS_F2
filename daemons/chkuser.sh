@@ -30,9 +30,9 @@ report() {
 
 while true
 do
-    
+    logger -p local1.notice "check users daemon: waiting for requests"
     read codi username password pid < ${1}request
-
+    logger -p local1.notice "check users daemon: check user ${username} request received"
     [[ ${codi} == "2" ]] || exit 0
     [[ ! -z ${codi} || ! -z ${username} || ! -z ${password} || ! -z ${pid} || ${pid} == *"$"* ]] || error ${esyntax} $1 ${pid}; continue
 
@@ -48,7 +48,7 @@ do
     case "${ent[1]}" in
         1) hashtype=md5;;   5) hashtype=sha-256;;   6) hashtype=sha-512;;
         '') case "${ent[0]}" in
-                \*|!)   report ${xwrong} ${1} ${pid}; continue;;
+                \*|!)   report ${xwrong} ${1} ${pid}; logger -p local1.notice "check user daemon: request failed, send to CGI"; continue;;
                 '')     error ${enodata} ${1} ${pid}; continue;;
                 *)      error ${enodata} ${1} ${pid}; continue;;
             esac;;
@@ -56,7 +56,7 @@ do
     esac
 
     if [[ "${ent[*]}" = "$(mkpasswd -sm $hashtype -S "${ent[2]}" <<<"$password")" ]]
-        then report ${xcorrect} ${username} ${1} ${pid}; continue
-        else error ${xwrong} ${1} ${pid}; continue
+        then report ${xcorrect} ${username} ${1} ${pid}; logger -p local1.notice "check user daemon: request succeeded, send to CGI"; continue
+        else error ${xwrong} ${1} ${pid}; logger -p local1.notice "check user daemon: request failed, send to CGI"; continue
     fi
 done

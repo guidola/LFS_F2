@@ -3,6 +3,7 @@
 case $1 in
     start)
         [[ ! -p /web_server/fifos/cron/request && ! -z `ps -aux | grep /web_server/daemons/cron_manager.sh` ]] || (echo "Daemon already started. Please stop it and start it again" && exit 1)
+        logger -p local1.notice "cron manager daemon: starting daemon";
         mkdir -p /web_server/fifos/cron/
         mkfifo /web_server/fifos/cron/request
         mkdir -p /web_server/tmp/cron/
@@ -13,6 +14,7 @@ case $1 in
         #/web_server/daemons/cron_manager.sh /web_server/fifos/cron/ >> /web_server/daemons/cron_manager_daemon_log 2>> /web_server/daemons/cron_manager_daemon_log &
         /web_server/daemons/cron_manager.sh /web_server/fifos/cron/ &
         echo "Cron manager daemon running [$!]"
+        logger -p local1.notice "cron manager daemon: running";
         ;;
     stop)
         echo "Signaling daemon..."
@@ -21,6 +23,7 @@ case $1 in
         rm -f /web_server/fifos/cron/*
         rm -f /web_server/tmp/cron/*
         echo "Cron manager daemon gracefully shut down."
+        logger -p local1.notice "cron manager daemon: stopped";
         ;;
     *)
         echo "Usage: $0 [start|stop]"

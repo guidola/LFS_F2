@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 die() {
+    logger -p local0.notice "CGI get file logs: bad request"
     echo "Status: $1"
     echo""
     exit 0
@@ -34,6 +35,8 @@ if [[ rc -eq 0 ]]; then
     done
     logs="${logs%?}]"
     echo "{\"rc\":true, \"logs\": ${logs}}"
+    logger -p local0.notice "CGI get file logs: success"
 else
     echo '{"rc": false}'
+    logger -p local0.notice "CGI get file logs: error, the action could not be completed"
 fi

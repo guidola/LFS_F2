@@ -55,3 +55,4 @@ echo "Content-Type: application/json"
 echo ""
 
 lsToJson
+logger -p local0.notice "CGI get logs available: success"

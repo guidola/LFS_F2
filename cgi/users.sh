@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 die() {
+    logger -p local0.notice "CGI users: bad request"
     echo "Status: $1"
     echo""
     exit 0
@@ -34,6 +35,14 @@ HPHONE=`echo ${url} | grep -oP '(?<=hphone=).*?(?=&)' | urldecode`
 OTHER=`echo ${url} | grep -oP '(?<=other=).*?(?=&)' | urldecode`
 FULLNAME=`echo ${url} | grep -oP '(?<=fullname=).*?(?=&)' | urldecode`
 
+if [[ $ACTION -eq $insert ]]; then
+    logger -p local0.notice "CGI users: create user ${USERNAME} request"
+elif [[ $ACTION -eq $delete ]]; then
+    logger -p local0.notice "CGI users: delete user ${USERNAME} request"
+else
+    logger -p local0.notice "CGI users: show users request"
+fi
+
 if [[ ! -z $ACTION ]]; then
 
     [[ $CODI -ne 2 ]] || die "400 Bad Request"
@@ -59,21 +68,25 @@ if [[ ! -z $ACTION ]]; then
                 echo "Status: 500 Internal Server Error"
                 echo ""
                 echo "\"Oops. Syntax error\""
+                logger -p local0.notice "CGI users: internal error (syntax error)"
                 ;;
             ${ecode})
                 echo "Status: 500 Internal Server Error"
                 echo ""
                 echo "\"Oops. The requested action does not exist\""
+                logger -p local0.notice "CGI users: internal error (wrong action)"
                 ;;
             ${xerror})
                 echo "Status: 200 OK"
                 echo ""
                 echo '{"rc": false}'
+                logger -p local0.notice "CGI users: error, the action could not be completed"
                 ;;
             ${xcorrect})
                 echo "Status: 200 OK"
                 echo ""
                 echo '{"rc": true}'
+                logger -p local0.notice "CGI users: request success"
                 ;;
         esac
     fi
@@ -96,4 +109,5 @@ else
     echo "Status: 200 OK"
     echo ""
     echo "$message"
+    logger -p local0.notice "CGI users: request success"
 fi

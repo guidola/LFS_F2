@@ -13,6 +13,7 @@ OIFS="$IFS"
 while true
 do
     #echo "Going to read from --> ${1}request"
+    logger -p local1.notice "cron manager daemon: waiting for requests"
     IFS="$" read codi pid user target_user action line_num minute hour monthday month weekday command < ${1}request
     IFS="$OIFS"
     [[ ${codi} -ne "2" ]] || exit 0
@@ -24,6 +25,7 @@ do
     case ${codi} in
         ${show})
             #echo "entered to show cron jobs"
+            logger -p local1.notice "cron manager daemon: show cron jobs request received"
             message='{"cron":['
             if [[ $user == "root" ]]; then
                 #echo "the user is root"
@@ -71,9 +73,11 @@ do
             #echo "finished parsing cron, the content is:"
             #echo "${message}"
             echo "${xcorrect}" >> "${1}${pid}"
+            logger -p local1.notice "cron manager daemon: show cron jobs request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
             echo "${message}" >> "${1}${pid}"
+            logger -p local1.notice "cron manager daemon: show cron jobs request finished, information send to CGI"
 	        #echo "asnwered with the message to --> ${1}${pid}"
 	        ;;
 
@@ -86,6 +90,7 @@ do
             fi
             touch /web_server/tmp/cron/${target_user}
             if [[ ${action} -eq ${delete} ]]; then
+                logger -p local1.notice "cron manager daemon: delete cron job number ${line_num} from user ${target_user} request received"
 		        #echo "the action is delete"
                 crontab -u ${target_user} -l | grep "^[^#]" | sed "${line_num}d" > /web_server/tmp/cron/${target_user}
                 crontab -u ${target_user} /web_server/tmp/cron/${target_user}
@@ -93,11 +98,12 @@ do
                 rm /web_server/tmp/cron/${target_user}
                 #echo "command finished, going to answer to --> ${1}${pid}"
                 if [ ${rc} -eq 0 ]
-                    then echo "${xcorrect}" >> "${1}${pid}"
-                    else echo "${xerror}" >> "${1}${pid}"
+                    then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request succeeded, send to CGI"
+                    else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request failed, send to CGI"
                 fi
                 #echo "answered done"
             else if [[ ${action} -eq ${insert} ]]; then
+                     logger -p local1.notice "cron manager daemon: insert cron job from user ${target_user} request received"
 		             #echo "the action is insert"
                      crontab -u ${target_user} -l | grep "^[^#]" > /web_server/tmp/cron/${target_user}
                      echo "${minute} ${hour} ${monthday} ${month} ${weekday} ${command}" >> /web_server/tmp/cron/${target_user}
@@ -106,8 +112,8 @@ do
                      rm /web_server/tmp/cron/${target_user}
                      #echo "command finished, going to answer to --> ${1}${pid}"
                      if [ ${rc} -eq 0 ]
-                        then echo "${xcorrect}" >> "${1}${pid}"
-                        else echo "${xerror}" >> "${1}${pid}"
+                        then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request succeeded, send to CGI"
+                        else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request failed, send to CGI"
                      fi
                      #echo "answered done"
                  else

@@ -12,6 +12,7 @@ IFS="$"
 while true
 do
     #echo "Going to read from --> ${1}request"
+    logger -p local1.notice "process manager daemon: waiting for requests"
     read codi request_pid time_to_sleep pid < ${1}request
     #echo "codi: ${codi}\n rq_pid: ${request_pid}\n time_sleep: ${time_to_sleep}\n pid: ${pid}"
 
@@ -25,24 +26,30 @@ do
 
     case ${codi} in
         ${pause})
+            logger -p local1.notice "process manager daemon: pause process with PID ${request_pid} request received"
             #echo "it's a stop"
             kill -STOP ${request_pid}
             #echo "stop done"
             if [ $? -eq 0 ]
                 then echo "${xcorrect}" >> "${1}${pid}"
                      ( sleep ${time_to_sleep}; kill -CONT ${request_pid})&
+                     logger -p local1.notice "process manager daemon: request succeeded, send to CGI"
                      #echo "correct asnwered"
                 else echo "${xerror}" >> "${1}${pid}"
+                     logger -p local1.notice "process manager daemon: request failed, send to CGI"
                      #echo "error answered"
             fi;;
         ${kill})
+            logger -p local1.notice "process manager daemon: kill process with PID ${request_pid} request received"
             #echo "it's a kill"
             kill ${request_pid}
             #echo "kill done"
             if [ $? -eq 0 ]
                 then echo "${xcorrect}" >> "${1}${pid}"
+                     logger -p local1.notice "process manager daemon: request succeeded, send to CGI"
                      #echo "correct answered"
                 else echo "${xerror}" >> "${1}${pid}"
+                     logger -p local1.notice "process manager daemon: request failed, send to CGI"
                      #echo "error answered"
             fi;;
         *)

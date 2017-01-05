@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 die() {
+    logger -p local0.notice CGI boot: bad request
     echo "Status: $1"
     echo""
     exit 0
@@ -23,10 +24,12 @@ CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)' | urldecode`
 
 case $resp_code in
     ${shutdown})
+        logger -p local0.notice CGI boot: power off requested
         poweroff
         #shutdown -P now
         ;;
     ${restart})
+        logger -p local0.notice CGI boot: reboot requested
         reboot
         #shutdown -r now
         ;;

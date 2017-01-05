@@ -7,6 +7,7 @@ generate_notification() {
 }
 
 die() {
+    logger -p local0.notice CGI auth: bad request
     echo "Status: $1"
     echo ""
     exit 0
@@ -49,6 +50,7 @@ if [ ! -z resp_code ]; then
             echo ""
             generate_notification "Invalid Credentials" "The username and password provided are not correct" "error"
             login=`cat /web_server/www/login.html | sed -e "s/\/\/CGI-SCRIPT-INJECTED-JS_____\/\//${notification}/g"`
+            logger -p local0.notice CGI auth: authentication failure
             ;;
         ${esyntax}|${ehash})
             #return login.html with custom error
@@ -56,6 +58,7 @@ if [ ! -z resp_code ]; then
             echo ""
             generate_notification "Oops." "Something went wrong on our side" "error"
             login=`cat /web_server/www/login.html | sed -e "s/\/\/CGI-SCRIPT-INJECTED-JS_____\/\//${notification}/g"`
+            logger -p local0.notice CGI auth: internal error
             ;;
         ${xcorrect})
             #return index.html with dynamic attributes filled in and the token for the private area as a cookie
@@ -63,6 +66,7 @@ if [ ! -z resp_code ]; then
             echo ""
             echo "Set-Cookie: auth_token=$token"
             index=`cat /web_server/www/index_prova.html | sed -e "s/{{username}}/${username}/g"`
+            logger -p local0.notice CGI auth: authentication success with token ${token}
             ;;
     esac
 fi

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 die() {
+    logger -p local0.notice "CGI iptables: bad request"
     echo "Status: $1"
     echo""
     exit 0
@@ -57,7 +58,13 @@ read resp_code < $ret_fifo
 #echo "Read from return fifo done --> .${resp_code}."
 echo "Content-Type: application/json"
 
-
+if [[ $ACTION -eq $insert ]]; then
+    logger -p local0.notice "CGI iptables: insert rule request"
+elif [[ $ACTION -eq $delete ]]; then
+    logger -p local0.notice "CGI iptables: delete rule request"
+else
+    logger -p local0.notice "CGI iptables: show rules request"
+fi
 
 if [[ ! -z $resp_code ]]; then
     case $resp_code in
@@ -65,16 +72,19 @@ if [[ ! -z $resp_code ]]; then
             echo "Status: 500 Internal Server Error"
             echo ""
             echo "\"Oops. Syntax error\""
+            logger -p local0.notice "CGI iptables: internal error (syntax error)"
             ;;
         ${ecode})
             echo "Status: 500 Internal Server Error"
             echo ""
             echo "\"Oops. The requested action does not exist\""
+            logger -p local0.notice "CGI iptables: internal error (wrong action)"
             ;;
         ${xerror})
             echo "Status: 200 OK"
             echo ""
             echo '{"rc": false}'
+            logger -p local0.notice "CGI iptables: error, the action could not be completed"
             ;;
         ${xcorrect})
             echo "Status: 200 OK"
@@ -87,6 +97,7 @@ if [[ ! -z $resp_code ]]; then
 		        #echo "second read done"
                 echo "{\"rc\":true, \"payload\": ${response}}"
             fi
+            logger -p local0.notice "CGI iptables: request success"
             ;;
     esac
 fi

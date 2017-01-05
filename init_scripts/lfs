@@ -3,6 +3,7 @@
 stop() {
     echo ""
     echo "Gracefully shutting down daemons..."
+    logger -p local1.notice "LFS manager: stopping all daemons";
     # try to gracefully shutdown all daemons
     /etc/init.d/cpanel_daemons/acl.sh stop
     /etc/init.d/cpanel_daemons/auth.sh stop
@@ -18,6 +19,7 @@ stop() {
     rm -rf /web_server/fifos/*
     echo "All cpanel services stopped!!"
     echo ""
+    logger -p local1.notice "LFS manager: all daemons stopped";
 
 }
 
@@ -25,6 +27,7 @@ stop() {
 start() {
 echo ""
     echo "Starting all cpanel services..."
+    logger -p local1.notice "LFS manager: starting all daemons";
     /etc/init.d/cpanel_daemons/acl.sh start
     /etc/init.d/cpanel_daemons/auth.sh start
     /etc/init.d/cpanel_daemons/cron.sh start
@@ -32,7 +35,7 @@ echo ""
     /etc/init.d/cpanel_daemons/usr.sh start
     echo "All services started!!"
     echo ""
-
+    logger -p local1.notice "LFS manager: all daemons running";
 }
 
 
@@ -49,6 +52,7 @@ case $1 in
 
     'restart')
         echo "Restarting all cpanel services..."
+        logger -p local1.notice "LFS manager: restarting all daemons";
         echo ""
         stop
         start

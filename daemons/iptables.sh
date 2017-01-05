@@ -13,6 +13,7 @@ OIFS="$IFS"
 while true
 do
     #echo "Going to read from --> ${1}request"
+    logger -p local1.notice "iptables daemon: waiting for requests"
     IFS="$" read codi pid table action num chain prot iint oint source dest spt dpt to target < ${1}request
     IFS="$OIFS"
     [[ ${codi} -ne "2" ]] || exit 0
@@ -24,6 +25,7 @@ do
     case ${codi} in
         ${show})
             #echo "entered to show ip tables"
+            logger -p local1.notice "iptables daemon: show rules request received"
             missatge='{"filter":{"forward":['
             strings=`sudo iptables -L FORWARD --line-numbers -v -n | awk 'NR>2{match($0, /dpts?:[:0-9]+/, arr); match($0, /spts?:[:0-9]+/, ar); print $1 "$" $2 "$" $4 "$" $5 "$" $7 "$" $8 "$" $9 "$" $10 "$" ar[0] "$" arr[0]}'`
 
@@ -106,9 +108,11 @@ do
             #echo "finished parsing ip tables, the content is:"
             #echo "${missatge}"
             echo "${xcorrect}" >> "${1}${pid}"
+            logger -p local1.notice "iptables daemon: show rules request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
             echo "${missatge}" >> "${1}${pid}"
+            logger -p local1.notice "iptables daemon: show rules request finished, information send to CGI"
 	        #echo "asnwered with the message to --> ${1}${pid}"
 	        ;;
 
@@ -119,6 +123,7 @@ do
             [[ ! -z ${action} && ! -z ${num} && ! -z ${chain} ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
             #echo "there is action, num and chain"
             if [[ ${action} -eq ${delete} ]]; then
+                logger -p local1.notice "iptables daemon: delete rule number ${num} from chain ${chain} in table ${table} request received"
                 missatge="${missatge} -D ${chain} ${num}"
 		        #echo "the action is delete and the message is:"
 		        #echo "${missatge}"
@@ -126,11 +131,12 @@ do
                 rc=$?
                 #echo "command finished, going to answer to --> ${1}${pid}"
                 if [ ${rc} -eq 0 ]
-                    then echo "${xcorrect}" >> "${1}${pid}"
-                    else echo "${xerror}" >> "${1}${pid}"
+                    then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "iptables daemon: request succeeded, send to CGI"
+                    else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "iptables daemon: request failed, send to CGI"
                 fi
                 #echo "answered done"
             else if [[ ${action} -eq ${insert} ]]; then
+                     logger -p local1.notice "iptables daemon: insert rule to chain ${chain} in table ${table} request received"
                      missatge="${missatge} -I ${chain} ${num}"
                      [[ -z ${prot} ]] || missatge="${missatge} -p ${prot}"
                      [[ -z ${iint} ]] || missatge="${missatge} -i ${iint}"
@@ -147,8 +153,8 @@ do
                      rc=$?
                      #echo "command finished, going to answer to --> ${1}${pid}"
                      if [ ${rc} -eq 0 ]
-                        then echo "${xcorrect}" >> "${1}${pid}"
-                        else echo "${xerror}" >> "${1}${pid}"
+                        then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "iptables daemon: request succeeded, send to CGI"
+                        else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "iptables daemon: request failed, send to CGI"
                      fi
                      #echo "answered done"
                  else

@@ -29,5 +29,5 @@ for string in ${strings}; do
     let i=i+1
 done
 
-
+logger -p local0.notice "CGI show processess: request completed"
 
