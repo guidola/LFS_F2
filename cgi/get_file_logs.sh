@@ -21,7 +21,7 @@ xerror=1
 url="${url}&"
 file=`echo ${url} | grep -oP '(?<=file=).*?(?=&)' | urldecode`
 
-info=`cat /var/log/${file}`
+info=`cat ${file}`
 rc=$?
 echo "Content-Type: application/json"
 echo "Status: 200 OK"
