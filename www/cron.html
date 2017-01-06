@@ -79,20 +79,20 @@
 
         $.ajax({
             type: "POST",
-            url: '/cgi-bin/cron.sh',
+            url: '/cgi-bin/crontab.sh',
             accepts:{
                 json: 'text/json'
             },
             data: {
-                //TODO change param names to the ones of the cgi script for crontab
                 action: 0,
-                username: minute,
-                passwd: hour,
-                fullname: dom,
-                rnumber: mon,
-                wphone: dow,
-                hphone: user,
-                other: cmd
+                user: 'root',
+                target: user,
+                min: minute,
+                hour: hour,
+                dom: dom,
+                dow: dow,
+                month: mon,
+                command: cmd
             },
             dataType: "json",
 
@@ -206,17 +206,19 @@
     }
 
 
-    function executeDeleteTaskRequest(username) {
+    function executeDeleteTaskRequest(username, task_id) {
 
         $.ajax({
             type: "POST",
-            url: '/cgi-bin/cron.sh',
+            url: '/cgi-bin/crontab.sh',
             accepts:{
                 json: 'text/json'
             },
             data: {
                 action: 1,
-                username: username
+                target: username,
+                user: root,
+                line_num: task_id
             },
             dataType: "json",
 
@@ -247,8 +249,9 @@
 
     function taskDeleteRequest(event) {
 
-        var task = event.target.getAttribute('data-data');
-        executeDeleteTaskRequest(task);
+        var task_id = event.target.getAttribute('data-data');
+        var user = event.target.getAttribute('data-role');
+        executeDeleteTaskRequest(user, task_id);
     }
 
 
@@ -256,9 +259,12 @@
 
         $.ajax({
             type: "POST",
-            url: '/cgi-bin/cron.sh',
+            url: '/cgi-bin/crontab.sh',
             accepts:{
                 json: 'text/json'
+            },
+            data:{
+                user: 'root'
             },
             context: this,
             dataType: "json",
@@ -275,9 +281,9 @@
             success: function(response){
 
                 if (response.rc) {
-                    var dades = response.payload;
-                    //load all chains
-                    loadTasks(dades.tasks);
+
+                    //load all tasks
+                    loadTasks(response.cron);
                 } else {
                     $.notify('Could not fetch tasks!', 'error');
                 }
@@ -304,18 +310,22 @@
 
         for (i = 0; i < users.length; i++) {
             user = users[i];
-            parent_dude.appendChild(loadTaskRow(user));
+            for (var task in user.jobs) {
+                parent_dude.appendChild(loadTaskRow(user.user, task));
+            }
         }
+
+        $('.task-delete').click(taskDeleteRequest);
 
     }
 
-    function loadTaskRow(task_info){
+    function loadTaskRow(user_name, task_info){
 
         var trow = document.createElement('tr');
         var min = document.createElement('td');
 
         var hour = min.cloneNode(true);
-        min.innerHTML = task_info.minute;
+        min.innerHTML = task_info.min;
         hour.innerHTML = task_info.hour;
         trow.appendChild(min);
         trow.appendChild(hour);
@@ -325,7 +335,7 @@
         trow.appendChild(dom);
 
         var mon = document.createElement('td');
-        mon.innerHTML = task_info.mon;
+        mon.innerHTML = task_info.month;
         trow.appendChild(mon);
 
         var dow = document.createElement('td');
@@ -333,49 +343,44 @@
         trow.appendChild(dow);
 
         var user = document.createElement('td');
-        user.innerHTML = task_info.user;
+        user.innerHTML = user_name;
         trow.appendChild(user);
 
         var cmd = document.createElement('td');
-        cmd.innerHTML = task_info.cmd;
+        cmd.innerHTML = task_info.command;
         trow.appendChild(cmd);
 
         var close = document.createElement('td');
         close.setAttribute('style', "width: 2%");
         var i_close = document.createElement('i');
-        var whole_task = task_info.minute
-                + task_info.hour
-                + task_info.dom
-                + task_info.mon
-                + task_info.dow
-                + task_info.user
-                + task_info.cmd;
+        var whole_task = task_info.line_num + user_name;
         i_close.setAttribute('id', 'close' + whole_task);
         i_close.setAttribute('class', 'fa fa-close task-delete');
         i_close.setAttribute('style', 'float: right;');
-        i_close.setAttribute('data-data', whole_task);
+        i_close.setAttribute('data-data', task_info.line_num);
+        i_close.setAttribute('data-role', user_name);
         close.appendChild(i_close);
         trow.append(close);
 
         return trow 
     }
 
-    loadTasks(
-            [{minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""},
-                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\""}
-                ]);
+    /*loadTasks(
+            [{minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 1},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 2},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 3},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 4},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 5},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 6},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 7},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 8},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 9},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 10},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 11},
+                {minute: '*', hour: '*', dom: "*", mon: "*", dow: '*', user: "root", cmd: "echo \"patito\"", seq_id: 12}
+                ]);*/
 
-    $('.task-delete').click(taskDeleteRequest);
+
     $('#refresh').click(updateTasks);
     $('.more_button').click(appendFormToTable);
     updateTasks();

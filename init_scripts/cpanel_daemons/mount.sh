@@ -6,7 +6,7 @@ case $1 in
         logger -p local1.notice "automount daemon: starting daemon";
         mkdir -p /media/usb
         echo "Starting automount daemon..."
-        /web_server/daemons/automount.sh < /dev/null >> /var/log/daemons_errors/automount.log 2 >> /var/log/daemons_errors/automount.log &
+        /web_server/daemons/automount.sh < /dev/null 1>>/var/log/daemons_errors/automount.log 2>>/var/log/daemons_errors/automount.log &
         echo "Automount daemon running [$!]"
         logger -p local1.notice "automount daemon: running";
         ;;

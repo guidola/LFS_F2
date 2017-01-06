@@ -44,7 +44,7 @@ EOF
             logger -p local1.notice "user manager daemon: delete user ${username} request received"
 	        #echo "entered to delete command"
 	        [[ ! -z ${username} ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
-            deluser "$username"
+            userdel "$username"
             rc=$?
             rm -rf /home/${username}
 	        rc2=$?

@@ -50,14 +50,14 @@ if [[ ! -z $ACTION ]]; then
     #create return fifo
     ret_fifo="/web_server/fifos/usr/$$"
     mkfifo $ret_fifo
-    echo "FIFO ${ret_fifo} created"
+    #echo "FIFO ${ret_fifo} created"
 
     #send process request to process manager daemon
     echo "1\$$$\$$ACTION\$$USERNAME\$$PASSWD\$$FULLNAME\$$RNUMBER\$$WPHONE\$$HPHONE\$$OTHER" >> /web_server/fifos/usr/request
-    echo "Echo to request fifo done --> 1\$$$\$$ACTION\$$USERNAME\$$PASSWD\$$FULLNAME\$$RNUMBER\$$WPHONE\$$HPHONE\$$OTHER"
+    #echo "Echo to request fifo done --> 1\$$$\$$ACTION\$$USERNAME\$$PASSWD\$$FULLNAME\$$RNUMBER\$$WPHONE\$$HPHONE\$$OTHER"
     #wait for response from the authentication daemon
     read resp_code < $ret_fifo
-    echo "Read from return fifo done --> .${resp_code}."
+    #echo "Read from return fifo done --> .${resp_code}."
     echo "Content-Type: application/json"
 
 
@@ -92,7 +92,7 @@ if [[ ! -z $ACTION ]]; then
     fi
 else
     info=`cat /etc/passwd`
-    message='{"users": ['
+    message='{"rc": true, "users": ['
     OIFS=$IFS
     IFS=$'\n'
     for line in $info

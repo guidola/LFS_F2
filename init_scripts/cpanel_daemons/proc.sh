@@ -8,7 +8,7 @@ case $1 in
         mkfifo /web_server/fifos/proc/request
         chown apache:apache -R /web_server/fifos/proc
         echo "Starting process manager daemon..."
-        /web_server/daemons/process_manager.sh /web_server/fifos/proc/ < /dev/null >> /var/log/daemons_errors/proc.log 2 >> /var/log/daemons_errors/proc.log &
+        /web_server/daemons/process_manager.sh /web_server/fifos/proc/ < /dev/null 1>> /var/log/daemons_errors/proc.log 2 >> /var/log/daemons_errors/proc.log &
         echo "Process manager daemon running [$!]"
         logger -p local1.notice "process manager daemon: running";
         ;;

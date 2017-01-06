@@ -27,7 +27,7 @@ ecode=3
 [[ $CONTENT_LENGTH -eq 0 ]] || read -n $CONTENT_LENGTH url
 url="${url}&"
 CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)' | urldecode`
-USER=`echo ${url} | grep -oP '(?<=user=).*?(?=&)' | urldecode`
+USER=`echo ${url} | grep -oP '(?<=user=).*?(?=&)' | urldecode` # temporary TODO change this for info on login token
 ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)' | urldecode`
 LINE_NUM=`echo ${url} | grep -oP '(?<=line_num=).*?(?=&)' | urldecode`
 MINUTE=`echo ${url} | grep -oP '(?<=min=).*?(?=&)' | urldecode`

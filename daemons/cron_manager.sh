@@ -26,7 +26,7 @@ do
         ${show})
             #echo "entered to show cron jobs"
             logger -p local1.notice "cron manager daemon: show cron jobs request received"
-            message='{"cron":['
+            message='{"rc": true, "cron":['
             if [[ $user == "root" ]]; then
                 #echo "the user is root"
                 for usr in $(cut -f1 -d: /etc/passwd)

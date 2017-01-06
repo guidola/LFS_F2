@@ -73,7 +73,6 @@
     number_input_proto.setAttribute('type', 'number');
 
     function submitAddUser(event) {
-        console.log('I now do something');
 
         //obtain data from form inputs
         var inputs_wrapper = event.target.parentNode.parentNode;
@@ -84,6 +83,17 @@
         var work_ph = inputs_wrapper.childNodes[6].firstElementChild.value;
         var home_ph = inputs_wrapper.childNodes[7].firstElementChild.value;
         var other = inputs_wrapper.childNodes[8].firstElementChild.value;
+
+        var re = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$');
+        console.log("password");
+        console.log(re.source);
+        if ( !re.test(password) ) {
+            console.log("not valid pass");
+            $.notify("INVALID PASSWORD: Password must have numbers, upper case, lower case and special chars", "error");
+            return;
+        }else {
+            console.log("valid pass");
+        }
 
         $.ajax({
             type: "POST",
@@ -113,12 +123,12 @@
             // json retrieve call was successful
             //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
             success: function(response){
-
+                console.log(response);
                 if (response.rc) {
-                    $.notify('Rule successfully registered!', 'success');
+                    $.notify('User successfully registered!', 'success');
                     updateSystemUsers();
                 } else {
-                    $.notify('Could not add the requested rule...', 'error');
+                    $.notify('Could not add the requested user...', 'error');
                 }
             },
 
@@ -165,7 +175,7 @@
         trow.appendChild(fullname);
 
         var room_number = document.createElement('td');
-        var room_number_form = number_input_proto.cloneNode(true);
+        var room_number_form = text_input_proto.cloneNode(true);
         room_number_form.setAttribute('name', 'room_number');
         room_number_form.setAttribute('placeholder', 'room number');
         room_number.appendChild(room_number_form);
@@ -286,14 +296,13 @@
 
             // json retrieve call was successful
             //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
-            success: function(response){
+            success: function(dades){
 
-                if (response.rc) {
-                    var dades = response.payload;
-                    //load all chains
+                if (dades.rc) {
+                    //load all users
                     loadUsers(dades.users);
                 } else {
-                    $.notify('Could not fetch rules!', 'error');
+                    $.notify('Could not fetch users!', 'error');
                 }
 
             },
@@ -320,6 +329,8 @@
             user = users[i];
             parent_dude.appendChild(loadUserRow(user));
         }
+
+        $('.user-delete').click(userDeleteRequest);
 
     }
 
@@ -358,6 +369,10 @@
         hphone.innerHTML = user_info.hphone;
         trow.appendChild(hphone);
 
+        var other = document.createElement('td');
+        other.innerHTML = user_info.other;
+        trow.appendChild(other);
+
         var home = document.createElement('td');
         home.innerHTML = user_info.home;
         trow.appendChild(home);
@@ -389,87 +404,12 @@
                 {usr: 'guidola', passwd: 'x', uid: 234, gid: 456, fullname: 'dobao', rnumber: 34, wphone: '+34 345 576 867', hphone: '+34 345 576 867', home: '/home/mrrobot', shell: '/bin/bash'}
             ]);
 
-    $('.user-delete').click(userDeleteRequest);
     $('#refresh').click(updateSystemUsers);
     $('.more_button').click(appendFormToTable);
     updateSystemUsers();
 
 
     <!-- Datatables -->
-    var handleDataTableButtons = function() {
-        if ($("#datatable-buttons").length) {
-            $("#datatable-buttons").DataTable({
-                dom: "Bfrtip",
-                buttons: [
-                    {
-                        extend: "copy",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "csv",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "excel",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "pdfHtml5",
-                        className: "btn-sm"
-                    },
-                    {
-                        extend: "print",
-                        className: "btn-sm"
-                    }
-                ],
-                responsive: true
-            });
-        }
-    };
-
-    TableManageButtons = function() {
-        "use strict";
-        return {
-            init: function() {
-                handleDataTableButtons();
-            }
-        };
-    }();
-
-    $('#datatable_nat').dataTable();
-
-    $('#datatable-keytable').DataTable({
-        keys: true
-    });
-
-    $('#datatable-responsive').DataTable();
-
-    $('#datatable-scroller').DataTable({
-        ajax: "js/datatables/json/scroller-demo.json",
-        deferRender: true,
-        scrollY: 380,
-        scrollCollapse: true,
-        scroller: true
-    });
-
-    $('#datatable-fixed-header').DataTable({
-        fixedHeader: true
-    });
-
-    var $datatable = $('#datatable-checkbox');
-
-    $datatable.dataTable({
-        'order': [[ 1, 'asc' ]],
-        'columnDefs': [
-            { orderable: false, targets: [0] }
-        ]
-    });
-    $datatable.on('draw.dt', function() {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_flat-green'
-        });
-    });
-
     TableManageButtons.init();
     <!-- /Datatables -->
 

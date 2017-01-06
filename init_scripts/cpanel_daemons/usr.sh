@@ -8,7 +8,7 @@ case $1 in
         mkfifo /web_server/fifos/usr/request
         chown apache:apache -R /web_server/fifos/usr
         echo "Starting user manager daemon..."
-        /web_server/daemons/user_manager.sh /web_server/fifos/usr/ < /dev/null >> /var/log/daemons_errors/usr.log 2 >> /var/log/daemons_errors/usr.log &
+        /web_server/daemons/user_manager.sh /web_server/fifos/usr/ < /dev/null 1>>/var/log/daemons_errors/usr.log 2>>/var/log/daemons_errors/usr.log &
         echo "User manager daemon running [$!]"
         logger -p local1.notice "user manager daemon: running";
         ;;

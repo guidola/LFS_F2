@@ -11,7 +11,7 @@ case $1 in
         echo "SILENCE" > web_server/fifos/music/mpg123_fifo
         chown apache:apache -R /web_server/fifos/music
         echo "Starting music player daemon..."
-        /web_server/daemons/iptables.sh /web_server/fifos/music/ < /dev/null >> /var/log/daemons_errors/music.log 2 >> /var/log/daemons_errors/music.log &
+        /web_server/daemons/iptables.sh /web_server/fifos/music/ < /dev/null 1>>/var/log/daemons_errors/music.log 2>>/var/log/daemons_errors/music.log &
         echo "Music player daemon running [$!]"
         logger -p local1.notice "music player daemon: running";
         ;;
