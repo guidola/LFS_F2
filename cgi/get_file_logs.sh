@@ -33,7 +33,11 @@ if [[ rc -eq 0 ]]; then
     do
         logs="${logs}\"${line}\","
     done
-    logs="${logs%?}]"
+    if [[ ${logs:${#logs}-1:1} == "[" ]]; then
+        logs="${logs}]"
+    else
+        logs="${logs%?}]"
+    fi
     echo "{\"rc\":true, \"logs\": ${logs}}"
     logger -p local0.notice "CGI get file logs: success"
 else
