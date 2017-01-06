@@ -11,8 +11,7 @@ case $1 in
         logger -p local1.notice "automount daemon: running";
         ;;
     stop)
-        PID=`ps aux | grep /web_server/daemons/automount.sh | awk 'NR==1 {print $2}'`
-        kill ${PID}
+        pkill -f /web_server/daemons/automount.sh
         devices=`ls -1 /media/usb/`
         IFS=$'\n'
         for usb in $devices
