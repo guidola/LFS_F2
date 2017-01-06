@@ -32,11 +32,12 @@ ecode=3
 url="${url}&"
 ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)' | urldecode`
 SONG=`echo ${url} | grep -oP '(?<=song=).*?(?=&)' | urldecode`
+USB=`echo ${url} | grep -oP '(?<=usb=).*?(?=&)' | urldecode`
 
 
 #verify we got all params we need.
 [[ ! -z  $ACTION ]] || ACTION=${unrandom}
-#[[ ! -z $SONG ]] || die "400 Bad Request"
+[[ ! -z $USB ]] || die "400 Bad Request"
 
 
 #create return fifo
@@ -45,8 +46,8 @@ mkfifo $ret_fifo
 #echo "FIFO ${ret_fifo} created"
 
 #send process request to process manager daemon
-echo "1\$$$\$$ACTION\$$SONG" >> /web_server/fifos/acl/request
-#echo "Echo to request fifo done --> 1\$$$\$$ACTION\$$SONG"
+echo "1\$$$\$$ACTION\$$USB\$$SONG" >> /web_server/fifos/acl/request
+#echo "Echo to request fifo done --> 1\$$$\$$ACTION\$$USB\$$SONG"
 #wait for response from the authentication daemon
 read resp_code < $ret_fifo
 #echo "Read from return fifo done --> .${resp_code}."

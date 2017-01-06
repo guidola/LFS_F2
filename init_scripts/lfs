@@ -8,6 +8,8 @@ stop() {
     /etc/init.d/cpanel_daemons/acl.sh stop
     /etc/init.d/cpanel_daemons/auth.sh stop
     /etc/init.d/cpanel_daemons/cron.sh stop
+    /etc/init.d/cpanel_daemons/mount.sh stop
+    /etc/init.d/cpanel_daemons/music.sh stop
     /etc/init.d/cpanel_daemons/proc.sh stop
     /etc/init.d/cpanel_daemons/usr.sh stop
     # wait 1 second and if there is some daemon still up cleanse it all
@@ -31,6 +33,8 @@ echo ""
     /etc/init.d/cpanel_daemons/acl.sh start
     /etc/init.d/cpanel_daemons/auth.sh start
     /etc/init.d/cpanel_daemons/cron.sh start
+    /etc/init.d/cpanel_daemons/mount.sh start
+    /etc/init.d/cpanel_daemons/music.sh start
     /etc/init.d/cpanel_daemons/proc.sh start
     /etc/init.d/cpanel_daemons/usr.sh start
     echo "All services started!!"
