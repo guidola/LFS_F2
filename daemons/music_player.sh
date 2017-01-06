@@ -12,6 +12,7 @@ getlist() {
         missatge="${missatge}\"${line}\","
         if [[ ${line} == ${song} ]]; then
             current=${i}
+            current_song=${song}
         fi
         let i=i+1
     done
@@ -80,12 +81,13 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
 	    ${next})
-            #echo "entered to pause/resume song"
+            #echo "entered to next song"
             logger -p local1.notice "music player daemon: next song from usb ${usb} request received"
             if [[ $isrepeat -eq 1 ]]; then
+                song=${current_song}
                 echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
             else
-                current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${song} | awk -F: '{print $1}'`
+                current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
                 if [[ $current -ge $total ]]; then
                     next=1
@@ -107,12 +109,13 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
 	    ${previous})
-            #echo "entered to pause/resume song"
+            #echo "entered to previous song"
             logger -p local1.notice "music player daemon: previous song from usb ${usb} request received"
             if [[ $isrepeat -eq 1 ]]; then
+                song=${current_song}
                 echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
             else
-                current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${song} | awk -F: '{print $1}'`
+                current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
                 if [[ $current -le 1 ]]; then
                     previous=current
@@ -135,7 +138,7 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
         ${random})
-            #echo "entered to pause/resume song"
+            #echo "entered to random list"
             logger -p local1.notice "music player daemon: random list from usb ${usb} request received"
             touch /web_server/music/${usb}/randomlist.txt
             shuf /web_server/music/${usb}/playlist.txt > /web_server/music/${usb}/randomlist.txt
@@ -154,7 +157,7 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
 	    ${unrandom})
-            #echo "entered to pause/resume song"
+            #echo "entered to unrandom list"
             logger -p local1.notice "music player daemon: original list from usb ${usb} request received"
             cat /web_server/music/${usb}/originallist.txt > /web_server/music/${usb}/playlist.txt
             rm /web_server/music/${usb}/randomlist.txt
@@ -172,7 +175,7 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
 	    ${repeat})
-            #echo "entered to pause/resume song"
+            #echo "entered to repeat song"
             logger -p local1.notice "music player daemon: repeat song from usb ${usb} request received"
             isrepeat=1
             echo "${xcorrect}" >> "${1}${pid}"
@@ -186,7 +189,7 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
 	    ${unrepeat})
-            #echo "entered to pause/resume song"
+            #echo "entered to unrepeat song"
             logger -p local1.notice "music player daemon: unrepeat song from usb ${usb} request received"
             isrepeat=0
             echo "${xcorrect}" >> "${1}${pid}"
@@ -200,7 +203,7 @@ do
 	        #echo "the message is: ${missatge}"
 	        ;;
 	    ${show})
-            #echo "entered to pause/resume song"
+            #echo "entered to show list"
             logger -p local1.notice "music player daemon: show list from usb ${usb} request received"
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: show list request succeeded, waiting for response"
