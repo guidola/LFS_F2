@@ -8,7 +8,8 @@ die() {
 }
 
 urldecode(){
-  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;')"
+  local url_encoded="${1//+/ }"
+  printf '%b' "${url_encoded//%/\\x}"
 }
 
 [[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
