@@ -46,7 +46,11 @@ do
                             let i=i+1
                         done
                         IFS=$OIFS
-                        message="${message%?}]},"
+                        if [[ ${message:${#message}-1:1} == "[" ]]; then
+                            message="${message}]},"
+                        else
+                            message="${message%?}]},"
+                        fi
                     fi
                 done
                 message="${message%?}]}"
@@ -67,7 +71,11 @@ do
                         let i=i+1
                     done
                     IFS=$OIFS
-                    message="${message%?}]}]}"
+                    if [[ ${message:${#message}-1:1} == "[" ]]; then
+                            message="${message}]}]}"
+                        else
+                            message="${message%?}]}]}"
+                        fi
                 fi
             fi
             #echo "finished parsing cron, the content is:"
