@@ -3,7 +3,7 @@
         <div class="col-sm-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>System User Management</h2>
+                    <h2 id="log_title">System Logs</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a><i id= "refresh" class="fa fa-refresh"></i></a>
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -12,10 +12,10 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content" style="display: block;">
-                    <table id="datatable_logs" class="table table-striped table-bordered">
+                    <table id="datatable_logs" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
                         <thead>
                         <tr>
-                            <th style="width: 100%;"></th>
+                            <th class="sorting_asc_disabled sorting_desc_disabled" ></th>
                         </tr>
                         </thead>
 
@@ -51,7 +51,7 @@
     });
 
     
-    function updateLogs(file) {
+    function updateLogs() {
 
         $.ajax({
             type: "POST",
@@ -60,7 +60,7 @@
                 json: 'text/json'
             },
             data: {
-                file: file
+                file: window.path_of_selected_log
             },
             context: this,
             dataType: "json",
@@ -79,7 +79,15 @@
                 if (response.rc) {
 
                     //load all logs
-                    loadLogs(response.logs);
+                    var arrayin = [];
+                    for (log_row in response.logs) {
+                        if(response.logs[log_row] != '--------' && response.logs[log_row] != ' FAIL'){
+                            arrayin.push([response.logs[log_row]]);
+                        }
+                    }
+                    $('#datatable_logs').dataTable({
+                        data: arrayin
+                    });
                 } else {
                     $.notify('Could not fetch logs!', 'error');
                 }
@@ -96,12 +104,14 @@
 
     function loadLogs(logs) {
 
+        document.getElementById('log_title').innerHTML = window.path_of_selected_log;
         var parent_dude = document.getElementById('datatable_logs').getElementsByTagName('tbody')[0];
         while (parent_dude.firstChild) {
             parent_dude.removeChild(parent_dude.firstChild);
         }
         
-        for (var log in logs) {
+        for (var log_iter in logs) {
+            var log = logs[log_iter];
             parent_dude.appendChild(loadLogRow(log));
         }
 
@@ -109,10 +119,12 @@
 
     function loadLogRow(log_info){
 
+        var trow = document.createElement('tr');
+        trow.setAttribute('role', "row");
+        trow.setAttribute('class', "even");
         var log =  document.createElement('td');
-        log.innerHTML = log_info;
+        log.innerHTML = "<p>" + log_info + "</p>";
         trow.appendChild(log);
-
 
         return trow
     }
@@ -120,7 +132,5 @@
 
     $('#refresh').click(updateLogs);
     updateLogs();
-
-    $('.table').dataTable();
 
 </script>

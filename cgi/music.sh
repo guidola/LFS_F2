@@ -8,7 +8,7 @@ die() {
 }
 
 urldecode(){
-  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;')"
+  echo -e "$(sed 's/+/ /g;s/%\(..\)/\//g;')"
 }
 
 

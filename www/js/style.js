@@ -5,10 +5,9 @@
 var log_file_li_template = document.createElement('li');
 log_file_li_template.setAttribute('data-role', 'log-trigger');
 log_file_li_template.setAttribute('class', 'menu_item clickable');
-log_file_li_template.setAttribute('data-url', '/LFS_F2/www/logs.html');
+log_file_li_template.setAttribute('data-url', 'logs.html');
 
 
-//<li  id="log_1" data-role="log-trigger" class="menu_item clickable" data-url="/LFS_F2/www/logs.html"><a>System</a></li>
 
 function populateLogMenu(parent, logs, depth) {
 
@@ -120,6 +119,96 @@ function loadLogTypes() {
     });
 }
 
+var device_li_template = document.createElement('li');
+device_li_template.setAttribute('class', 'menu_item');
+
+
+
+function populateDeviceMenu(parent, devices) {
+
+    for (var iter in devices) {
+        var device = devices[iter];
+        console.log(device);
+        // clone li template
+        var new_li = device_li_template.cloneNode(true);
+        if (iter == 0 && depth > 0) {
+            new_li.classList.add('sub_menu');
+        }
+        // mod id and url
+        new_li.id = device.name;
+        new_li.setAttribute('data-data', device);
+        new_li.innerHTML = '<a>' + device + '<i class="fa fa-align-right fa-play green list-trigger"></i></a>';
+
+        // append new li to parent
+        parent.appendChild(new_li);
+
+    }
+
+
+
+}
+
+function loadDevices() {
+
+    $.ajax({
+        type: "GET",
+        url: '/cgi-bin/show_devices.sh',
+        accepts:{
+            html: 'application/json'
+        },
+        context: this,
+        dataType: "json",
+
+        // html retrieve call was *not* successful
+        error: function() {
+            $.notify("could not get available logs", "error");
+        },
+
+        // html retrieve call was successful
+        //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+        success: function(response_payload){
+            console.log(response_payload);
+            var parent_dude = document.getElementById('devices_menu');
+            //unpopulate parent
+            while (parent_dude.firstChild) {
+                parent_dude.removeChild(parent_dude.firstChild);
+            }
+            //populate parent
+            populateLogMenu(parent_dude, response_payload.devices);
+            //set onclick on new menu items
+            $('.menu_item.clickable').click(setMainContent);
+
+            $('#log_type_menu').find('a').on('click', function(ev) {
+                var $li = $(this).parent();
+
+                if ($li.is('.active')) {
+                    $li.removeClass('active active-sm');
+                    $('ul:first', $li).slideUp(function() {
+                        setContentHeight();
+                    });
+                } else {
+                    // prevent closing menu if we are on child menu
+                    if (!$li.parent().is('.child_menu')) {
+                        $SIDEBAR_MENU.find('li').removeClass('active active-sm');
+                        $SIDEBAR_MENU.find('li ul').slideUp();
+                    }
+
+                    $li.addClass('active');
+
+                    $('ul:first', $li).slideDown(function() {
+                        setContentHeight();
+                    });
+                }
+            });
+
+        },
+
+        failure: function () {
+            $.notify("could not get available logs", "error");
+        }
+    });
+}
+
 function setMainContent(e){
 
     var trigger = e.target.parentNode;
@@ -169,5 +258,6 @@ function setMainContent(e){
 }
 
 $('.menu_item.clickable').click(setMainContent);
+$('#devices_menu').click(loadDevices);
 
 loadLogTypes();
