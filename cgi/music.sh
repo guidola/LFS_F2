@@ -23,6 +23,7 @@ random=4
 unrandom=5
 repeat=6
 unrepeat=7
+show=8
 xcorrect=0
 xerror=1
 esyntax=2
@@ -36,7 +37,7 @@ USB=`echo ${url} | grep -oP '(?<=usb=).*?(?=&)' | urldecode`
 
 
 #verify we got all params we need.
-[[ ! -z  $ACTION ]] || ACTION=${unrandom}
+[[ ! -z  $ACTION ]] || ACTION=${show}
 [[ ! -z $USB ]] || die "400 Bad Request"
 
 
@@ -77,6 +78,9 @@ case $ACTION in
          ;;
     ${unrepeat})
         logger -p local0.notice "CGI music: unrepeat song request"
+         ;;
+    ${show})
+        logger -p local0.notice "CGI music: show list request"
          ;;
 esac
 

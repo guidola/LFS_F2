@@ -72,10 +72,10 @@ do
                     done
                     IFS=$OIFS
                     if [[ ${message:${#message}-1:1} == "[" ]]; then
-                            message="${message}]}]}"
-                        else
-                            message="${message%?}]}]}"
-                        fi
+                        message="${message}]}]}"
+                    else
+                        message="${message%?}]}]}"
+                    fi
                 fi
             fi
             #echo "finished parsing cron, the content is:"
