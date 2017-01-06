@@ -53,7 +53,11 @@ do
                         fi
                     fi
                 done
-                message="${message%?}]}"
+                if [[ ${message:${#message}-1:1} == "[" ]]; then
+                    message="${message}]}"
+                else
+                    message="${message%?}]}"
+                fi
             else
                 #echo "the user is not root"
                 jobs=`crontab -u ${user} -l 2> /dev/null | grep "^[^#]"`

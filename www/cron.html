@@ -189,16 +189,14 @@
         datatable.getElementsByTagName('tbody')[0].appendChild(trow);
     }
 
-    function appendFormToTable(event) {
+    function appendFormToCronTable(event) {
 
         console.log(event);
 
         if (event.target.tagName == 'I') {
-            var table = event.target.parentNode.parentNode.firstElementChild.firstElementChild.nextElementSibling
-                    .firstElementChild.firstElementChild;
+            var table = event.target.parentNode.parentNode.firstElementChild;
         } else {
-            table = event.target.parentNode.firstElementChild.firstElementChild.nextElementSibling
-                    .firstElementChild.firstElementChild;
+            table = event.target.parentNode.firstElementChild;
         }
 
         console.log(table);
@@ -217,7 +215,7 @@
             data: {
                 action: 1,
                 target: username,
-                user: root,
+                user: 'root',
                 line_num: task_id
             },
             dataType: "json",
@@ -283,7 +281,7 @@
                 if (response.rc) {
 
                     //load all tasks
-                    loadTasks(response.cron);
+                    loadTasks(response.payload.cron);
                 } else {
                     $.notify('Could not fetch tasks!', 'error');
                 }
@@ -307,10 +305,14 @@
 
         var i;
         var user;
-
+        if (users === undefined){
+            $.notify("No cron tasks to show", 'info');
+            return;
+        }
         for (i = 0; i < users.length; i++) {
             user = users[i];
-            for (var task in user.jobs) {
+            for (var task_n in user.jobs) {
+                var task = user.jobs[task_n];
                 parent_dude.appendChild(loadTaskRow(user.user, task));
             }
         }
@@ -382,13 +384,7 @@
 
 
     $('#refresh').click(updateTasks);
-    $('.more_button').click(appendFormToTable);
+    $('.more_button').click(appendFormToCronTable);
     updateTasks();
-
-    <!-- Datatables -->
-
-    $('#datatable_cron').dataTable();
-
-    <!-- /Datatables -->
 
 </script>

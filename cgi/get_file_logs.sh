@@ -22,7 +22,7 @@ xerror=1
 url="${url}&"
 file=`echo ${url} | grep -oP '(?<=file=).*?(?=&)' | urldecode`
 
-info=`cat ${file}`
+info=`tail -n 5000 ${file}`
 rc=$?
 echo "Content-Type: application/json"
 echo "Status: 200 OK"
