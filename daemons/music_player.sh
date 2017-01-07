@@ -33,6 +33,7 @@ unrandom=5
 repeat=6
 unrepeat=7
 show=8
+stop=9
 xcorrect=0
 xerror=1
 esyntax=2
@@ -212,6 +213,20 @@ do
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: show list request finished, information send to CGI"
+	        #echo "asnwered with the message to --> ${1}${pid}"
+	        #echo "the message is: ${missatge}"
+	        ;;
+	    ${stop})
+            #echo "entered to stp` song"
+            logger -p local1.notice "music player daemon: stop song from usb ${usb} request received"
+            echo "S" > "${1}mpg123_fifo"
+            echo "${xcorrect}" >> "${1}${pid}"
+            logger -p local1.notice "music player daemon: stop song request succeeded, waiting for response"
+            #echo "asnwered with xcorrect to --> ${1}${pid}"
+            read brossa < ${1}${pid}
+            getlist
+            echo "${missatge}" >> "${1}${pid}"
+            logger -p local1.notice "music player daemon: stop song request finished, information send to CGI"
 	        #echo "asnwered with the message to --> ${1}${pid}"
 	        #echo "the message is: ${missatge}"
 	        ;;

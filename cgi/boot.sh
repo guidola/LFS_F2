@@ -22,7 +22,7 @@ restart=1
 url="${url}&"
 CODI=`echo ${url} | grep -oP '(?<=codi=).*?(?=&)' | urldecode`
 
-case $resp_code in
+case $CODI in
     ${shutdown})
         logger -p local0.notice CGI boot: power off requested
         poweroff

@@ -8,8 +8,7 @@ die() {
 }
 
 urldecode(){
-  local url_encoded="${1//+/ }"
-  printf '%b' "${url_encoded//%/\\x}"
+  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;')"
 }
 
 
@@ -25,6 +24,7 @@ unrandom=5
 repeat=6
 unrepeat=7
 show=8
+stop=9
 xcorrect=0
 xerror=1
 esyntax=2
@@ -82,6 +82,9 @@ case $ACTION in
          ;;
     ${show})
         logger -p local0.notice "CGI music: show list request"
+         ;;
+    ${stop})
+        logger -p local0.notice "CGI music: stop song request"
          ;;
 esac
 

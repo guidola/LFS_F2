@@ -12,9 +12,16 @@ die() {
     echo ""
     exit 0
 }
+urldecode(){
+  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;')"
+}
 
+[[ $REQUEST_METHOD == "POST" ]] || die "400 Bad Request"
+[[ $CONTENT_LENGTH -eq 0 ]] || read -n $CONTENT_LENGTH url
+url="${url}&"
+USERNAME=`echo ${url} | grep -oP '(?<=username=).*?(?=&)' | urldecode`
+PASSWD=`echo ${url} | grep -oP '(?<=passwd=).*?(?=&)' | urldecode`
 
-(( $REQUEST_METHOD == "POST" )) || die "400 Bad Request"
 
 IFS="$"
 xcorrect=0
@@ -26,14 +33,14 @@ ehash=5
 
 template=`cat ../www/js/templates/notification_template.js`
 #verify we got all params we need.
-(( ! -z  $USERNAME || ! -z $PWD )) || die "400 Bad Request"
+(( ! -z  $USERNAME || ! -z $PASSWD )) || die "400 Bad Request"
 
 #create return fifo
 ret_fifo="/web_server/fifos/auth/$$"
 mkfifo $ret_fifo
 
 #send authentication request to authentication daemon
-echo "1\$$USERNAME\$$PWD\$$$" >> /web_server/fifos/auth/request
+echo "1\$$USERNAME\$$PASSWD\$$$" >> /web_server/fifos/auth/request
 
 #wait for response from the authentication daemon
 read resp_code token < $ret_fifo
@@ -50,7 +57,7 @@ if [ ! -z resp_code ]; then
             echo ""
             generate_notification "Invalid Credentials" "The username and password provided are not correct" "error"
             login=`cat /web_server/www/login.html | sed -e "s/\/\/CGI-SCRIPT-INJECTED-JS_____\/\//${notification}/g"`
-            logger -p local0.notice CGI auth: authentication failure
+            logger -p "local0.notice CGI auth: authentication failure"
             ;;
         ${esyntax}|${ehash})
             #return login.html with custom error
@@ -58,7 +65,7 @@ if [ ! -z resp_code ]; then
             echo ""
             generate_notification "Oops." "Something went wrong on our side" "error"
             login=`cat /web_server/www/login.html | sed -e "s/\/\/CGI-SCRIPT-INJECTED-JS_____\/\//${notification}/g"`
-            logger -p local0.notice CGI auth: internal error
+            logger -p "local0.notice CGI auth: internal error"
             ;;
         ${xcorrect})
             #return index.html with dynamic attributes filled in and the token for the private area as a cookie
@@ -66,7 +73,7 @@ if [ ! -z resp_code ]; then
             echo ""
             echo "Set-Cookie: auth_token=$token"
             index=`cat /web_server/www/index_prova.html | sed -e "s/{{username}}/${username}/g"`
-            logger -p local0.notice CGI auth: authentication success with token ${token}
+            logger -p "local0.notice CGI auth: authentication success with token ${token}"
             ;;
     esac
 fi
