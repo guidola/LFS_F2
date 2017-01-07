@@ -16,7 +16,7 @@ case $1 in
         IFS=$'\n'
         for usb in $devices
         do
-            umount /dev/${usb}
+            umount /media/usb/${usb}
         done
         rm -rf /media/usb
         echo "Automount daemon gracefully shut down."
