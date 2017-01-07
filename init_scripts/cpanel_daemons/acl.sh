@@ -14,6 +14,7 @@ case $1 in
         ;;
     stop)
         echo "Signaling daemon..."
+        (sleep 1; pkill -f "bash /web_server/daemons/iptables.sh" 2>>/dev/null) &
         echo '2$$$$$$$$$$$$$$' >> /web_server/fifos/acl/request
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/acl/*
