@@ -4,7 +4,7 @@ function searchMPFiles {
 
     for file in $1/*; do
         
-        if [[ $file == "${1}/" || $file == "${1}/" || "$file" == "${1}/" ]]; then continue; fi
+        if [[ $file == "${1}/." || $file == "${1}/.." || "$file" == "${1}/*" ]]; then continue; fi
 
         #if its a .mp2 or .mp3 file write it to the playlist
         if [[ -f ${file} ]]; then
@@ -51,10 +51,15 @@ do
 
         # watch the mounted usbs to umount on disconnection
         for device in ${!mounted_devices[@]}; do
+            [[ -z "${mounted_devices[${device}]}" ]] && continue;
             echo "checking ${device} mounted at ${mounted_devices[${device}]}"
-            if [[ -z `ls /dev/ | grep "${device}"` && ! -z `df | grep "${mounted_devices[${device}]}"` ]]; then
+            if [[ -z `ls /dev/ | grep "${device}"` ]]; then
                 echo "${device} disconnected"
                 umount ${mounted_devices[${device}]}
+                if [[ $? -eq 0 ]]; then
+                    mounted_devices["${usb}"]=""
+                    rm -rf /web_server/music/${usb} >> /dev/null
+                fi
                 echo "unmounted ${device} mounted at ${mounted_devices[${device}] with code $?}"
             fi
         done
