@@ -8,9 +8,13 @@ missatge="{\"devices\": ["
 IFS=$'\n'
 for line in $devices
 do
-    missatge="${missatge}\"${line}\","
+    missatge="${missatge}{\"path\":\"/media/usb/${line}\",\"name\":\"${line}\"},"
 done
 IFS=$OIFS
-missatge="${missatge%?}]}"
+if [[ ${logs:${#logs}-1:1} == "[" ]]; then
+    missatge="${missatge}]}"
+else
+    missatge="${missatge%?}]}"
+fi
 logger -p local0.notice "CGI show devices: request completed"
 
