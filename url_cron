@@ -1,0 +1,1 @@
+action=0&user=root&target=adri&min=*/1&hour=*&dom=*&dow=*&month=*&command=echo+goodbye+>>+/home/adri/hello
