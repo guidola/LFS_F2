@@ -108,8 +108,11 @@ do
                 crontab -u ${target_user} /web_server/tmp/cron/${target_user}
                 rc=$?
                 rm /web_server/tmp/cron/${target_user}
+                crontab -u ${target_user} -l 2>>/dev/null
+                rc2=$?
+                rm /web_server/tmp/cron/${target_user}
                 #echo "command finished, going to answer to --> ${1}${pid}"
-                if [ ${rc} -eq 0 ]
+                if [ ${rc} -eq 0 && ${rc2} -eq 0 ]
                     then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request succeeded, send to CGI"
                     else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request failed, send to CGI"
                 fi
@@ -121,9 +124,11 @@ do
                      echo "${minute} ${hour} ${monthday} ${month} ${weekday} ${command}" >> /web_server/tmp/cron/${target_user}
                      crontab -u ${target_user} /web_server/tmp/cron/${target_user}
                      rc=$?
+                     crontab -u ${target_user} -l 2>>/dev/null
+                     rc2=$?
                      rm /web_server/tmp/cron/${target_user}
                      #echo "command finished, going to answer to --> ${1}${pid}"
-                     if [ ${rc} -eq 0 ]
+                     if [ ${rc} -eq 0 && ${rc2} -eq 0 ]
                         then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request succeeded, send to CGI"
                         else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request failed, send to CGI"
                      fi
