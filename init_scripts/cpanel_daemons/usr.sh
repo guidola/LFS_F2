@@ -10,7 +10,7 @@ case $1 in
         echo "Starting user manager daemon..."
         /web_server/daemons/user_manager.sh /web_server/fifos/usr/ < /dev/null 1>>/var/log/daemons_errors/usr.log 2>>/var/log/daemons_errors/usr.log &
         echo "User manager daemon running [$!]"
-        logger -p local1.notice "user manager daemon: running";
+        logger -p local1.notice "user manager daemon: running"
         ;;
     stop)
         echo "Signaling daemon..."
@@ -19,7 +19,7 @@ case $1 in
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/usr/*
         echo "User manager daemon gracefully shut down."
-        logger -p local1.notice "user manager daemon: stopped";
+        logger -p local1.notice "user manager daemon: stopped"
         ;;
     *)
         echo "Usage: $0 [start|stop]"

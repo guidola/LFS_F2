@@ -10,7 +10,7 @@ case $1 in
         echo "Starting authentication daemon..."
         /web_server/daemons/chkuser.sh /web_server/fifos/auth/ < /dev/null 1>>/var/log/daemons_errors/auth.log 2>>/var/log/daemons_errors/auth.log &
         echo "Authentication daemon running [$!]"
-        logger -p local1.notice "check user daemon: running";
+        logger -p local1.notice "check user daemon: running"
         ;;
     stop)
         echo "Signaling daemon..."
@@ -19,7 +19,7 @@ case $1 in
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/auth/*
         echo "Authentication daemon gracefully shut down."
-        logger -p local1.notice "check user daemon: stopped";
+        logger -p local1.notice "check user daemon: stopped"
         ;;
     *)
         echo "Usage: $0 [start|stop]"

@@ -13,7 +13,7 @@ case $1 in
         echo "Starting music player daemon..."
         /web_server/daemons/music_player.sh /web_server/fifos/music/ < /dev/null 1>>/var/log/daemons_errors/music.log 2>>/var/log/daemons_errors/music.log &
         echo "Music player daemon running [$!]"
-        logger -p local1.notice "music player daemon: running";
+        logger -p local1.notice "music player daemon: running"
         ;;
     stop)
         echo "Signaling daemon..."
@@ -22,7 +22,7 @@ case $1 in
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/music/*
         echo "Music player daemon gracefully shut down."
-        logger -p local1.notice "music player daemon: stopped";
+        logger -p local1.notice "music player daemon: stopped"
         ;;
     *)
         echo "Usage: $0 [start|stop]"

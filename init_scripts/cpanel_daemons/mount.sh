@@ -8,7 +8,7 @@ case $1 in
         echo "Starting automount daemon..."
         /web_server/daemons/automount.sh < /dev/null 1>>/var/log/daemons_errors/automount.log 2>>/var/log/daemons_errors/automount.log &
         echo "Automount daemon running [$!]"
-        logger -p local1.notice "automount daemon: running";
+        logger -p local1.notice "automount daemon: running"
         ;;
     stop)
         pkill -f /web_server/daemons/automount.sh
@@ -20,7 +20,7 @@ case $1 in
         done
         rm -rf /media/usb
         echo "Automount daemon gracefully shut down."
-        logger -p local1.notice "automount daemon: stopped";
+        logger -p local1.notice "automount daemon: stopped"
         ;;
     *)
         echo "Usage: $0 [start|stop]"

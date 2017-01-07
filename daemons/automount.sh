@@ -31,6 +31,7 @@ do
     for usb in $usbs
     do
         echo "found new device"
+        logger -p local1.notice "automount daemon: found a new device to mount"
         ismounted=`df | grep /dev/${usb}`
         if [[ -z ${ismounted} ]]; then
             echo "mounting new device..."
@@ -47,6 +48,7 @@ do
             touch /web_server/music/${usb}/originallist.txt
             # copy it to the playlist
             cp -f /web_server/music/${usb}/originallist.txt /web_server/music/${usb}/playlist.txt
+            logger -p local1.notice "automount daemon: device ${usb} mounted and list of songs created"
         fi
 
         # watch the mounted usbs to umount on disconnection
@@ -55,12 +57,14 @@ do
             echo "checking ${device} mounted at ${mounted_devices[${device}]}"
             if [[ -z `ls /dev/ | grep "${device}"` ]]; then
                 echo "${device} disconnected"
+                logger -p local1.notice "automount daemon: device ${device} disconnected"
                 umount ${mounted_devices[${device}]}
                 if [[ $? -eq 0 ]]; then
                     mounted_devices["${usb}"]=""
                     rm -rf /web_server/music/${usb} >> /dev/null
                 fi
                 echo "unmounted ${device} mounted at ${mounted_devices[${device}] with code $?}"
+                logger -p local1.notice "automount daemon: device ${device} unmounted"
             fi
         done
 

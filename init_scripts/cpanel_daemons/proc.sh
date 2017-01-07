@@ -10,7 +10,7 @@ case $1 in
         echo "Starting process manager daemon..."
         /web_server/daemons/process_manager.sh /web_server/fifos/proc/ < /dev/null 1>> /var/log/daemons_errors/proc.log 2 >> /var/log/daemons_errors/proc.log &
         echo "Process manager daemon running [$!]"
-        logger -p local1.notice "process manager daemon: running";
+        logger -p local1.notice "process manager daemon: running"
         ;;
     stop)
         echo "Signaling daemon..."
@@ -19,7 +19,7 @@ case $1 in
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/proc/*
         echo "Process manager daemon gracefully shut down."
-        logger -p local1.notice "process manager daemon: stopped";
+        logger -p local1.notice "process manager daemon: stopped"
         ;;
     *)
         echo "Usage: $0 [start|stop]"
