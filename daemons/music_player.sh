@@ -56,7 +56,7 @@ do
             #echo "entered to play song"
             logger -p local1.notice "music player daemon: play song ${song} from usb ${usb} request received"
             echo "S" > "${1}mpg123_fifo"
-            echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+            echo "L ${song}" > "${1}mpg123_fifo"
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: play song request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
@@ -86,7 +86,7 @@ do
             logger -p local1.notice "music player daemon: next song from usb ${usb} request received"
             if [[ $isrepeat -eq 1 ]]; then
                 song=${current_song}
-                echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+                echo "L ${song}" > "${1}mpg123_fifo"
             else
                 current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
@@ -97,7 +97,7 @@ do
                 fi
                 song=`cat /web_server/music/${usb}/playlist.txt | awk -v var="$next" 'NR == var'`
                 echo "S" > "${1}mpg123_fifo"
-                echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+                echo "L ${song}" > "${1}mpg123_fifo"
             fi
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: next song request succeeded, waiting for response"
@@ -114,7 +114,7 @@ do
             logger -p local1.notice "music player daemon: previous song from usb ${usb} request received"
             if [[ $isrepeat -eq 1 ]]; then
                 song=${current_song}
-                echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+                echo "L ${song}" > "${1}mpg123_fifo"
             else
                 current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
@@ -125,7 +125,7 @@ do
                 fi
                 song=`cat /web_server/music/${usb}/playlist.txt | awk -v var="$previous" 'NR == var'`
                 echo "S" > "${1}mpg123_fifo"
-                echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+                echo "L ${song}" > "${1}mpg123_fifo"
             fi
 
             echo "${xcorrect}" >> "${1}${pid}"
@@ -146,7 +146,7 @@ do
             cat /web_server/music/${usb}/randomlist.txt > /web_server/music/${usb}/playlist.txt
             song=`cat /web_server/music/${usb}/playlist.txt | awk 'NR == 1'`
             echo "S" > "${1}mpg123_fifo"
-            echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+            echo "L ${song}" > "${1}mpg123_fifo"
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: random list request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
@@ -164,7 +164,7 @@ do
             rm /web_server/music/${usb}/randomlist.txt
             song=`cat /web_server/music/${usb}/playlist.txt | awk 'NR == 1'`
             echo "S" > "${1}mpg123_fifo"
-            echo "L /media/usb/${usb}/music/${song}" > "${1}mpg123_fifo"
+            echo "L ${song}" > "${1}mpg123_fifo"
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: original list request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
