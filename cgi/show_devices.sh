@@ -8,7 +8,9 @@ missatge="{\"devices\": ["
 IFS=$'\n'
 for line in $devices
 do
-    missatge="${missatge}{\"path\":\"/media/usb/${line}\",\"name\":\"${line}\"},"
+    name=`ls -alt /dev/disk/by-label/ | grep ${line} | awk '{print $9}'`
+    name=`echo -e "${name}"`
+    missatge="${missatge}{\"path\":\"/media/usb/${line}\",\"name\":\"${name}\"},"
 done
 IFS=$OIFS
 if [[ ${logs:${#logs}-1:1} == "[" ]]; then
