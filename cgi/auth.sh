@@ -12,8 +12,10 @@ die() {
     echo ""
     exit 0
 }
+
 urldecode(){
-  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;')"
+  read a
+  echo -e "`echo ${a} | sed 's/+/ /g;s/%\(..\)/\\\x\1/g;'`"
 }
 
 [[ $REQUEST_METHOD == "POST" ]] || die "400 Bad Request"

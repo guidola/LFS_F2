@@ -41,8 +41,8 @@ do
                         do
                             info=`echo ${line} | awk -v var=${i} '{print "{\"line_num\": " var ", \"min\": \"" $1 "\", \"hour\": \"" $2 "\", \"dom\": \"" $3 "\", \"month\": \"" $4 "\", \"dow\": \"" $5 "\", "}'`
                             message="${message}${info}"
-                            info=`echo ${line} | awk '{$1=$2=$3=$4=$5=""; print "\"command\": \"" $0 "\"},"}'`
-                            message="${message}${info}"
+                            info=`echo ${line} | awk '{$1=$2=$3=$4=$5=""; print $0 }' | sed 's/"/\\\U0022/g' `
+                            message="${message} \"command\": \"${info}\"},"
                             let i=i+1
                         done
                         IFS=$OIFS

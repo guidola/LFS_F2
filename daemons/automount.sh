@@ -15,7 +15,7 @@ function searchMPFiles {
 
         #if its a folder call this func again
         if [[ -d ${file} ]]; then
-            searchMPFiles ${file}
+            searchMPFiles ${file} $2
         fi
 
     done;

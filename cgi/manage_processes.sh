@@ -7,6 +7,10 @@ die() {
     exit 0
 }
 
+urldecode(){
+  read a
+  echo -e "`echo ${a} | sed 's/+/ /g;s/%\(..\)/\\\x\1/g;'`"
+}
 
 [[ $REQUEST_METHOD -eq "POST" ]] || die "400 Bad Request"
 
@@ -21,9 +25,9 @@ pause=1
 
 read -n $CONTENT_LENGTH url
 url="${url}&"
-ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)'`
-PID=`echo ${url} | grep -oP '(?<=pid=).*?(?=&)'`
-TIME=`echo ${url} | grep -oP '(?<=time=).*?(?=&)'`
+ACTION=`echo ${url} | grep -oP '(?<=action=).*?(?=&)' | urldecode`
+PID=`echo ${url} | grep -oP '(?<=pid=).*?(?=&)' | urldecode`
+TIME=`echo ${url} | grep -oP '(?<=time=).*?(?=&)' | urldecode`
 #verify we got all params we need.
 [[ ! -z  $ACTION && ! -z $PID && ($ACTION -ne 1 || ! -z $TIME) ]] || die "400 Bad Request"
 [[ $ACTION -ne 2 ]] || die "400 Bad Request"
