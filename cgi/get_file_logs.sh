@@ -21,7 +21,7 @@ xerror=1
 [[ $CONTENT_LENGTH -eq 0 ]] || read -n $CONTENT_LENGTH url
 url="${url}&"
 file=`echo ${url} | grep -oP '(?<=file=).*?(?=&)' | urldecode`
-
+logger -p local0.notice "CGI get file logs: get logs from file ${file} request"
 info=`tail -n 5000 ${file}`
 rc=$?
 echo "Content-Type: application/json"
