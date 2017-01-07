@@ -3,7 +3,7 @@
 
 OIFS="$IFS"
 
-cpu=`top -n 1 -b | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
+cpu=`top -bn2 | awk '/^top -/ { p=!p } { if (!p) print }' | awk 'NR == 3 {print $2 "$" $6 "$" $4 "$" $10 "$" $12 "$" $14 "$" $16 "$" $8 }'`
 IFS="$"
 cpu_array=($cpu)
 #Args="$*"
