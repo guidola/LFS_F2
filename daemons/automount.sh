@@ -55,10 +55,11 @@ do
         for device in ${!mounted_devices[@]}; do
             [[ -z "${mounted_devices[${device}]}" ]] && continue;
             echo "checking ${device} mounted at ${mounted_devices[${device}]}"
-            if [[ -z `ls /dev/ | grep "${device}"` ]]; then
+            if [[ -z `lsblk | grep "${device}"` ]]; then
                 echo "${device} disconnected"
                 logger -p local1.notice "automount daemon: device ${device} disconnected"
-                umount ${mounted_devices[${device}]}
+                fuser -k ${mounted_devices[${device}]}
+                umount -l ${mounted_devices[${device}]}
                 if [[ $? -eq 0 ]]; then
                     mounted_devices["${usb}"]=""
                     rm -rf /web_server/music/${usb} >> /dev/null

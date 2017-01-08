@@ -85,9 +85,14 @@
                             arrayin.push([response.logs[log_row]]);
                         }
                     }
-                    $('#datatable_logs').dataTable({
-                        data: arrayin
+                    var tablerino = $('#datatable_logs').DataTable({
+                        retrieve: true,
+                        order: []
                     });
+                    tablerino.clear();
+                    tablerino.rows.add(arrayin).draw();
+                    document.getElementById('log_title').innerHTML = window.path_of_selected_log;
+
                 } else {
                     $.notify('Could not fetch logs!', 'error');
                 }

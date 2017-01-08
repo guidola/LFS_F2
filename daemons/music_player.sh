@@ -5,7 +5,7 @@ getlist() {
     info=`cat /web_server/music/${usb}/originallist.txt`
     missatge="{\"list\": ["
     i=1
-    current=0
+    current=-1
     IFS=$'\n'
     for line in $info
     do
@@ -17,7 +17,7 @@ getlist() {
         let i=i+1
     done
     IFS=$OIFS
-    if [[ ${message:${#message}-1:1} == "[" ]]; then
+    if [[ ${missatge:${#missatge}-1:1} == "[" ]]; then
         missatge="${missatge}], \"current\": ${current}}"
     else
         missatge="${missatge%?}], \"current\": ${current}}"

@@ -27,15 +27,19 @@ case $CODI in
     ${shutdown})
         logger -p local0.notice CGI boot: power off requested
         poweroff
-        #shutdown -P now
+        echo "Status: 200 OK"
+        echo ""
+        echo ""
         ;;
     ${restart})
         logger -p local0.notice CGI boot: reboot requested
         reboot
-        #shutdown -r now
+        echo "Status: 200 OK"
+        echo ""
+        echo ""
         ;;
     *)
-        die
+        die "400 Bad Request"
         ;;
 
 esac

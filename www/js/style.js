@@ -64,7 +64,7 @@ function loadLogTypes() {
         type: "GET",
         url: '/cgi-bin/getLogsAvailable.sh',
         accepts:{
-            html: 'application/json'
+            json: 'application/json'
         },
         context: this,
         dataType: "json",
@@ -87,7 +87,6 @@ function loadLogTypes() {
             populateLogMenu(parent_dude, response_payload, 0);
             //set onclick on new menu items
             $('.menu_item.clickable').click(setMainContent);
-
             $('#log_type_menu').find('a').on('click', function(ev) {
                 var $li = $(this).parent();
 
@@ -126,42 +125,59 @@ device_li_template.setAttribute('class', 'menu_item');
 
 function populateDeviceMenu(parent, devices) {
 
-    for (var iter in devices) {
+    for (var iter = 0; iter < devices.length; iter++) {
         var device = devices[iter];
-        console.log(device);
+        if (device.name == ""){continue}
         // clone li template
         var new_li = device_li_template.cloneNode(true);
-        if (iter == 0 && depth > 0) {
-            new_li.classList.add('sub_menu');
-        }
         // mod id and url
-        new_li.id = device.name;
-        new_li.setAttribute('data-data', device);
-        new_li.innerHTML = '<a>' + device + '<i class="fa fa-align-right fa-play green list-trigger"></i></a>';
+        new_li.id = device.name.replace(/\s+/g, '');
+        new_li.setAttribute('data-data', device.path);
+        new_li.setAttribute('data-role', 'playlist-trigger');
+        new_li.setAttribute('data-url', '/playlist.html');
+        new_li.setAttribute('data-option', device.name);
+        new_li.innerHTML = '<a>' + device.name + '<i class="fa float-right fa-play green list-trigger"></i></a>';
 
         // append new li to parent
         parent.appendChild(new_li);
 
     }
 
+    $('.list-trigger').click(function (e) {
 
+        e.stopPropagation();
+        var path = e.target.parentNode.parentNode.getAttribute('data-data');
+
+        // envia un load de la llista pertinent i canvia la pagina a la playlist
+        window.path_of_selected_playlist = path;
+        window.selected_device_id = e.target.parentNode.parentNode.id;
+        window.selected_device_name = e.target.parentNode.parentNode.getAttribute('data-option');
+        setMainContent({target: {parentNode: e.target.parentNode.parentNode}});
+        console.log(e.target.parentNode.parentNode.id);
+        $('li.bg-orange').toggleClass('bg-orange');
+        $('#' + e.target.parentNode.parentNode.id).toggleClass('bg-orange');
+
+
+    });
 
 }
+
 
 function loadDevices() {
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: '/cgi-bin/show_devices.sh',
         accepts:{
-            html: 'application/json'
+            json: 'application/json'
         },
         context: this,
         dataType: "json",
 
         // html retrieve call was *not* successful
-        error: function() {
-            $.notify("could not get available logs", "error");
+        error: function(payload) {
+            console.log(payload);
+            $.notify("could not get available devices", "error");
         },
 
         // html retrieve call was successful
@@ -175,12 +191,12 @@ function loadDevices() {
             }
             //populate parent
             populateDeviceMenu(parent_dude, response_payload.devices);
-            //set onclick on new menu items
-            $('.menu_item.clickable').click(setMainContent);
+            $('#' + window.selected_device_id).toggleClass('bg-orange');
+
         },
 
         failure: function () {
-            $.notify("could not get available logs", "error");
+            $.notify("could not get available devices", "error");
         }
     });
 }
@@ -233,7 +249,79 @@ function setMainContent(e){
 
 }
 
-$('.menu_item.clickable').click(setMainContent);
-$('#devices_menu').click(loadDevices);
+function triggerBootAction(codi)  {
 
+    $.ajax({
+        type: "POST",
+        url: '/cgi-bin/boot.sh',
+        accepts:{
+            json: 'text/json'
+        },
+        data: {
+            codi: codi
+        },
+        context: this,
+        dataType: "json",
+
+        // html retrieve call was *not* successful
+        error: function() {
+            $.notify("could not trigger action " + codi, 'error');
+        },
+
+        // html retrieve call was successful
+        //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+        success: function(response_payload){
+            $.notify("Action " + codi + " successfully performed. Wait in case of restart or power up again on power-off. Then reload.", 'success');
+        },
+
+        failure: function () {
+            $.notify("could not trigger action " + codi, 'error');
+        }
+    })
+
+}
+
+function triggerPlayerAction(codi)  {
+
+    $.ajax({
+        type: "POST",
+        url: '/cgi-bin/get_file_logs.sh',
+        accepts:{
+            json: 'text/json'
+        },
+        data: {
+            codi: codi
+        },
+        context: this,
+        dataType: "json",
+
+        // html retrieve call was *not* successful
+        error: function() {
+            $.notify("could not trigger action " + codi, 'error');
+        },
+
+        // html retrieve call was successful
+        //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
+        success: function(response_payload){
+            $.notify("Action " + codi + " successfully performed. Loaded new list status", 'success');
+
+            //si es un play hem de canviar el botó per un pause
+            //si es un pause hem de canviar el botó per un play
+            //amb random urandom hem dactivar desactivar el boto
+            //amb repeat unrepeat hem dactivar desactivar el boto
+
+        },
+
+        failure: function () {
+            $.notify("could not trigger action " + codi, 'error');
+        }
+    })
+
+}
+
+
+$.('.player-action').click( function (e) {triggerPlayerAction(e.target.getAttribute('data-data'))});
+$('.boot-action').click( function (e) {triggerBootAction(e.target.getAttribute('data-data'))});
+$('#devices_wrapper').click(loadDevices);
 loadLogTypes();
+$('.menu_item.clickable').click(setMainContent);

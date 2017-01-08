@@ -49,7 +49,7 @@ mkfifo $ret_fifo
 #echo "FIFO ${ret_fifo} created"
 
 #send process request to process manager daemon
-echo "1\$$$\$$ACTION\$$USB\$$SONG" >> /web_server/fifos/acl/request
+echo "1\$$$\$$ACTION\$$USB\$$SONG" >> /web_server/fifos/music/request
 #echo "Echo to request fifo done --> 1\$$$\$$ACTION\$$USB\$$SONG"
 #wait for response from the authentication daemon
 read resp_code < $ret_fifo

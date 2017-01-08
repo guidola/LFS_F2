@@ -32,6 +32,7 @@ if [[ rc -eq 0 ]]; then
     IFS=$'\n'
     for line in ${info}
     do
+        line=`echo $line | tr "\t" " " | tr "\n" " "`
         logs="${logs}\"${line}\","
     done
     if [[ ${logs:${#logs}-1:1} == "[" ]]; then
@@ -39,7 +40,7 @@ if [[ rc -eq 0 ]]; then
     else
         logs="${logs%?}]"
     fi
-    echo "{\"rc\":true, \"logs\": ${logs}}"
+    echo "{\"rc\":true, \"logs\": ${logs} }"
     logger -p local0.notice "CGI get file logs: success"
 else
     echo '{"rc": false}'
