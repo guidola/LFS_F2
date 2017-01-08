@@ -29,7 +29,6 @@ stop() {
 
 start() {
 echo ""
-    echo "this has been updated"
     echo "Starting all cpanel services..."
     logger -p local1.notice "LFS manager: starting all daemons";
     /etc/init.d/cpanel_daemons/acl.sh start

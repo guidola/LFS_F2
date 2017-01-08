@@ -4,19 +4,12 @@ getlist() {
 
     info=`cat /web_server/music/${usb}/originallist.txt`
     missatge="{\"list\": ["
-    i=1
-    current=-1
-    IFS=$'\n'
+
     for line in $info
     do
         missatge="${missatge}\"${line}\","
-        if [[ ${line} == ${song} ]]; then
-            current=${i}
-            current_song=${song}
-        fi
-        let i=i+1
     done
-    IFS=$OIFS
+
     if [[ ${missatge:${#missatge}-1:1} == "[" ]]; then
         missatge="${missatge}], \"current\": ${current}}"
     else
@@ -24,6 +17,7 @@ getlist() {
     fi
 }
 
+current=-1
 play=0
 pause_resume=1
 next=2
@@ -51,6 +45,7 @@ do
     #echo "passed through first condition"
     [[ ! -z ${codi} && ! -z ${pid} && ${pid} != *"$"* ]] || (echo "${esyntax}" >> "${1}${pid}" & continue)
     #echo "passed through the conditions, going to answer to --> ${1}${pid} and the action is ${action}"
+    logger -p local1.notice "music player daemon: received a petition with code $action, usb $usb and song $song"
     case ${action} in
         ${play})
             #echo "entered to play song"
@@ -61,6 +56,8 @@ do
             logger -p local1.notice "music player daemon: play song request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
+            current_song=${song}
+            current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: play song request finished, information send to CGI"
@@ -88,21 +85,21 @@ do
                 song=${current_song}
                 echo "L ${song}" > "${1}mpg123_fifo"
             else
-                current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
                 if [[ $current -ge $total ]]; then
-                    next=1
+                    let next_song=1
                 else
-                    let next=current+1
+                    let next_song=current+1
                 fi
-                song=`cat /web_server/music/${usb}/playlist.txt | awk -v var="$next" 'NR == var'`
+                current_song=`cat /web_server/music/${usb}/playlist.txt | awk -v var="$next_song" 'NR == var'`
                 echo "S" > "${1}mpg123_fifo"
-                echo "L ${song}" > "${1}mpg123_fifo"
+                echo "L ${current_song}" > "${1}mpg123_fifo"
             fi
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: next song request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
+            current=$next_song
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: next song request finished, information send to CGI"
@@ -116,22 +113,22 @@ do
                 song=${current_song}
                 echo "L ${song}" > "${1}mpg123_fifo"
             else
-                current=`cat /web_server/music/${usb}/playlist.txt | grep -n ${current_song} | awk -F: '{print $1}'`
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
                 if [[ $current -le 1 ]]; then
-                    previous=current
+                    let previous_song=1 # la posem a 0 i no a current per desinicialitzar el -1
                 else
-                    let previous=current-1
+                    let previous_song=current-1
                 fi
-                song=`cat /web_server/music/${usb}/playlist.txt | awk -v var="$previous" 'NR == var'`
+                current_song=`cat /web_server/music/${usb}/playlist.txt | awk -v var="$previous_song" 'NR == var'`
                 echo "S" > "${1}mpg123_fifo"
-                echo "L ${song}" > "${1}mpg123_fifo"
+                echo "L ${current_song}" > "${1}mpg123_fifo"
             fi
 
             echo "${xcorrect}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: previous song request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
+            current=$previous_song
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: previous song request finished, information send to CGI"
@@ -224,6 +221,8 @@ do
             logger -p local1.notice "music player daemon: stop song request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
+            current_song=""
+            current=-1
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: stop song request finished, information send to CGI"

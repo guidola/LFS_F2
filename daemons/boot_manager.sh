@@ -22,22 +22,16 @@ do
         ${shutdown})
             #echo "entered to shutdown"
             logger -p local1.notice "boot manager daemon: shutdown request received"
-            poweroff
-            rc=$?
-            if [ ${rc} -eq 0 ]
-                then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "boot manager daemon: shutdown request success"
-                else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "iptables daemon: request failed"
-            fi
+            echo "${xcorrect}" >> "${1}${pid}";
+            logger -p local1.notice "boot manager daemon: shutdown request success"
+	        ( sleep 5; poweroff )&
 	        ;;
         ${restart})
             #echo "entered to restart"
             logger -p local1.notice "boot manager daemon: restart request received"
-            reboot
-            rc=$?
-            if [ ${rc} -eq 0 ]
-                then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "boot manager daemon: restart request success"
-                else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "iptables daemon: request failed"
-            fi
+            echo "${xcorrect}" >> "${1}${pid}";
+            logger -p local1.notice "boot manager daemon: restart request success"
+            ( sleep 5; reboot )&
 	        ;;
         *)
 	    #echo "code error, going to answer to --> ${1}${pid}"

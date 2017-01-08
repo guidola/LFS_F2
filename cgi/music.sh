@@ -39,7 +39,7 @@ USB=`echo ${url} | grep -oP '(?<=usb=).*?(?=&)' | urldecode`
 
 
 #verify we got all params we need.
-[[ ! -z  $ACTION ]] || ACTION=${show}
+[[ ! -z  $ACTION ]] || die "400 Bad Request"
 [[ ! -z $USB ]] || die "400 Bad Request"
 
 

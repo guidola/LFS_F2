@@ -264,8 +264,13 @@ function triggerBootAction(codi)  {
         dataType: "json",
 
         // html retrieve call was *not* successful
-        error: function() {
-            $.notify("could not trigger action " + codi, 'error');
+        error: function(e) {
+            console.log(e);
+            if(e.statusText == "OK"){
+                $.notify("Action " + codi + " successfully performed. Wait in case of restart or power up again on power-off. Then reload.", 'success');
+            } else {
+                $.notify("could not trigger action " + codi, 'error');
+            }
         },
 
         // html retrieve call was successful
@@ -274,23 +279,32 @@ function triggerBootAction(codi)  {
             $.notify("Action " + codi + " successfully performed. Wait in case of restart or power up again on power-off. Then reload.", 'success');
         },
 
-        failure: function () {
-            $.notify("could not trigger action " + codi, 'error');
+        failure: function (e) {
+            if(e.statusText == "OK"){
+                $.notify("Action " + codi + " successfully performed. Wait in case of restart or power up again on power-off. Then reload.", 'success');
+            } else {
+                $.notify("could not trigger action " + codi, 'error');
+            }
+            console.log(e);
         }
     })
 
 }
 
-function triggerPlayerAction(codi)  {
+function triggerPlayerAction(codi, song)  {
+
+    var usb = window.path_of_selected_playlist === undefined ? null : window.path_of_selected_playlist;
 
     $.ajax({
         type: "POST",
-        url: '/cgi-bin/get_file_logs.sh',
+        url: '/cgi-bin/music.sh',
         accepts:{
             json: 'text/json'
         },
         data: {
-            codi: codi
+            action: codi,
+            song: song,
+            usb:  usb
         },
         context: this,
         dataType: "json",
@@ -302,13 +316,43 @@ function triggerPlayerAction(codi)  {
 
         // html retrieve call was successful
         //insert it on the main div. Since we just loaded the html we do not have to remove any content since its empty
-        success: function(response_payload){
+        success: function(response){
             $.notify("Action " + codi + " successfully performed. Loaded new list status", 'success');
 
             //si es un play hem de canviar el botó per un pause
             //si es un pause hem de canviar el botó per un play
             //amb random urandom hem dactivar desactivar el boto
             //amb repeat unrepeat hem dactivar desactivar el boto
+
+            //en qualsevol cas actualitzem la llist amb el nou estat
+            console.log(response);
+            if (response.rc) {
+                var dades = response.payload;
+                //load all logs
+                var arrayin = [];
+
+                for (var song_id in dades.list) {
+                    var song_mas= parseInt(song_id)+1
+                    console.log(song_mas + " -- " + dades.current);
+                    if (song_mas == dades.current) {
+                        arrayin.push(["<i class='fa fa-music green center-y'>", dades.list[song_id]])
+                    } else {
+                        arrayin.push(["<i data-data=\"" + dades.list[song_id] + "\" class='fa fa-play green play-song center-y'>", dades.list[song_id]]);
+
+                    }
+                }
+                var tablerino = $('#datatable_logs').DataTable({
+                    retrieve: true,
+                    order: []
+                });
+                tablerino.clear();
+                tablerino.rows.add(arrayin).draw();
+                document.getElementById('playlist_title').innerHTML = 'Playlist ' + window.selected_device_name;
+                $('.play-song').click(function(e){triggerPlayerAction("0", e.target.getAttribute('data-data'))});
+
+            } else {
+                $.notify('Could not fetch logs!', 'error');
+            }
 
         },
 
@@ -320,8 +364,28 @@ function triggerPlayerAction(codi)  {
 }
 
 
-$.('.player-action').click( function (e) {triggerPlayerAction(e.target.getAttribute('data-data'))});
-$('.boot-action').click( function (e) {triggerBootAction(e.target.getAttribute('data-data'))});
+$('.player-action').click( function (e) {
+    var node;
+    if (e.target.tagName == 'SPAN') {
+        node = e.target.parentNode.getAttribute('data-data')
+    } else {
+        node = e.target.getAttribute('data-data')
+    }
+
+    triggerPlayerAction(node, null);
+});
+
+$('.boot-action').click( function (e) {
+    var node;
+    if (e.target.tagName == 'SPAN') {
+        node = e.target.parentNode.getAttribute('data-data')
+    } else {
+        node = e.target.getAttribute('data-data')
+    }
+
+    triggerBootAction(node);
+});
+
 $('#devices_wrapper').click(loadDevices);
 loadLogTypes();
 $('.menu_item.clickable').click(setMainContent);

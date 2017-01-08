@@ -56,7 +56,9 @@
 
 
         if ( window.path_of_selected_playlist === undefined ) {
+            $.notify("There is no playlist loaded. Load a playlist from devices", "warning");
             $('#datatable_logs').dataTable();
+            return;
         }
 
         $.ajax({
@@ -84,11 +86,15 @@
                     var dades = response.payload;
                     //load all logs
                     var arrayin = [];
+
                     for (var song_id in dades.list) {
-                        if (song_id == dades.current) {
-                            arrayin.push(["<i class='fa fa-play green center-y'>", dades.list[song_id]])
+                        var song_mas= parseInt(song_id)+1
+                        console.log(song_mas + " -- " + dades.current);
+                        if (song_mas == dades.current) {
+                            arrayin.push(["<i class='fa fa-music green center-y'>", dades.list[song_id]])
                         } else {
-                            arrayin.push(["", dades.list[song_id]])
+                            arrayin.push(["<i data-data=\"" + dades.list[song_id] + "\" class='fa fa-play green play-song center-y'>", dades.list[song_id]]);
+
                         }
                     }
                     var tablerino = $('#datatable_logs').DataTable({
@@ -98,6 +104,7 @@
                     tablerino.clear();
                     tablerino.rows.add(arrayin).draw();
                     document.getElementById('playlist_title').innerHTML = 'Playlist ' + window.selected_device_name;
+                    $('.play-song').click(function(e){triggerPlayerAction("0", e.target.getAttribute('data-data'))});
 
                 } else {
                     $.notify('Could not fetch logs!', 'error');
