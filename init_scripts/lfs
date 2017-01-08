@@ -12,6 +12,7 @@ stop() {
     /etc/init.d/cpanel_daemons/music.sh stop
     /etc/init.d/cpanel_daemons/proc.sh stop
     /etc/init.d/cpanel_daemons/usr.sh stop
+    /etc/init.d/cpanel_daemons/boot.sh stop
     # wait 1 second and if there is some daemon still up cleanse it all
     sleep 1
     echo "Killing hung up daemons..."
@@ -38,6 +39,7 @@ echo ""
     /etc/init.d/cpanel_daemons/music.sh start
     /etc/init.d/cpanel_daemons/proc.sh start
     /etc/init.d/cpanel_daemons/usr.sh start
+    /etc/init.d/cpanel_daemons/boot.sh start
     echo "All services started!!"
     echo ""
     logger -p local1.notice "LFS manager: all daemons running";
