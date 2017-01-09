@@ -41,7 +41,7 @@ do
                         do
                             info=`echo ${line} | awk -v var=${i} '{print "{\"line_num\": " var ", \"min\": \"" $1 "\", \"hour\": \"" $2 "\", \"dom\": \"" $3 "\", \"month\": \"" $4 "\", \"dow\": \"" $5 "\", "}'`
                             message="${message}${info}"
-                            info=`echo ${line} | awk '{$1=$2=$3=$4=$5=""; print $0 }' | sed 's/"/\\\U0022/g' `
+                            info=`echo ${line} | awk '{$1=$2=$3=$4=$5=""; print $0 }' | tr '"' "'" `
                             message="${message} \"command\": \"${info}\"},"
                             let i=i+1
                         done
@@ -70,8 +70,8 @@ do
                     do
                         info=`echo ${line} | awk -v var=${i} '{print "{\"line_num\": " var ", \"min\": \"" $1 "\", \"hour\": \"" $2 "\", \"dom\": \"" $3 "\", \"month\": \"" $4 "\", \"dow\": \"" $5 "\", "}'`
                         message="${message}${info}"
-                        info=`echo ${line} | awk '{$1=$2=$3=$4=$5=""; print "\"command\": \"" $0 "\"},"}'`
-                        message="${message}${info}"
+                        info=`echo ${line} | awk '{$1=$2=$3=$4=$5=""; print $0 }' | tr '"' "'" `
+                        message="${message} \"command\": \"${info}\"},"
                         let i=i+1
                     done
                     IFS=$OIFS
@@ -114,7 +114,7 @@ do
                 rc2=$?
                 rm /web_server/tmp/cron/${target_user}
                 #echo "command finished, going to answer to --> ${1}${pid}"
-                if [ ${rc} -eq 0 && ${rc2} -eq 0 ]
+                if [[ ${rc} -eq 0 && ${rc2} -eq 0 ]]
                     then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request succeeded, send to CGI"
                     else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request failed, send to CGI"
                 fi
@@ -130,7 +130,7 @@ do
                      rc2=$?
                      rm /web_server/tmp/cron/${target_user}
                      #echo "command finished, going to answer to --> ${1}${pid}"
-                     if [ ${rc} -eq 0 && ${rc2} -eq 0 ]
+                     if [[ ${rc} -eq 0 && ${rc2} -eq 0 ]]
                         then echo "${xcorrect}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request succeeded, send to CGI"
                         else echo "${xerror}" >> "${1}${pid}"; logger -p local1.notice "cron manager daemon: request failed, send to CGI"
                      fi

@@ -328,6 +328,10 @@ function triggerPlayerAction(codi, song)  {
             //si es un play hem de canviar el botó per un pause
             //si es un pause hem de canviar el botó per un play
             if (codi == 1){$('#play').toggleClass('glyphicon-pause glyphicon-play')}
+
+            if ((codi == 2 || codi == 3) && $('#play').hasClass('glyphicon-play')){$('#play').toggleClass('glyphicon-pause glyphicon-play')}
+
+
             //amb random urandom hem dactivar desactivar el boto
             if (codi == 4 || codi == 5){
                 $('#random').toggleClass('green');

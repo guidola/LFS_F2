@@ -25,7 +25,7 @@ case $1 in
         ;;
     stop)
         echo "Signaling daemon..."
-        (sleep 1; pkill -f "bash /web_server/daemons/music_player.sh" 2>>/dev/null) &
+        (sleep 1; pkill -f "bash /web_server/daemons/music_player.sh" 2>>/dev/null; pkill --signal 9 "mpg123 -R --fifo /web_server/fifos/music/mpg123_fifo") &
         echo '2$$$' >> /web_server/fifos/music/request
         echo "Waiting for on-going requests to end..."
         rm -f /web_server/fifos/music/*

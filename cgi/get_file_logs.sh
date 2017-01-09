@@ -32,7 +32,7 @@ if [[ rc -eq 0 ]]; then
     IFS=$'\n'
     for line in ${info}
     do
-        line=`echo $line | tr "\t" " " | tr "\n" " "`
+        line=`echo $line | tr "\t" " " | tr "\n" " " | tr '"' "'"`
         logs="${logs}\"${line}\","
     done
     if [[ ${logs:${#logs}-1:1} == "[" ]]; then

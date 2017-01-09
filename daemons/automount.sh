@@ -2,18 +2,20 @@
 
 function searchMPFiles {
 
-    for file in $1/*; do
-        
-        if [[ $file == "${1}/." || $file == "${1}/.." || "$file" == "${1}/*" ]]; then continue; fi
+    for file in ${1}/*; do
 
+        if [[ $file == "${1}/." || $file == "${1}/.." || "$file" == "${1}/*" ]]; then continue; fi
+        echo "looking up file $file..."
         #if its a .mp2 or .mp3 file write it to the playlist
         if [[ -f ${file} ]]; then
             if [[ $file =~ \.mp[23]$ ]]; then
                 echo ${file} >> $2
             fi;
+            continue;
         fi
 
         #if its a folder call this func again
+        file $file
         if [[ -d ${file} ]]; then
             searchMPFiles ${file} $2
         fi
@@ -55,11 +57,10 @@ do
         for device in ${!mounted_devices[@]}; do
             [[ -z "${mounted_devices[${device}]}" ]] && continue;
             echo "checking ${device} mounted at ${mounted_devices[${device}]}"
-            if [[ -z `lsblk | grep "${device}"` ]]; then
+            if [[ -z `ls /dev/ | grep "${device}"` ]]; then
                 echo "${device} disconnected"
                 logger -p local1.notice "automount daemon: device ${device} disconnected"
-                fuser -k ${mounted_devices[${device}]}
-                umount -l ${mounted_devices[${device}]}
+                umount ${mounted_devices[${device}]}
                 if [[ $? -eq 0 ]]; then
                     mounted_devices["${usb}"]=""
                     rm -rf /web_server/music/${usb} >> /dev/null
