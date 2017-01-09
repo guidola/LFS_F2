@@ -310,7 +310,8 @@ function triggerPlayerAction(codi, song)  {
         dataType: "json",
 
         // html retrieve call was *not* successful
-        error: function() {
+        error: function(r) {
+            console.log(r);
             $.notify("could not trigger action " + codi, 'error');
         },
 
@@ -319,10 +320,26 @@ function triggerPlayerAction(codi, song)  {
         success: function(response){
             $.notify("Action " + codi + " successfully performed. Loaded new list status", 'success');
 
+            if (codi == 0){
+                $('#play').removeClass('glyphicon-pause');
+                $('#play').removeClass('glyphicon-play');
+                $('#play').addClass('glyphicon-pause');
+            }
             //si es un play hem de canviar el botó per un pause
             //si es un pause hem de canviar el botó per un play
+            if (codi == 1){$('#play').toggleClass('glyphicon-pause glyphicon-play')}
             //amb random urandom hem dactivar desactivar el boto
+            if (codi == 4 || codi == 5){
+                $('#random').toggleClass('green');
+                var elem1 = document.getElementById('random').parentNode;
+                elem1.setAttribute('data-data', elem1.getAttribute('data-data')==4?5:4 + "")
+            }
             //amb repeat unrepeat hem dactivar desactivar el boto
+            if (codi == 6 || codi == 7){
+                $('#repeat').toggleClass('green');
+                var elem2 = document.getElementById('repeat').parentNode;
+                elem2.setAttribute('data-data', elem2.getAttribute('data-data')==6?7:6 + "")
+            }
 
             //en qualsevol cas actualitzem la llist amb el nou estat
             console.log(response);
@@ -332,7 +349,7 @@ function triggerPlayerAction(codi, song)  {
                 var arrayin = [];
 
                 for (var song_id in dades.list) {
-                    var song_mas= parseInt(song_id)+1
+                    var song_mas= parseInt(song_id)+1;
                     console.log(song_mas + " -- " + dades.current);
                     if (song_mas == dades.current) {
                         arrayin.push(["<i class='fa fa-music green center-y'>", dades.list[song_id]])
@@ -356,7 +373,8 @@ function triggerPlayerAction(codi, song)  {
 
         },
 
-        failure: function () {
+        failure: function (r) {
+            console.log(r);
             $.notify("could not trigger action " + codi, 'error');
         }
     })
@@ -389,3 +407,11 @@ $('.boot-action').click( function (e) {
 $('#devices_wrapper').click(loadDevices);
 loadLogTypes();
 $('.menu_item.clickable').click(setMainContent);
+
+$('#logout').click(function(){
+    var cookies = $.cookie();
+    for(var cookie in cookies) {
+        $.removeCookie(cookie);
+    }
+    window.location = '/login.html';
+});

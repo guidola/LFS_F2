@@ -86,8 +86,8 @@
                 <a class="player-action" id="previous" data-data="3" data-toggle="tooltip" data-placement="top" title="Previous Song">
                   <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
                 </a>
-                <a class="player-action" id="play" data-data="1" data-toggle="tooltip" data-placement="top" title="Play">
-                  <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                <a class="player-action"  data-data="1" data-toggle="tooltip" data-placement="top" title="Play">
+                  <span id="play" class="glyphicon glyphicon-play" aria-hidden="true"></span>
                 </a>
                 <a class="player-action" id="next" data-data="2" data-toggle="tooltip" data-placement="top" title="Next Song">
                   <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
@@ -97,11 +97,11 @@
                 </a>
               </div>
               <div>
-                <a class="player-action" id="random" data-data="4" data-toggle="tooltip" data-placement="top" title="Random">
-                  <span class="glyphicon glyphicon-random" aria-hidden="true"></span>
+                <a class="player-action"  data-data="4" data-toggle="tooltip" data-placement="top" title="Random">
+                  <span id="random" class="glyphicon glyphicon-random" aria-hidden="true"></span>
                 </a>
-                <a class="player-action" id="repeat" data-data="6" data-toggle="tooltip" data-placement="top" title="Repeat">
-                  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                <a class="player-action" data-data="6" data-toggle="tooltip" data-placement="top" title="Repeat">
+                  <span id="repeat" class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                 </a>
                 <a class="boot-action" id="reboot" data-data="1" data-toggle="tooltip" data-placement="top" title="Reboot">
                   <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
@@ -125,14 +125,12 @@
 
               <ul class="nav navbar-nav navbar-right" style="margin-right: 10px !important;">
                 <li class="">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    {{username}}
+                  <a id="username_placeholder" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   </a>
                 </li>
                 <li role="presentation" class="dropdown">
-                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
+                  <a id="logout">
+                    <span class="glyphicon glyphicon-log-out"></span>
                   </a>
                 </li>
               </ul>
@@ -214,10 +212,27 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="js/jquery-cookies.js"></script>
 
     <!-- Custom Theme Scripts -->
     <!-- FastClick -->
     <script src="vendors/fastclick/lib/fastclick.js"></script>
+
+    <script>
+
+      function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2){return parts.pop().split(";").shift()}else{return ""};
+      }
+
+      if ( getCookie('authenticated') != 'true' || getCookie('username') == "" ) {
+          window.location='/login.html'
+      }else{
+          document.getElementById('username_placeholder').innerHTML = getCookie('username');
+      }
+
+    </script>
 
     <!-- Custom Theme Scripts -->
     <script src="js/style.js"></script>

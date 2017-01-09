@@ -85,7 +85,7 @@
             },
             data: {
                 action: 0,
-                user: 'root',
+                user: getCookie('username'),
                 target: user,
                 min: minute,
                 hour: hour,
@@ -215,7 +215,7 @@
             data: {
                 action: 1,
                 target: username,
-                user: 'root',
+                user: getCookie('username'),
                 line_num: task_id
             },
             dataType: "json",
@@ -262,7 +262,7 @@
                 json: 'text/json'
             },
             data:{
-                user: 'root'
+                user: getCookie('username')
             },
             context: this,
             dataType: "json",

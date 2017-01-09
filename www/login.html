@@ -30,7 +30,7 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form  action="/cgi-bin/auth.sh" method="post">
+            <form id="form-login" action="/cgi-bin/auth.sh" method="POST">
               <h1>Login Form</h1>
               <div>
                 <input name="username" type="text" class="form-control" placeholder="Username" required />
@@ -39,14 +39,14 @@
                 <input name="pwd" type="password" class="form-control" placeholder="Password" required />
               </div>
               <div>
-                <a class="btn btn-default submit" href="index.html">Log in</a>
+                <a id="login-button" class="btn btn-default submit">Log in</a>
               </div>
 
               <div class="clearfix"></div>
 
               <div class="separator">
                 <div class="clearfix"></div>
-                <br />
+                <br/>
 
                 <div>
                   <h1><i class="fa fa-linux"></i> FS0C13TY LFS </h1>
@@ -82,7 +82,7 @@
                 </p>
 
                 <div class="clearfix"></div>
-                <br />
+                <br/>
 
                 <div>
                   <h1><i class="fa fa-linux"></i> Gentelella Alela!</h1>
@@ -95,4 +95,101 @@
       </div>
     </div>
   </body>
+
+  <!-- jQuery -->
+  <script src="vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- FastClick -->
+  <script src="vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="vendors/nprogress/nprogress.js"></script>
+  <!-- Chart.js -->
+  <script src="vendors/Chart.js/dist/Chart.min.js"></script>
+  <!-- gauge.js -->
+  <script src="vendors/gauge.js/dist/gauge.min.js"></script>
+  <!-- bootstrap-progressbar -->
+  <script src="vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+  <!-- iCheck -->
+  <script src="vendors/iCheck/icheck.min.js"></script>
+  <!-- Skycons -->
+  <script src="vendors/skycons/skycons.js"></script>
+  <!-- Flot -->
+  <script src="vendors/Flot/jquery.flot.js"></script>
+  <script src="vendors/Flot/jquery.flot.pie.js"></script>
+  <script src="vendors/Flot/jquery.flot.time.js"></script>
+  <script src="vendors/Flot/jquery.flot.stack.js"></script>
+  <script src="vendors/Flot/jquery.flot.resize.js"></script>
+  <!-- Flot plugins -->
+  <script src="vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+  <script src="vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+  <script src="vendors/flot.curvedlines/curvedLines.js"></script>
+  <!-- DateJS -->
+  <script src="vendors/DateJS/build/date.js"></script>
+  <!-- JQVMap -->
+  <script src="vendors/jqvmap/dist/jquery.vmap.js"></script>
+  <script src="vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script src="vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+  <!-- bootstrap-daterangepicker -->
+  <script src="vendors/moment/min/moment.min.js"></script>
+  <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+  <!-- jQuery Sparklines -->
+  <script src="vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+  <!-- easy-pie-chart -->
+  <script src="vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
+
+  <!-- Datatables -->
+  <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="vendors/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+  <script src="vendors/jszip/dist/jszip.min.js"></script>
+  <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+
+  <!-- Custom Theme Scripts -->
+  <!-- FastClick -->
+  <script src="vendors/fastclick/lib/fastclick.js"></script>
+
+  <!-- Custom Theme Scripts -->
+  <script src="build/js/custom.min.js"></script>
+
+  <script src="vendors/validator/validator.js"></script>
+  <script src="vendors/notifyjs/notify.min.js"></script>
+
+  <script>
+
+      $('#login-button').click(function(){$('#form-login').submit()});
+
+      var url = window.location.href;
+
+      var status = url.split('#')[1];
+
+      if (status == 1) {
+        new PNotify({
+          title: 'Invalid Credentials',
+          text: 'The username and password provided are not correct',
+          type: 'error',
+          styling: 'bootstrap3'
+        });
+      } else if (status == 2){
+        new PNotify({
+          title: 'Oops.',
+          text: 'Something went wrong on our side',
+          type: 'error',
+          styling: 'bootstrap3'
+        });
+      }
+
+  </script>
+
 </html>

@@ -2,7 +2,7 @@
 
 getlist() {
 
-    info=`cat /web_server/music/${usb}/originallist.txt`
+    info=`cat /web_server/music/${usb}/playlist.txt`
     missatge="{\"list\": ["
 
     for line in $info
@@ -84,6 +84,7 @@ do
             if [[ $isrepeat -eq 1 ]]; then
                 song=${current_song}
                 echo "L ${song}" > "${1}mpg123_fifo"
+                next_song=$current
             else
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
                 if [[ $current -ge $total ]]; then
@@ -112,6 +113,7 @@ do
             if [[ $isrepeat -eq 1 ]]; then
                 song=${current_song}
                 echo "L ${song}" > "${1}mpg123_fifo"
+                previous_song=$current
             else
                 total=`wc -l /web_server/music/${usb}/playlist.txt | awk '{print $1}'`
                 if [[ $current -le 1 ]]; then
@@ -148,6 +150,8 @@ do
             logger -p local1.notice "music player daemon: random list request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
+            current=1
+            current_song=${song}
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: random list request finished, information send to CGI"
@@ -166,6 +170,8 @@ do
             logger -p local1.notice "music player daemon: original list request succeeded, waiting for response"
             #echo "asnwered with xcorrect to --> ${1}${pid}"
             read brossa < ${1}${pid}
+            current=1
+            current_song=${song}
             getlist
             echo "${missatge}" >> "${1}${pid}"
             logger -p local1.notice "music player daemon: original list request finished, information send to CGI"

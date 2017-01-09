@@ -1,1 +1,55 @@
 action=0&user=root&target=adri&min=*/1&hour=*&dom=*&dow=*&month=*&command=echo+goodbye+>>+/home/adri/hello
+
+
+   - ./
+     |
+     |--/ cgi               # scripts cgi accessibles des del navegador web (api)
+     |--/ daemons           # dimonis del cpanel que gestionen les tasques de root.
+     |--/ init_scripts      # scripts d'inicialització dels dimonis
+     | |--/ cpanel_daemons      # scripts particulars dels dimonis
+     | |
+     | |-- lfs                  # script mestre del sistema
+     |--/ keys              # conte les claus usades per signar els JWT d'autenticació
+     |--/ skel              # esquelet emprat per crear les carpetes home de nous usuaris
+     |--/ www               # arrel del directori web. Conté el cpanel (la web).
+     |
+     |-- configure_init.sh  # configura el sistema init
+     |-- push_to_remote.sh  # script de auto-deploy del sistema a través de ssh
+     |
+
+
+    # servidor escolta al port 80 per qualsevol @ip
+    Listen 0.0.0.0 80
+
+    # configurem el usuari i grup que emprara el servidor
+    <IfModule unixd_module>
+        User apache
+        Group apache
+    </IfModule>
+
+    # canviem el document root i i el path de la configuració del directori
+    # per el nostre path /web_server/www que conté la web
+    DocumentRoot "/web_server/www"
+    <Directory "/web_server/www">
+        <output_omitted>
+    </Directory>
+
+    # configurem els fitxers a buscar quan es sol·licit l'arrel de la web
+    <IfModule dir_module>
+        DirectoryIndex index.html
+    </IfModule>
+
+    # configurem el path de la url que mapeja la carpeta contenidora dels scripts
+    <IfModule alias_module>
+            ScriptAlias /cgi-bin/ "/web_server/cgi/"
+    </IfModule>
+    # configurem les propietats de dit directori per tal de que es permeti
+    # access total als seus fitxers
+    <Directory "/web_server/cgi/">
+            AllowOverride None
+            Options None
+            Require All Granted
+    </Directory>
+
+
+

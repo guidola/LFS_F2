@@ -80,6 +80,8 @@ do
                     else
                         message="${message%?}]}]}"
                     fi
+                else
+                    message="${message}]}"
                 fi
             fi
             #echo "finished parsing cron, the content is:"
